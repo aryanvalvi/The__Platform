@@ -62,7 +62,7 @@ const UserImage = async (req, res) => {
 
       await User.findByIdAndUpdate(
         userId,
-        { $push: { CreatedProject: [{ image: result.secure_url }] } },
+        { $push: { CreatedProject1: [{ image: result.secure_url }] } },
         { new: true }
       );
 

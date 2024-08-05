@@ -8,10 +8,13 @@ const { UserData } = require("../models/user-model");
 const { getdata } = require("../controller/Getdata");
 const { GetImage, UserImage, UserVideo } = require("../controller/UserUpload");
 const { Cloud } = require("../controller/Cloud/CloudNary");
+const MainData = require("../controller/MainData");
 let userdata;
 let userimagelocation;
 
-router.get("/explore", explore);
+//User Data image/video
+
+router.get("/explore", MainData);
 
 //auth login
 router.get(
