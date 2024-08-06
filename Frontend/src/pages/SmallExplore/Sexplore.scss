@@ -1,0 +1,153 @@
+.flex {
+  margin-top: 200px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  // gap: 9px;
+}
+.gand {
+  margin-top: 30px;
+
+  p {
+    margin-top: 30px;
+    color: #000;
+    font-family: Kaushan Script;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+  }
+
+  padding: 30px;
+  margin-bottom: 20px;
+  .profile {
+    position: absolute;
+
+    width: 38px;
+    height: 38px;
+  }
+}
+
+.gand {
+  .mgand {
+    width: 350px;
+    height: 250px;
+  }
+  position: relative;
+  // display: flex;
+  .profile {
+    position: absolute;
+    top: 98%;
+  }
+  .p {
+    position: absolute;
+    top: 90%;
+    left: 17%;
+  }
+  .like {
+    width: 6%;
+    position: absolute;
+    top: 100%;
+    left: 80%;
+    // fill: #bab1b1;
+    transition: 0.2s;
+  }
+  .like:hover {
+    fill: rgb(222, 25, 25);
+    transform: scale(1.1);
+  }
+  .like:active {
+    transform: translateY(-1px);
+    // box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  }
+  .like::after {
+    z-index: -1;
+  }
+  .likee {
+    width: 6.5%;
+    position: absolute;
+    top: 100%;
+    left: 90%;
+    fill: #671e1e;
+  }
+  .likee:hover {
+    fill: #000000;
+  }
+}
+
+.des {
+  position: absolute;
+  border-radius: 30px;
+  width: 400px;
+  height: 350px;
+  position: absolute;
+  top: 0%;
+  left: 10%;
+  background: rgba(0, 0, 0, 0.6);
+
+  opacity: 0;
+  transition: 0.6s;
+}
+.des:hover {
+  opacity: 1;
+}
+
+.imageContent {
+  width: 100%;
+  height: 100%;
+  // position: relative;
+  .mgand {
+    position: relative;
+    max-width: 400px;
+    max-height: 350px;
+  }
+  img {
+    display: block;
+  }
+}
+.content {
+  p {
+    color: aliceblue;
+  }
+  border-radius: 30px;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: 0.6s;
+}
+.content:hover {
+  opacity: 1;
+}
+.exploreButton {
+  margin-top: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  button {
+    border-radius: 10px;
+    background: #000;
+    color: #fff;
+    font-family: Kaushan Script;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    transition: 0.6s;
+  }
+  button:hover {
+    background: #ffffff;
+    color: #000000;
+    transform: scale(1.1);
+  }
+}
+
+.secondflex {
+  margin-top: -30px;
+}
