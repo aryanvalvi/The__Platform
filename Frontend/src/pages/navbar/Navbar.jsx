@@ -4,6 +4,7 @@ import axios from "axios";
 import { Link, useLocation } from "react-router-dom";
 
 import { Homecontext } from "../../Context/Home";
+import Home from "../Home/Home";
 const Navbar = () => {
   const homecontext = useContext(Homecontext);
   // console.log(homecontext.HomeState.userInfo.username);
@@ -86,14 +87,14 @@ const Navbar = () => {
                     onMouseLeave={() => setIsHovered(false)}
                     className="profile"
                   >
-                    {console.log(userdata.GanduKiImage)}
-                    <a href="/profile">
+                    {console.log(userdata.userImage)}
+                    <Link to={`/profile/${userdata._id}`}>
                       <img
                         className="profile-picture"
-                        src={`${userdata.GanduKiImage}`}
+                        src={`${userdata.userImage}`}
                         alt=""
                       />
-                    </a>
+                    </Link>
                     <p className="profile-name">{userdata.username}</p>
                     {isHovered && (
                       <a href="/googleLogin">
@@ -108,8 +109,9 @@ const Navbar = () => {
             </ul>
           </nav>
         </div>
+        {/* <Home></Home> */}
       </div>
-      <button
+      {/* <button
         onClick={() =>
           axios
             .get("http://localhost:5000/auth/faf", {
@@ -124,7 +126,7 @@ const Navbar = () => {
         }
       >
         Click
-      </button>
+      </button> */}
     </div>
     // <>
     //   <button onClick={HandleLogin}>Login</button>

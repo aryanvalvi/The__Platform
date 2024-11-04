@@ -7,25 +7,90 @@
   // );
 }
 .Uploadcontainer {
+  height: auto;
   margin-top: 30px;
   display: flex;
   justify-content: center;
   // align-items: center;
 }
 .uploadImage {
+  // margin-top: 300px;
   width: 400px;
-  height: 50px;
+  height: 100px;
   border: 1px solid black;
   border-radius: 8px;
-  position: relative;
+}
+.uploadPng {
+  position: absolute;
+  top: 50%; /* Centers vertically in the container */
+  left: 50%; /* Centers horizontally */
+  transform: translate(-50%, -50%); /* Ensures perfect centering */
+}
+.uploadPng2 {
+  position: absolute;
+  top: 50%; /* Centers vertically in the container */
+  left: 50%; /* Centers horizontally */
+  transform: translate(-50%, -50%); /* Ensures perfect centering */
 }
 .UploadP {
-  margin-top: 5px;
-  height: 1px;
-  width: 2px;
-  overflow: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid black;
+  // background-color: #000;
+  // position: absolute;
+  // top: 50%;
+  // left: 20%;
+  // transform: translate(-50%, -50%);
 }
+.VideoP {
+  margin-top: 20px;
+}
+.ganddd {
+  display: flex;
+  height: 40px;
+  margin-top: 10px;
+  width: 400px;
+  position: relative;
+  border: 1px solid black;
+  color: rgb(0, 0, 0);
+  background-color: #daccd7;
+  p {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    // margin-left: 40px;
+    margin-top: 5px;
+    height: 30px;
+    overflow: hidden;
+    // color: rgba(0, 0, 0, 0.77);
+    font-family: Kaushan Script;
+    font-size: 1rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+  }
+}
+.CrossIcon {
+  position: absolute;
+  right: 0;
+  margin-top: 5px;
+  color: rgb(255, 0, 0);
+}
+.Uploadv {
+  position: absolute;
+  top: 50%;
+  left: 30%;
+}
+
 .custom-file-input-label {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100px;
   img {
     // border: 1px solid black;
     padding: 10px;
@@ -33,6 +98,11 @@
     width: 30px;
   }
   p {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    // transform: translateX(-50%);
+    margin: 0;
     height: 30px;
     width: 300px;
     overflow: hidden;
@@ -42,31 +112,71 @@
     font-style: normal;
     font-weight: 400;
     line-height: normal;
-    top: -20%;
-    left: 18%;
+    top: 70%;
+    left: 38%;
+    position: absolute;
+  }
+}
+.custom-file-input-label2 {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100px;
+  img {
+    // border: 1px solid black;
+    padding: 10px;
+    // border-radius: 100px;
+    width: 30px;
+  }
+  p {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    // transform: translateX(-50%);
+    margin: 0;
+    height: 30px;
+    width: 300px;
+    overflow: hidden;
+    color: rgba(0, 0, 0, 0.77);
+    font-family: Kaushan Script;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    top: 70%;
+    left: 38%;
     position: absolute;
   }
 }
 .rightdescription {
-  background-color: rgb(0, 0, 0);
-  margin-top: -40px;
+  // background-color: rgb(0, 0, 0);
+  // margin-top: -40px;
   color: #ffffff;
   font-family: Kaushan Script;
   font-size: 40px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
-  width: 200px;
+  width: 600px;
+  height: auto;
   margin-left: 40px;
   p {
     // position: absolute;
+  }
+  img {
+    width: 600px;
+    height: auto;
+    object-fit: cover;
   }
 }
 .discription {
   max-width: 400px;
   min-width: 400px;
   min-height: 30px;
-  margin-top: 20px;
+  // margin-top: 20px;
   // padding: 30px;
   color: rgba(0, 0, 0, 0.77);
   font-family: Kaushan Script;
@@ -75,6 +185,15 @@
   font-weight: 400;
   line-height: normal;
   border-radius: 9px;
+}
+.Title {
+  font-family: Kaushan Script;
+
+  max-width: 400px;
+  min-width: 400px;
+  min-height: 30px;
+  border-radius: 9px;
+  border: 1px solid black;
 }
 .uploadButtom {
   margin-top: 30px;
@@ -94,6 +213,18 @@
   flex-shrink: 0;
 }
 .leftDescription {
+  position: relative;
+  margin-top: 20px;
+  padding-left: 10px;
+  h1 {
+    font-weight: 400;
+    font-family: Kaushan Script;
+    font-size: 21px;
+    margin-top: 20px;
+  }
+}
+.des {
+  margin-top: 10px;
 }
 .Options {
   margin-top: 40px;
@@ -118,7 +249,7 @@
   height: auto;
   width: auto;
   background-color: #ffffff;
-  border: 1px solid rgb(255, 115, 1);
+  border: 1px solid rgb(198, 154, 117);
 }
 .shape {
   background-color: #ffffff;
@@ -132,11 +263,15 @@
   border-right: none;
   border-bottom: none;
 }
+.btn3 {
+  background-color: #000000;
+  color: white;
 
+  margin-top: 30px;
+}
 .btn2 {
   align-items: center;
   appearance: none;
-  background-color: #fcfcfd;
   border-radius: 4px;
   border-width: 0;
   box-shadow: rgba(45, 35, 66, 0.4) 0 2px 4px,

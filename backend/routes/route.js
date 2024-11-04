@@ -6,7 +6,25 @@ const multer = require("multer");
 const path = require("path");
 const { UserData } = require("../models/user-model");
 const { getdata } = require("../controller/Getdata");
-const { GetImage, UserImage, UserVideo } = require("../controller/UserUpload");
+const {
+  UserInteraction,
+  Check,
+  Dashboard,
+} = require("../controller/UserInteraction");
+const {
+  testApi,
+  GetData,
+  getUserPersonal,
+  GetMoreData,
+  DeleteAll,
+  GetUserDesign,
+} = require("../controller/GetUserdata");
+const {
+  GetImage,
+  UserPostImage,
+  UserVideo,
+  Both,
+} = require("../controller/UserUpload");
 const { Cloud } = require("../controller/Cloud/CloudNary");
 const MainData = require("../controller/MainData");
 let userdata;
@@ -56,48 +74,6 @@ router.get("/logout", (req, res) => {
   });
 });
 
-const storage = multer.diskStorage({
-  destination: (req, res, cb) => {
-    cb(null, "./clientImage/");
-  },
-  filename: (req, file, cb) => {
-    console.log(file);
-
-    userimagelocation =
-      userdata.username + Date.now() + path.extname(file.originalname);
-
-    const filename = cb(null, userimagelocation);
-  },
-});
-
-const upload = multer({ storage: storage });
-console.log(storage.getFilename.filename);
-//Imageuploader
-router.post("/upload", upload.single("image"), (req, res) => {
-  res.send("Image Uploaded");
-});
-router.post("/uploadData", async (req, res) => {
-  const UserGanduName = userdata.username;
-  const existingUser = await UserData.findOne({ username: UserGanduName });
-  try {
-    if (existingUser) {
-      console.log("arealdy user is there");
-    } else {
-      const data = req.body;
-      const newUserdata = new UserData({
-        image: userimagelocation,
-        username: userdata.username,
-        description: data.des,
-      });
-      await newUserdata.save();
-    }
-
-    console.log("data is uploaded");
-  } catch (error) {
-    console.log(error);
-  }
-});
-
 //data getting
 router.get("/myproject", async (req, res) => {
   try {
@@ -128,9 +104,21 @@ router.get("/myproject", async (req, res) => {
 
 //file upload
 
-router.post("/xyz", UserImage);
+router.post("/xyz", UserPostImage);
 router.post("/UserVideoUpload", UserVideo);
+router.post("/both", Both);
 router.post("/z", GetImage);
+
+//Get user Data
+router.get("/Getdata", GetData);
+router.post("/getmore", GetMoreData);
+router.post("/getUserPersonal", getUserPersonal);
+router.get("/test", testApi);
+router.post("/delete", DeleteAll);
+router.post("/getuserdesign", GetUserDesign);
+router.post("/userInteraction", UserInteraction);
+router.post("/Check", Check);
+router.post("/dashboard", Dashboard);
 
 //Upload User Data
 
@@ -159,3 +147,15 @@ const upload2 = multer({ storage2 });
 module.exports = router;
 //  userdata };
 router.get("/L", Cloud);
+const ensureAuthenticated = (req, res, next) => {
+  console.log("Checking authentication");
+  if (req.isAuthenticated()) {
+    console.log("Authenticated user:", req.user);
+    return next();
+  }
+  res.status(401).json({ message: "Unauthorized" });
+};
+router.post("/W", ensureAuthenticated, (req, res) => {
+  res.json(req.user);
+  console.log("user", req.user);
+});

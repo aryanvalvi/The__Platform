@@ -1,55 +1,103 @@
-import React, { useState } from "react";
-import axios from "axios";
+import React, { useContext, useState } from "react";
 import "./Upload.scss";
+import { MdImage } from "react-icons/md";
+import { RxCross2 } from "react-icons/rx";
+import Videoupload from "./Videoupload";
+import { Homecontext } from "../../Context/Home";
+import Both from "./Both";
+
 const Upload = () => {
-  const [color, setColor] = useState("orange");
-  const [buttonclick, setButtonClick] = useState(1);
-  const [file, setFile] = useState(null);
-  const [videoFile, setVideoFile] = useState(null);
-  const [des, setDes] = useState("");
-  const [type, setType] = useState("div1");
+  const VideoContext = useContext(Homecontext);
+  console.log(VideoContext);
+  const file = VideoContext.VideoState.file;
+  const type = VideoContext.VideoState.type;
+  const Des = VideoContext.VideoState.description;
+  const Title = VideoContext.VideoState.Title;
+  console.log(Des);
+  console.log();
+
+  const [description, setDescription] = useState("");
   console.log(file);
+
+  const fileInputRef = React.createRef();
+  const HandleDiscriptionChange = (e) => {
+    VideoContext.VideoDispatch({
+      type: "File_Changes",
+      field: "description",
+      value: e.target.value,
+    });
+  };
+  const HandleTitleChange = (e) => {
+    VideoContext.VideoDispatch({
+      type: "File_Changes",
+      field: "Title",
+      value: e.target.value,
+    });
+  };
   const handleFileChange = (e) => {
-    setFile(e.target.files[0]);
+    // setFile(e.target.files[0]);
+    VideoContext.VideoDispatch({
+      type: "File_Changes",
+      field: "file",
+      value: e.target.files[0],
+    });
   };
   // console.log(file.name);
   const handleUpload = async (e) => {
     e.preventDefault();
+    console.log("Des when i", Des);
+    console.log("file when i", file);
     const formData = new FormData();
     formData.append("image", file);
+    const DesTitle = { Des, Title };
+    formData.append("description", JSON.stringify(DesTitle));
+    const Data = { formData, Des };
+    // formData.append("Des",Des);
     try {
-      const res = await axios.post("http://localhost:5000/auth/xyz", formData, {
-        withCredentials: true,
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const res = await fetch(
+        "http://localhost:5000/auth/xyz",
+
+        {
+          method: "POST",
+          body: formData,
+          credentials: "include",
+          // headers: {
+          //   "Content-Type": "application/json",
+          // },
+        }
+      );
       console.log(res.data);
     } catch (error) {
       console.log("error while uploading the img", error);
     }
 
-    if (des) {
-      axios.post("http://localhost:5000/uploadData", { des });
-    } else {
-      alert("please write some description");
-    }
+    // if (des) {
+    //   axios.post("http://localhost:5000/uploadData", { des });
+    // } else {
+    //   alert("please write some description");
+    // }
   };
   const handleButtonclick = (Bindex, div) => {
-    setButtonClick(Bindex);
-    setType(div);
+    VideoContext.VideoDispatch({
+      type: "Button_Click",
+      payload: {
+        buttonclick: Bindex,
+        type: div,
+      },
+    });
   };
   const getButtonStyle = (index) => {
     return {
-      backgroundColor: buttonclick === index ? "orange" : "white",
+      backgroundColor:
+        VideoContext.VideoState.buttonclick === index ? "orange" : "white",
     };
   };
   const getChnageLeft = (index) => {
-    switch (buttonclick) {
+    switch (VideoContext.VideoState.buttonclick) {
       case 1:
-        return { left: "390px" };
+        return { left: "365px" };
       case 2:
-        return { left: "510px" };
+        return { left: "490px" };
       case 3:
         return { left: "629px" };
       default:
@@ -57,44 +105,17 @@ const Upload = () => {
     }
   };
 
-  //video
-
-  const handleVideoChange = (e) => {
-    setVideoFile(e.target.files[0]);
+  const handleClearFile = () => {
+    setFile(null);
+    fileInputRef.current.value = null; // Reset the file input
   };
-  console.log("file is", videoFile);
-  const handleVideoSubmit = async (e) => {
-    e.preventDefault();
-    if (!videoFile) {
-      console.log("File is not there");
-    }
-    const formdata = new FormData();
-    formdata.append("video", videoFile);
-    // Iterate over FormData entries and log them
-    for (let [key, value] of formdata.entries()) {
-      console.log(`xxxxxxxxxxx${key}:`, value);
-    }
-    if (formdata) {
-      try {
-        const res = await axios.post(
-          "http://localhost:5000/auth/UserVideoUpload",
-          formdata,
-          {
-            withCredentials: true,
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        );
-        console.log(res);
-      } catch (error) {
-        console.log("error while uploading", error);
-      }
-    }
+  const Test = () => {
+    console.log("Des when i", VideoContext.VideoState.file);
+    console.log("Des when i2", Des);
   };
-
   return (
     <div className="MainUploadContainer">
+      <button onClick={Test}>Click me bruhh</button>
       <div className="Option">
         <div className="Options">
           <button
@@ -130,67 +151,69 @@ const Upload = () => {
                     htmlFor="file-input"
                     className="custom-file-input-label"
                   >
-                    <div className="uploadImage">
-                      {file ? (
-                        <div className="UploadP">
-                          <p>{file.name}</p>
-                        </div>
-                      ) : (
-                        <div className="UploadP">
-                          <p> select a img</p>
-                        </div>
-                      )}
-                      <img src="image/upload.png" alt="" />
-                    </div>
+                    <div className="uploadImage"></div>
+                    <img className="uploadPng" src="image/upload.png" alt="" />
+                    <p>Select a Image</p>
                   </label>
+                  {file ? (
+                    <div className="ganddd">
+                      <MdImage
+                        style={{
+                          fontSize: "30px",
+                          marginTop: "5px",
+                          color: "white",
+                        }}
+                      />
+                      <p>{file.name}</p>
+                      <RxCross2
+                        onClick={handleClearFile}
+                        className="CrossIcon"
+                        style={{ fontSize: "30px" }}
+                      />
+                    </div>
+                  ) : (
+                    <></>
+                  )}
                   <input
                     id="file-input"
                     name="image"
                     type="file"
                     style={{ display: "none" }}
                     onChange={handleFileChange}
+                    ref={fileInputRef}
                   />
-                  <br />
+                  <h1>Description:</h1>
                   <textarea
                     name="message"
                     rows="3"
                     cols="50"
                     placeholder="Writr Your description"
                     className="discription"
-                    onChange={(e) => setDes(e.target.value)}
+                    onChange={HandleDiscriptionChange}
                   ></textarea>
-
+                  <h1>Title:</h1>
+                  <input
+                    onChange={HandleTitleChange}
+                    className="Title"
+                    type="text"
+                  />{" "}
                   <br />
+                  {file && (
+                    <button
+                      className="uploadButtom btn2"
+                      onClick={handleUpload}
+                    >
+                      Upload
+                    </button>
+                  )}
                 </div>
               </div>
             )}
-            {type === "div2" && (
-              <div className="VideoUpload">
-                <form onSubmit={handleVideoSubmit}>
-                  <input
-                    type="file"
-                    // name="video"
-                    accept="video/*"
-                    onChange={handleVideoChange}
-                  />
-                  {videoFile && <button>Upload</button>}
-                </form>
-              </div>
-            )}
-            {type === "div3" && (
-              <div className="BothUpload">
-                <h1>Both</h1>
-              </div>
-            )}
-
-            {file && (
-              <button className="uploadButtom" onClick={handleUpload}>
-                Upload
-              </button>
-            )}
+            {type === "div2" && <Videoupload></Videoupload>}
+            {type === "div3" && <Both></Both>}
 
             <div className="rightdescription">
-              <p className="UploadText">Show Your Talent To The World</p>
+              <img src="./image/Your Design2.jpg" alt="" />
             </div>
           </div>
         </div>

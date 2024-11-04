@@ -34,7 +34,7 @@ const userdata = new Schema({
   imageUrl: String,
 });
 
-const User = mongoose.model("user", userSchema);
+// const User = mongoose.model("user", userSchema);
 const UserData = mongoose.model("userdata", userdata);
 
-module.exports = { User, UserData };
+module.exports = { UserData };

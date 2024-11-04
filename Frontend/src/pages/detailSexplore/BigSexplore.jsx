@@ -30,6 +30,7 @@ const BigSexplore = () => {
 
   const { id } = useParams();
   const [data, setData] = useState([]);
+
   const getdata = async () => {
     const res = await fetch(`http://localhost:5000/explore`);
     const data = await res.json();

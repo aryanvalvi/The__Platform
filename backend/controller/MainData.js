@@ -1,4 +1,4 @@
-const { User } = require("../models/user-model");
+const User = require("../models/UserSchema");
 //all the data
 const MainData = async (req, res) => {
   const result = await User.find();
@@ -10,7 +10,7 @@ const MainData = async (req, res) => {
   );
 };
 
-//user data
+//user
 
 //other user data
 module.exports = MainData;

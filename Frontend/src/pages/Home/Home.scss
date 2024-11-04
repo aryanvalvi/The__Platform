@@ -1,4 +1,7 @@
 .Router {
+  background-image: url("/image/bg1 (3).jpg");
+  background-size: cover;
+  height: 100vh;
 }
 // background: rgb(34, 193, 195);
 // background: linear-gradient(
@@ -6,12 +9,14 @@
 //   rgba(34, 193, 195, 0.3255427170868347) 2%,
 //   rgba(253, 187, 45, 0.7120973389355743) 100%
 // );
+// .Homecontainer {
+//   background-image: url("/image/home.png");
+//   background-size: cover;
+//   // height: 300px;
+//   // height: 100vh;
+//   background-color: #ba2323;
+// }
 .Homecontainer {
-  // background-image: url("/image/home.png");
-  // background-size: cover;
-  // height: 300px;
-  // height: 100vh;
-  // background-color: #ba2323;
 }
 .HomeContent {
   // background-color: #4f4f4f;

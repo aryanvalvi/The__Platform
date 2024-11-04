@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import Home from "./Home";
 import Navbar from "../navbar/Navbar";
 import BigSexplore from "../detailSexplore/BigSexplore";
@@ -10,42 +10,41 @@ import Explore from "../Explore/Explore";
 import Myproject from "../ImageUpload/Myproject";
 import { Homecontext, HomeContextProvider } from "../../Context/Home";
 import Profile from "../navbar/Profile";
-const index = () => {
+import MoreInfo from "../SmallExplore/MoreInfo";
+
+const Index = () => {
+  return (
+    <BrowserRouter>
+      <RouterContent />
+    </BrowserRouter>
+  );
+};
+
+const RouterContent = () => {
+  const location = useLocation();
+  const isHome = location.pathname === "/";
+
   return (
     <>
-      <div className="Router">
-        <BrowserRouter>
-          <Navbar></Navbar>
-          <Routes>
-            <Route path="/" element={<Home />}>
-              <Route index element={<HomeContent />} />
-              <Route path="/id:" element={<HomeContent />} />
-            </Route>
-            <Route
-              path="/bigExplore/:id"
-              element={<BigSexplore></BigSexplore>}
-            ></Route>
-            <Route path="/upload" element={<Upload></Upload>}></Route>
-            <Route path="/Explore" element={<Explore></Explore>}></Route>
-            <Route path="/myproject" element={<Myproject></Myproject>}></Route>
-            <Route path="/profile" element={<Profile></Profile>}></Route>
-          </Routes>
-        </BrowserRouter>
-        <Footer></Footer>
-        {/* <Sexplore></Sexplore> */}
-        {/* <BrowserRouter>
+      <div className={`${isHome ? "Router" : ""}`}>
+        <Navbar />
+
         <Routes>
-          <Route path="/" element={<Home></Home>}></Route>
-          <Route
-            path="/bigExplore"
-            element={<BigSexplore></BigSexplore>}
-          ></Route>
-        
+          <Route path="/" element={<Home />}>
+            <Route index element={<HomeContent />} />
+            <Route path="/id:" element={<HomeContent />} />
+          </Route>
+          <Route path="/bigExplore/:id" element={<BigSexplore />} />
+          <Route path="/upload" element={<Upload />} />
+          <Route path="/Explore" element={<Explore />} />
+          <Route path="/myproject" element={<Myproject />} />
+          <Route path="/profile/:id" element={<Profile />} />
+          <Route path="/moreinfo/:id" element={<MoreInfo />} />
         </Routes>
-      </BrowserRouter> */}
+        <Footer />
       </div>
     </>
   );
 };
 
-export default index;
+export default Index;

@@ -3,6 +3,8 @@ import "./Home.scss";
 import { animateScroll as scroll } from "react-scroll";
 import { Outlet } from "react-router-dom";
 import axios from "axios";
+import Navbar from "../navbar/Navbar";
+import HomeContent from "../SmallExplore/HomeContent";
 const Home = () => {
   const [file, setfile] = useState(null);
   const handlefilechange = (e) => {
@@ -75,11 +77,11 @@ const Home = () => {
         <button onClick={scrollButoon} className="HomeButton">
           See What People have made
         </button>
-
+        {/* 
         <form onSubmit={handlesubmit}>
           <input type="file" name="avatar" onChange={handlefilechange} />
           <button type="submit">Upload</button>
-        </form>
+        </form> */}
       </div>
       <Outlet></Outlet>
     </div>

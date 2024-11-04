@@ -1,6 +1,7 @@
 import { useReducer } from "react";
 
 const initialState = {
+  personalInfo: [],
   loading: true,
   data: [],
   error: "",
@@ -37,6 +38,11 @@ const Reducer = (state, action) => {
       return {
         ...state,
         Eg: action.value,
+      };
+    case "PersonalInfo":
+      return {
+        ...state,
+        personalInfo: action.value,
       };
   }
 };
