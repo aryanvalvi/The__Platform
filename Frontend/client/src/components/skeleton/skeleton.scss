@@ -1,0 +1,25 @@
+@keyframes skeleton-loading {
+  0% {
+    background-position: -200px 0;
+  }
+  100% {
+    background-position: 200px 0;
+  }
+}
+
+.skeleton-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: center;
+  justify-content: center;
+}
+
+.skeleton {
+  background: linear-gradient(90deg, #eeeeee 25%, #dddddd 50%, #eeeeee 75%);
+  background-size: 400px 100%;
+  animation: skeleton-loading 1.2s infinite ease-in-out;
+  height: 200px;
+  width: 100%; // Default width
+  border-radius: 10px;
+}

@@ -19,6 +19,8 @@ const MoreInfo = () => {
   const [save, setSave] = useState(false);
   const [like, setLike] = useState(false);
   const [openPopup, setopenPopup] = useState(false);
+  const [abc, setAbc] = useState();
+  console.log(abc);
   console.log(like, save);
 
   const getData = async () => {
@@ -31,6 +33,7 @@ const MoreInfo = () => {
       body: JSON.stringify({ id }),
     });
     const data = await res.json();
+    console.log(data);
     setData(data);
   };
 
@@ -89,9 +92,10 @@ const MoreInfo = () => {
         body: JSON.stringify(SendData),
       });
       const resdata = await res.json();
-      console.log(resdata);
+      setAbc(resdata);
       if (resdata.follow === true) {
         setfollow(true);
+        console.log("checkker", resdata);
       } else if (resdata.follow === false) {
         setfollow(false);
       }
@@ -153,7 +157,7 @@ const MoreInfo = () => {
             </button>
           </div>
         </div>
-        {openPopup && <Popup setopenPopup={setopenPopup}></Popup>}
+        {openPopup && <Popup setopenPopup={setopenPopup} data={data}></Popup>}
         <img className="bigImage" src={data.images} alt="" />
         <p className="desMore">{data.description}</p>
       </div>

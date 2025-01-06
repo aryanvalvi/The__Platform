@@ -98,14 +98,22 @@ const Check = async (req, res) => {
 
 const Dashboard = async (req, res) => {
   const { id } = req.body;
+  const id2 = req.user._id;
+  console.log(id, id2);
+
   try {
+    const IsUserAdmin = await User.findById(id);
+    console.log("king", IsUserAdmin);
+    const IdMatcher = id2.toString() === IsUserAdmin._id.toString();
+    console.log(IdMatcher);
+
     const response = await DesignUpload.find({ creator: id });
     if (!response) {
       console.log("No Post");
       res.json({ data: false });
     }
-    res.json({ data: response });
-    console.log("Here is res", response);
+    res.json({ data: response, IdMatched: IdMatcher, Admin: IsUserAdmin });
+    // console.log("Here is res", response);
   } catch (error) {
     res.json({ data: false });
   }

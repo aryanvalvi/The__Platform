@@ -24,6 +24,9 @@ const Profile = () => {
   console.log(id);
   const [DataDesign, setDataDesign] = useState([]);
   const [toggle, setToggle] = useState(true);
+  const [isAdmin, SetIsAdmin] = useState(true);
+  const [user, setUser] = useState({});
+  console.log(user);
   console.log(DataDesign);
   console.log(userdata);
   console.log(Data);
@@ -49,10 +52,13 @@ const Profile = () => {
     });
     const data = await res.json();
     setDataDesign(data.data);
+    SetIsAdmin(data.IdMatched);
+    setUser(data.Admin);
     console.log(data);
   };
   useEffect(() => {
     getUserDesign();
+    window.scrollTo(0, 0);
   }, []);
 
   return (
@@ -60,38 +66,35 @@ const Profile = () => {
       {toggle ? (
         <div className="profileContainer">
           <div className="leftProfile">
-            <img src={`${userdata.GanduKiImage}`} alt="" />
-            <p className="leftProfileP">{userdata.username}</p>
+            <img src={`${user.userImage}`} alt="" />
+            <p className="leftProfileP">{user.username}</p>
             <h1>Main Title About You</h1>
             <div className="followers">
               <div className="InFollowers">
-                <span>
-                  {userdata.followers ? userdata.followers.length : 0}
-                </span>
+                <span>{user.followers ? user.followers.length : 0}</span>
                 <p>followers</p>
               </div>
               <div className="InFollowers">
-                <span>
-                  {userdata.following ? userdata.following.length : 0}
-                </span>
+                <span>{user.following ? user.following.length : 0}</span>
                 <p>following</p>
               </div>
               <div className="InFollowers">
-                <span>{userdata.likedBY ? userdata.likedBY.length : 0}</span>
+                <span>{user.likedBY ? user.likedBY.length : 0}</span>
                 <p>Likes</p>
               </div>
               <div className="InFollowers">
-                <span>
-                  {userdata.likedBY ? userdata.savedDesigns.length : 0}
-                </span>
+                <span>{user.likedBY ? user.savedDesigns.length : 0}</span>
                 <p>saves</p>
               </div>
             </div>
-            <div className="Buttons">
-              <button className="Connect">Connect</button>
 
-              <button className="Connect F2">Follow</button>
-            </div>
+            {isAdmin && (
+              <div className="Buttons">
+                <button className="Connect">Connect</button>
+
+                <button className="Connect F2">Follow</button>
+              </div>
+            )}
           </div>
           <div className="rightProfile">
             <Swiper

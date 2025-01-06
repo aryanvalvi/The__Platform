@@ -1,6 +1,9 @@
 import React, { useState } from "react";
+import { LuIndianRupee } from "react-icons/lu";
+import { RxCross2 } from "react-icons/rx";
 
-const Popup = ({ setopenPopup }) => {
+const Popup = ({ setopenPopup, data }) => {
+  console.log(data);
   const [popup, SetPopup] = useState(true);
   const toggleModal = () => {
     // SetPopup(!popup);
@@ -13,11 +16,28 @@ const Popup = ({ setopenPopup }) => {
         <div className="modal">
           <div onClick={toggleModal} className="overlay"></div>
           <div className="modal-content">
-            <h1></h1>
+            <div className="connect">
+              <img src={data.UserProfileImage} className="profile2" alt="" />
+              <p>Connect With {data.creator.username}</p>
+            </div>
+            <h1>Project Detail</h1>
+            <textarea
+              type="text"
+              placeholder="Please describe your project , including any specific design , timelines and goals"
+            />
 
-            <button className="close-modal" onClick={toggleModal}>
-              CLOSE
-            </button>
+            <h1>Project Budget</h1>
+            <span className="Rupeecontainer">
+              <input type="number" />
+              <LuIndianRupee className="Rupee" />
+            </span>
+            <div className="btnSend">
+              <button className="btn4">Send Message</button>
+            </div>
+
+            <span className="close-modal" onClick={toggleModal}>
+              <RxCross2 size={30} className="btn5" />
+            </span>
           </div>
         </div>
       )}

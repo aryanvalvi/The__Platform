@@ -109,7 +109,13 @@ const HomeContent = () => {
               </Link>
             </div>
             <div className="ImgAndHeart">
-              <img className="profile" src={f.UserProfileImage} alt="Profile" />
+              <Link to={`/profile/${f.creator._id}`}>
+                <img
+                  className="profile"
+                  src={f.UserProfileImage}
+                  alt="Profile"
+                />
+              </Link>
               <p className="overlayText">{f.creator.username}</p>
               <span className="">0</span>
               <FaHeart

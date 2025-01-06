@@ -1,25 +1,54 @@
 const DesignUpload = require("../models/DesignSchema");
 const User = require("../models/UserSchema");
+// const GetData = async (req, res) => {
+//   const page = parseInt(req.query.page) || 1; // Default to page 1
+//   const limit = parseInt(req.query.limit) || 6;
+
+//   const startIndex = (page - 1) * limit;
+
+//   // Get the total number of documents
+//   const totalDocs = await DesignUpload.countDocuments();
+//   const totalPages = Math.ceil(totalDocs / limit);
+
+//   const post = await DesignUpload.find()
+//     .populate("creator")
+//     .skip(startIndex)
+//     .limit(limit);
+//   res.json({
+//     data: post,
+//     currentPage: page,
+//     totalPages, // Send total pages to the frontend
+//   });
+//   console.log("get Function called", post.length);
+// };
 const GetData = async (req, res) => {
-  const page = parseInt(req.query.page) || 1; // Default to page 1
-  const limit = parseInt(req.query.limit) || 2;
+  const skip = req.query.skip;
+  const DEFAULAT_LIMIT = 5;
+  try {
+    console.log(skip, DEFAULAT_LIMIT);
 
-  const startIndex = (page - 1) * limit;
+    const posts = await DesignUpload.find({})
+      .populate("creator")
+      .skip(skip)
+      .limit(DEFAULAT_LIMIT);
 
-  // Get the total number of documents
-  const totalDocs = await DesignUpload.countDocuments();
-  const totalPages = Math.ceil(totalDocs / limit);
+    const totalPost = await DesignUpload.countDocuments();
+    const hasMorePost = skip + DEFAULAT_LIMIT < totalPost;
+    console.log(totalPost, hasMorePost);
 
-  const post = await DesignUpload.find()
-    .populate("creator")
-    .skip(startIndex)
-    .limit(limit);
-  res.json({
-    data: post,
-    currentPage: page,
-    totalPages, // Send total pages to the frontend
-  });
-  console.log("get Function called", post.length);
+    if (!posts || posts.length === 0) {
+      return res.status(200).json({
+        sucess: true,
+        message: "No More Post available",
+        hasMorePost: false,
+      });
+    }
+    res.status(200).json({ sucrress: true, data: posts, hasMorePost: true });
+  } catch (error) {
+    res.status(400).json({
+      error: `Error getting posts:${error.message}`,
+    });
+  }
 };
 
 const getUserPersonal = async (req, res) => {
