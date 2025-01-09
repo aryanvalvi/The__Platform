@@ -15,17 +15,19 @@ interface homecontent {
 }
 
 interface initialState {
-  isPending: boolean;
+  loading: boolean;
+  currentPage: number;
   homeContent: homecontent[];
-  isError: boolean;
   hasMorePost: boolean;
+  isError: boolean;
 }
 
 const initialState: initialState = {
-  isPending: false,
+  loading: false,
+  currentPage: 1,
   homeContent: [],
-  isError: false,
   hasMorePost: true,
+  isError: false,
 };
 
 interface moreDetailInitialState {
@@ -50,51 +52,92 @@ const checkerInitialState: checkerInitialState = {
   },
 };
 
+
+const userPostInteractionState :checkerInitialState = {
+  check: {
+    follow: false,
+    like: false,
+    save: false,
+  },
+}
+
 export const fetchHomeContent = createAsyncThunk(
-  "FETCH_HOMECONTENT",
+  "homeContent/fetchHomeContent",
   async (page: number) => {
-    console.log("heyyy", page);
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    const res = await fetch(`http://localhost:5000/auth/Getdata?skip=${page}`, {
+    const res = await fetch(`http://localhost:5001/auth/Getdata?skip=${page}`, {
       method: "GET",
       credentials: "include",
     });
     const data = await res.json();
-    console.log(data);
     return data;
   }
 );
 
-export const HomeContentSlice = createSlice({
+// const homeContentSlice = createSlice({
+//   name: "homeContent",
+//   initialState,
+//   reducers: {
+//     reset(state) {
+//       state.loading = false;
+//       state.currentPage = 1;
+//       state.homeContent = [];
+//       state.hasMorePost = true;
+//       state.isError = false;
+//     },
+//   },
+//   extraReducers: (builder) => {
+//     // When the fetchHomeContent action is pending (i.e., loading)
+//     builder.addCase(fetchHomeContent.pending, (state) => {
+//       state.loading = true;
+//     });
+
+//     // When the fetchHomeContent action is fulfilled (i.e., data is fetched successfully)
+//     builder.addCase(fetchHomeContent.fulfilled, (state, action) => {
+//       state.homeContent = [...state.homeContent, ...action.payload.data];
+//       state.hasMorePost = action.payload.hasMorePost;
+//       state.loading = false;
+//       state.isError = false;
+//       state.currentPage += 1; // Increment current page for next request
+//     });
+
+//     // When the fetchHomeContent action is rejected (i.e., failed request)
+//     builder.addCase(fetchHomeContent.rejected, (state) => {
+//       state.isError = true;
+//       state.loading = false;
+//     });
+//   },
+// });
+export const homeContentSlice = createSlice({
   name: "homeContent",
   initialState,
-  reducers: {},
+  reducers: {
+    reset(state) {
+      state.loading = false;
+      state.currentPage = 1;
+      state.homeContent = [];
+      state.hasMorePost = true;
+      state.isError = false;
+    },
+  },
   extraReducers: (builder) => {
     // When the fetchHomeContent action is pending (i.e., loading)
     builder.addCase(fetchHomeContent.pending, (state) => {
-      state.isPending = true;
+      state.loading = true;
     });
 
     // When the fetchHomeContent action is fulfilled (i.e., data is fetched successfully)
     builder.addCase(fetchHomeContent.fulfilled, (state, action) => {
-      // Destructure data and hasMorePosts from the payload
-      const { data = [], hasMorePost } = action.payload;
-
-      // Add new posts to the homeContent array
-      state.homeContent = [...state.homeContent, ...data];
-
-      // Update hasMorePosts to determine whether to fetch more content
-      state.hasMorePost = hasMorePost;
-
-      // Set loading state to false
-      state.isPending = false;
+      state.homeContent = [...state.homeContent, ...action.payload.data];
+      state.hasMorePost = action.payload.hasMorePost;
+      state.loading = false;
       state.isError = false;
+      state.currentPage += 1; // Increment current page for next request
     });
 
     // When the fetchHomeContent action is rejected (i.e., failed request)
     builder.addCase(fetchHomeContent.rejected, (state) => {
       state.isError = true;
-      state.isPending = false;
+      state.loading = false;
     });
   },
 });
@@ -102,7 +145,7 @@ export const HomeContentSlice = createSlice({
 export const fetchMoreDetail = createAsyncThunk(
   "FETCH_MORE_DETAILS",
   async (id: any) => {
-    const res = await fetch(`http://localhost:5000/auth/getmore`, {
+    const res = await fetch(`http://localhost:5001/auth/getmore`, {
       method: "POST",
       credentials: "include",
       headers: {
@@ -111,6 +154,7 @@ export const fetchMoreDetail = createAsyncThunk(
       body: JSON.stringify({ id }),
     });
     const data = await res.json();
+    console.log("get more",data)
     return data;
   }
 );
@@ -129,7 +173,7 @@ export const moreDetailSlice = createSlice({
 export const checkerFunction = createAsyncThunk(
   "checkerFunction",
   async (id: any) => {
-    const res = await fetch("http://localhost:5000/auth/Check", {
+    const res = await fetch("http://localhost:5001/auth/Check", {
       method: "POST",
       credentials: "include",
       headers: {
@@ -152,6 +196,43 @@ export const Checker = createSlice({
     });
   },
 });
-export const homeContentReducer = HomeContentSlice.reducer;
+export const userPostInteractionFunction = createAsyncThunk(
+  "userPostInteraction",
+  async ({action,recieverId }:{ action:string;
+    recieverId :string})=>{
+  
+      const userdata = {
+        action,
+        recieverId
+  }
+  console.log("action receiverId", userdata);
+  const res = await fetch("http://localhost:5001/auth/userInteraction",{
+    method:"POST",
+    credentials:"include",
+    headers:{
+      "Content-Type":"application/json"
+    },
+    body:JSON.stringify(userdata)
+    
+  })
+const data = await res.json();
+console.log("afterchecker ",data) 
+return data;
+  }
+)
+
+export const userPostInteraction  = createSlice({
+  name:"interaction",
+  initialState:userPostInteractionState,
+  reducers:{},
+  extraReducers:(builder)=>{
+    builder.addCase(userPostInteractionFunction.fulfilled,(state,action)=>{
+      state.check = action.payload;
+    })
+
+  }
+})
+export const homeContentReducer = homeContentSlice.reducer;
 export const moreDetailReducer = moreDetailSlice.reducer;
 export const checkerReducer = Checker.reducer;
+export const userPostInteractionReducer = userPostInteraction.reducer;

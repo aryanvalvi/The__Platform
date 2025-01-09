@@ -1,6 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
 
 export interface userData {
+  user:boolean,
   followers?: [];
   following?: [];
   googleId?: string;
@@ -20,6 +22,7 @@ interface userDataType {
 
 const initialState: userDataType = {
   userData: {
+    user:false,
     followers: [],
     following: [],
     likedBy: [],
@@ -36,11 +39,19 @@ const initialState: userDataType = {
 export const fetchUserData = createAsyncThunk<userData>(
   "FETCH_DATA",
   async () => {
-    const res = await fetch(`http://localhost:5000/auth/getuserdata`, {
+    const res = await fetch(`http://localhost:5001/auth/getuserdata`, {
       method: "GET",
       credentials: "include",
     });
+    // const res = await axios.get(`http://localhost:5000/auth/getuserdata`, {
+    //   withCredentials:true,
+    // })
+    //   console.log(res.data)
+    //   const Data = res.data;
+    //   return Data;
+    
     const data = await res.json();
+    console.log("data is ",data.user)
     return data;
   }
 );
@@ -49,7 +60,21 @@ export const dataFetching = createSlice({
   name: "dataFetching",
   initialState,
   reducers: {
-    getData(state, action) {},
+    
+    logoutUser(state){
+      console.log("oye ")
+      state.userData = {
+        user:false,
+        followers: [],
+        following: [],
+        likedBy: [],
+        likedDesigns: [],
+        saveDesigns: [],
+        userImage: "",
+        username: "",
+        _id: "",
+      }
+    }
   },
   extraReducers: (builder) => {
     //pendingState
@@ -69,4 +94,5 @@ export const dataFetching = createSlice({
   },
 });
 
+export const {logoutUser} = dataFetching.actions;
 export default dataFetching.reducer;

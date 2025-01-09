@@ -15,6 +15,20 @@ require("dotenv").config();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", req.headers.origin); // Dynamically allow origin
+  res.header("Access-Control-Allow-Credentials", "true");
+  res.header(
+    "Access-Control-Allow-Methods",
+    "GET, POST, PUT, DELETE, OPTIONS"
+  );
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+  );
+  next();
+});
+
 app.use(
   cors({
     origin: ["http://localhost:5173", "http://localhost:3000"],
@@ -56,6 +70,6 @@ mongoose
     console.log("Database connection error: " + err);
   });
 
-app.listen(5000, () => {
+app.listen(5001, () => {
   console.log("Server is running on port 5000");
 });

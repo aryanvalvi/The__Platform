@@ -18,7 +18,7 @@ const UserInteraction = async (req, res) => {
       });
       if (receiver && follower) {
         console.log(receiver, follower);
-        res.json({ data: true });
+        res.json({ follow: true });
       } else {
         console.log("not get reciever");
       }
@@ -36,14 +36,14 @@ const UserInteraction = async (req, res) => {
       });
       if (receiver2 && liker) {
         // console.log(receiver, follower);
-        res.json({ data: true });
+        res.json({ like: true });
       } else {
         console.log("not get reciever");
       }
 
       break;
     case "save":
-      console.log(action, recieverId, userId);
+      console.log("saveeeee",action, recieverId, userId);
       const UserSaver = await User.findByIdAndUpdate(
         userId,
 
@@ -68,6 +68,7 @@ const Check = async (req, res) => {
     const { receiver } = req.body;
     const userId = req.user._id;
 
+    console.log("check",receiver,userId)
     // checking following
     try {
       const user1 = await User.findById(userId);

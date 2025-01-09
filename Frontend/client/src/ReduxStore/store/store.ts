@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import UserDataFetchReducer from "../slices/dataFetchSlice";
-import { homeContentReducer } from "../slices/homeContentSlice";
+import { homeContentReducer, userPostInteractionReducer } from "../slices/homeContentSlice";
 import { moreDetailReducer } from "../slices/homeContentSlice";
 import { checkerReducer } from "../slices/homeContentSlice";
 export const store = configureStore({
@@ -9,6 +9,7 @@ export const store = configureStore({
     homeContentReducer,
     moreDetailReducer,
     checkerReducer,
+    userPostInteractionReducer,
   },
 });
 

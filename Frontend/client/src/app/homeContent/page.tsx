@@ -1,15 +1,21 @@
-import React, { use, useEffect, useRef, useState } from "react";
-import { fetchHomeContent } from "@/ReduxStore/slices/homeContentSlice";
+import React, { use, useCallback, useEffect, useRef, useState } from "react";
+import { fetchHomeContent, homeContentSlice } from "@/ReduxStore/slices/homeContentSlice";
 import { useAppDispatch, useAppSelector } from "@/ReduxStore/hook/CustomHook";
 import SkeletonLoader from "@/components/skeleton/Skeleton";
 import Link from "next/link";
+
 import { Fa500Px, FaHeart } from "react-icons/fa";
 import "./Sexplore.scss";
+import debounce from "lodash/debounce"
 const page = () => {
   const myRef: any = useRef();
+  
+  
   const dispatch = useAppDispatch();
   const Data = useAppSelector((state) => state.homeContentReducer.homeContent);
-  const Gandu = useAppSelector((state) => state.homeContentReducer.hasMorePost);
+  const Gandu = useAppSelector((state) => state.homeContentReducer.loading);
+  const has = useAppSelector((state)=>state.homeContentReducer.hasMorePost)
+  console.log(has)
   console.log("data is", Data);
   console.log("gandu", Gandu);
   const [page, setPage] = useState(0);
@@ -17,20 +23,47 @@ const page = () => {
   const [loading, setLoading] = useState(false);
   const [hasMorePos, setHasMorePost] = useState(true);
 
-  const fetchMovie = async () => {
-    if (loading || !hasMorePos) return;
-    setLoading(true);
-    const result = await dispatch(fetchHomeContent(page));
-    setPage((prev) => prev + 5);
-    if (result.payload && result.payload.hasMorePost === false) {
-      setHasMorePost(false);
-    }
-    setLoading(false);
-  };
   console.log("befire ", page);
+  
+  const _handleEntry=(entry:any)=>{
+    
+    const boundingRect = entry.boundingClientRect;
+    const intersectionRect = entry.intersectionRect;
 
+    if (has &&
+      !Gandu &&
+      entry.isIntersecting &&
+      intersectionRect.bottom - boundingRect.bottom <= 5
+    ) {
+      dispatch(fetchHomeContent(page))
+     setPage(page +6)
+  
+    }
+  }
+  const handleEntry = debounce(_handleEntry,500)
+  const onIntersect = useCallback(
+    (entries:any)=>{
+      handleEntry(entries[0])
+
+    }
+    ,[handleEntry]
+  )
   useEffect(() => {
-    // console.log("my ref", myRef.current);
+
+  //  if(myRef.current){
+  //   const observer = new IntersectionObserver(onIntersect);
+  //   observer.observe(myRef.current);
+
+  //   return()=>{
+  //     observer.disconnect();
+  //   }
+
+  //  }
+  
+
+
+
+    console.log("my ref", myRef.current);
     const observer = new IntersectionObserver((entries) => {
       const entry = entries[0];
       if (entry.isIntersecting && hasMorePos && !loading) {
@@ -46,18 +79,32 @@ const page = () => {
         observer.unobserve(myRef.current);
       }
     };
-  }, [page, loading, hasMorePos]);
-
+  }, [Gandu, myRef, onIntersect, hasMorePos ,page]);
+  
+  const fetchMovie = async () => {
+    if (loading || !hasMorePos) return;
+    if(!Gandu)
+    setLoading(true);
+    const result = await dispatch(fetchHomeContent(page));
+    setLoading(false);
+    setPage((prev) => prev + 6);
+    if (result.payload && result.payload.hasMorePost === false) {
+      setHasMorePost(false);
+    }
+  };
   return (
     <>
-      {loading === true && hasMorePos ? (
-        <SkeletonLoader count={page === 0 ? 5 : page}></SkeletonLoader>
-      ) : (
+    
+   
+    
+    
+    
+      
         <div className="flex">
           {Data.map((f) => (
             <div key={f._id} className="gand">
               <div className="imageContent">
-                <Link href={`/moreinfo/${f._id}`}>
+                <Link href={`/detailInfo/${f._id}`}>
                   {f.images && f.images.length > 0 ? (
                     <img className="mgand" src={f.images} alt={f.title} />
                   ) : (
@@ -95,10 +142,13 @@ const page = () => {
             </div>
           ))}
         </div>
-      )}
+       {Gandu && 
+         <SkeletonLoader  count={page === 0 ? 6 : page}></SkeletonLoader>
+
+       }
 
       {hasMorePos && <div ref={myRef}></div>}
-      {!hasMorePos && <p>All data fetched</p>}
+      {!has && <p>All data fetched</p>}
       {/* )} */}
       {/* {loader && (
         <div className="Loader">

@@ -46,31 +46,40 @@ router.get(
     failureRedirect: "/",
   }),
   (req, res) => {
-    console.log(req.user);
-    res.redirect("http://localhost:5173");
+    // console.log(req.user);
+    res.redirect("http://localhost:3000");
   }
 );
 
 //auth getuserdata;
 router.get("/getuserdata", (req, res) => {
+  
   if (req.user) {
     res.status(200).json({
       user: req.user,
     });
-    console.log("bhadve", req.user);
+    // console.log("bhadve", req.user);
   } else {
     res.json({ user: null });
   }
 });
+
 
 //auth Logout
 router.get("/logout", (req, res) => {
   req.logout((err) => {
     if (err) {
       return res.send("Error while logout");
-    } else {
-      res.send("Log out");
     }
+    req.session.destroy((err)=>{
+      if(err){
+        console.log("Error destryoing session" , err)
+      }
+      res.clearCookie("connect.sid"),
+      // res.redirect("http://localhost:3000")
+      res.json({message:"logged out be"})
+      console.log("Logged Out Successfully")
+    })
   });
 });
 

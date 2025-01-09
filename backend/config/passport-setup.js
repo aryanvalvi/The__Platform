@@ -20,7 +20,7 @@ passport.use(
         // Check if the user already exists in the database
         let currentUser = await User.findOne({ googleID: profile.id });
         if (currentUser) {
-          console.log("Current User: ", currentUser);
+          // console.log("Current User: ", currentUser);
           return done(null, currentUser);
         }
 
@@ -39,7 +39,7 @@ passport.use(
           googleID: profile.id,
         }).save();
 
-        console.log(`New user is created: ${newUser}`);
+        // console.log(`New user is created: ${newUser}`);
         done(null, newUser);
       } catch (error) {
         console.error("Error while saving to DB:", error);

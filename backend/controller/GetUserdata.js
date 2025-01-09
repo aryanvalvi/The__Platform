@@ -23,7 +23,7 @@ const User = require("../models/UserSchema");
 // };
 const GetData = async (req, res) => {
   const skip = req.query.skip;
-  const DEFAULAT_LIMIT = 5;
+  const DEFAULAT_LIMIT = 6;
   try {
     console.log(skip, DEFAULAT_LIMIT);
 
@@ -41,6 +41,7 @@ const GetData = async (req, res) => {
         sucess: true,
         message: "No More Post available",
         hasMorePost: false,
+        data:[],
       });
     }
     res.status(200).json({ sucrress: true, data: posts, hasMorePost: true });
@@ -70,9 +71,14 @@ const GetMoreData = async (req, res) => {
     if (user) {
       res.status(200).json(user);
     } else {
+      res.status(404).json(null)
       console.log("User is not there");
     }
-  } catch (error) {}
+  } catch (error) {
+
+    res.status(404).json(null)
+    console.log("User is not there");
+  }
 };
 
 const testApi = async (req, res) => {

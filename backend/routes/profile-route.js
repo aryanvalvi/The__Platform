@@ -9,7 +9,7 @@ const authenticationn = (req, res, next) => {
 };
 
 router.get("/", authenticationn, (req, res) => {
-  res.render("http://localhost:5173", { user: req.user });
+  res.render("http://localhost:3000", { user: req.user });
 });
 
 module.exports = router;
