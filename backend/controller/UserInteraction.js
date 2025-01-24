@@ -1,64 +1,79 @@
 const User = require("../models/UserSchema");
 const DesignUpload = require("../models/DesignSchema");
 const UserInteraction = async (req, res) => {
-  const { action, recieverId } = req.body;
+  const { action, post } = req.body;
   const userId = req.user._id;
-
+  console.log("postId", post);
+  const design = await DesignUpload.findById(post);
+  console.log("design", design);
   switch (action) {
     case "follow":
-      console.log(action, recieverId, userId);
-      const receiver = await User.findByIdAndUpdate(
-        recieverId,
+      console.log(action, post, userId);
+      const receiver = await User.findById(post);
+      const isFollowing = receiver.followers.includes(userId);
+      if (isFollowing) {
+        //unfollow
 
-        { $addToSet: { followers: userId } },
-        { new: true }
-      );
-      const follower = await User.findByIdAndUpdate(userId, {
-        $addToSet: { following: recieverId },
-      });
-      if (receiver && follower) {
-        console.log(receiver, follower);
+        await User.findByIdAndUpdate(post, {
+          $pull: { followers: userId },
+        });
+        await User.findOneAndUpdate(userId, {
+          $pull: {
+            following: post,
+          },
+        });
+        res.json({ follow: false });
+      } else {
+        //follow
+
+        await User.findOneAndUpdate(post, {
+          $addToSet: {
+            followers: userId,
+          },
+        });
+        await User.findByIdAndUpdate(userId, {
+          $addToSet: { following: post },
+        });
+
         res.json({ follow: true });
-      } else {
-        console.log("not get reciever");
       }
+
       break;
+
     case "like":
-      console.log(action, recieverId, userId);
-      const receiver2 = await User.findByIdAndUpdate(
-        recieverId,
+      console.log(action, post, userId);
 
-        { $addToSet: { likedBY: userId } },
-        { new: true }
-      );
-      const liker = await User.findByIdAndUpdate(userId, {
-        $addToSet: { likedDesigns: recieverId },
-      });
-      if (receiver2 && liker) {
-        // console.log(receiver, follower);
-        res.json({ like: true });
+      console.log("postId", post);
+      if (design.likes.includes(userId)) {
+        design.likes = design.likes.filter(
+          (id) => id.toString() !== userId.toString()
+        );
+        await design.save();
+        return res.status(200).json({ like: false });
       } else {
-        console.log("not get reciever");
+        design.likes.push(userId);
+        await design.save();
+        return res.status(200).json({ like: true });
       }
-
       break;
     case "save":
-      console.log("saveeeee",action, recieverId, userId);
-      const UserSaver = await User.findByIdAndUpdate(
-        userId,
+      console.log("saveeeee", action, post, userId);
+      const user = await User.findById(userId);
+      const isSaved = user.savedDesigns.includes(post);
 
-        { $addToSet: { savedDesigns: recieverId } },
-        { new: true }
-      );
-
-      if (UserSaver) {
-        //  console.log(receiver, follower);
-        res.json({ save: true });
+      if (isSaved) {
+        // Unsave
+        await User.findByIdAndUpdate(userId, {
+          $pull: { savedDesigns: post },
+        });
+        res.json({ save: false });
       } else {
-        console.log("not get reciever");
+        // Save
+        await User.findByIdAndUpdate(userId, {
+          $addToSet: { savedDesigns: post },
+        });
+        res.json({ save: true });
       }
-      break;
-    case "GetInTouch":
       break;
   }
 };
@@ -68,11 +83,12 @@ const Check = async (req, res) => {
     const { receiver } = req.body;
     const userId = req.user._id;
 
-    console.log("check",receiver,userId)
+    console.log("check", receiver, userId);
     // checking following
     try {
       const user1 = await User.findById(userId);
-      const user2 = await User.findById(receiver);
+      const user2 = await DesignUpload.findById(receiver);
+      console.log("here is my post", user2);
 
       const checker1 = user1.following.some(
         (userId) => userId.toString() === receiver
@@ -80,10 +96,8 @@ const Check = async (req, res) => {
       const SaveChecker = user1.savedDesigns.some(
         (id) => id.toString() === receiver
       );
-      const LikeChecker = user1.likedDesigns.some(
-        (id) => id.toString() === receiver
-      );
-      console.log("here", checker1, SaveChecker, LikeChecker);
+      const LikeChecker = user2.likes.includes(userId);
+      console.log("here2", checker1, SaveChecker, LikeChecker);
       res.json({
         follow: checker1,
         save: SaveChecker,

@@ -52,14 +52,13 @@ const checkerInitialState: checkerInitialState = {
   },
 };
 
-
-const userPostInteractionState :checkerInitialState = {
+const userPostInteractionState: checkerInitialState = {
   check: {
     follow: false,
     like: false,
     save: false,
   },
-}
+};
 
 export const fetchHomeContent = createAsyncThunk(
   "homeContent/fetchHomeContent",
@@ -154,7 +153,7 @@ export const fetchMoreDetail = createAsyncThunk(
       body: JSON.stringify({ id }),
     });
     const data = await res.json();
-    console.log("get more",data)
+    console.log("get more", data);
     return data;
   }
 );
@@ -198,40 +197,36 @@ export const Checker = createSlice({
 });
 export const userPostInteractionFunction = createAsyncThunk(
   "userPostInteraction",
-  async ({action,recieverId }:{ action:string;
-    recieverId :string})=>{
-  
-      const userdata = {
-        action,
-        recieverId
+  async ({ action, post }: { action: string; recieverId: string }) => {
+    const userdata = {
+      action,
+      post,
+    };
+    console.log("action receiverId", userdata);
+    const res = await fetch("http://localhost:5001/auth/userInteraction", {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(userdata),
+    });
+    const data = await res.json();
+    console.log("afterchecker ", data);
+    return data;
   }
-  console.log("action receiverId", userdata);
-  const res = await fetch("http://localhost:5001/auth/userInteraction",{
-    method:"POST",
-    credentials:"include",
-    headers:{
-      "Content-Type":"application/json"
-    },
-    body:JSON.stringify(userdata)
-    
-  })
-const data = await res.json();
-console.log("afterchecker ",data) 
-return data;
-  }
-)
+);
 
-export const userPostInteraction  = createSlice({
-  name:"interaction",
-  initialState:userPostInteractionState,
-  reducers:{},
-  extraReducers:(builder)=>{
-    builder.addCase(userPostInteractionFunction.fulfilled,(state,action)=>{
+export const userPostInteraction = createSlice({
+  name: "interaction",
+  initialState: userPostInteractionState,
+  reducers: {},
+  extraReducers: (builder) => {
+    builder.addCase(userPostInteractionFunction.fulfilled, (state, action) => {
       state.check = action.payload;
-    })
-
-  }
-})
+    });
+  },
+});
 export const homeContentReducer = homeContentSlice.reducer;
 export const moreDetailReducer = moreDetailSlice.reducer;
 export const checkerReducer = Checker.reducer;

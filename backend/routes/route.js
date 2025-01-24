@@ -53,7 +53,6 @@ router.get(
 
 //auth getuserdata;
 router.get("/getuserdata", (req, res) => {
-  
   if (req.user) {
     res.status(200).json({
       user: req.user,
@@ -64,22 +63,21 @@ router.get("/getuserdata", (req, res) => {
   }
 });
 
-
 //auth Logout
 router.get("/logout", (req, res) => {
   req.logout((err) => {
     if (err) {
       return res.send("Error while logout");
     }
-    req.session.destroy((err)=>{
-      if(err){
-        console.log("Error destryoing session" , err)
+    req.session.destroy((err) => {
+      if (err) {
+        console.log("Error destryoing session", err);
       }
       res.clearCookie("connect.sid"),
-      // res.redirect("http://localhost:3000")
-      res.json({message:"logged out be"})
-      console.log("Logged Out Successfully")
-    })
+        // res.redirect("http://localhost:3000")
+        res.json({ message: "logged out be" });
+      console.log("Logged Out Successfully");
+    });
   });
 });
 
