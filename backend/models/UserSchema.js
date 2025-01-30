@@ -8,6 +8,13 @@ const UserSchema = new Schema({
   userImage: { type: String },
   email: { type: String },
   bio: { type: String },
+  messages:[
+    {
+      message:{type:String,required:true},
+      budget:{type:Number,required:true},
+      senderId:{type:String,required:true}
+    }
+  ],
   following: [{ type: Schema.Types.ObjectId, ref: "User" }],
   followers: [{ type: Schema.Types.ObjectId, ref: "User" }],
   savedDesigns: [{ type: Schema.Types.ObjectId, ref: "Design" }],

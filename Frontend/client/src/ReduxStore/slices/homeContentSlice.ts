@@ -20,6 +20,10 @@ interface initialState {
   homeContent: homecontent[];
   hasMorePost: boolean;
   isError: boolean;
+  totalPost:Number,
+  page:number,
+  skip:number,
+  prevData: homecontent[]; 
 }
 
 const initialState: initialState = {
@@ -28,6 +32,10 @@ const initialState: initialState = {
   homeContent: [],
   hasMorePost: true,
   isError: false,
+  totalPost:0,
+  page:1,
+  skip:0,
+  prevData: [], 
 };
 
 interface moreDetailInitialState {
@@ -59,64 +67,49 @@ const userPostInteractionState: checkerInitialState = {
     save: false,
   },
 };
+interface Proposal{
+  post:string,
+  message:string,
+  budget:number,
+}
+interface  sendproposalState{
+  proposal:Proposal[]
+}
+const sendproposalState:sendproposalState ={
+  proposal:[]
+
+}
 
 export const fetchHomeContent = createAsyncThunk(
   "homeContent/fetchHomeContent",
-  async (page: number) => {
-    const res = await fetch(`http://localhost:5001/auth/Getdata?skip=${page}`, {
+  async (page) => {
+    // console.log("From FetchHomeContent asyc thunk")
+    // const state:any = getState();
+    // const page = state.homeContent.page;
+    console.log("pageNumber",page)
+
+    const res = await fetch(`http://localhost:5001/auth/Getdata?page=${page}`, {
       method: "GET",
       credentials: "include",
     });
-    const data = await res.json();
-    return data;
+    const {data,totalPost}= await res.json();
+    console.log("HomeContentSlie",data)
+    return  {data,totalPost};
   }
 );
 
-// const homeContentSlice = createSlice({
-//   name: "homeContent",
-//   initialState,
-//   reducers: {
-//     reset(state) {
-//       state.loading = false;
-//       state.currentPage = 1;
-//       state.homeContent = [];
-//       state.hasMorePost = true;
-//       state.isError = false;
-//     },
-//   },
-//   extraReducers: (builder) => {
-//     // When the fetchHomeContent action is pending (i.e., loading)
-//     builder.addCase(fetchHomeContent.pending, (state) => {
-//       state.loading = true;
-//     });
 
-//     // When the fetchHomeContent action is fulfilled (i.e., data is fetched successfully)
-//     builder.addCase(fetchHomeContent.fulfilled, (state, action) => {
-//       state.homeContent = [...state.homeContent, ...action.payload.data];
-//       state.hasMorePost = action.payload.hasMorePost;
-//       state.loading = false;
-//       state.isError = false;
-//       state.currentPage += 1; // Increment current page for next request
-//     });
 
-//     // When the fetchHomeContent action is rejected (i.e., failed request)
-//     builder.addCase(fetchHomeContent.rejected, (state) => {
-//       state.isError = true;
-//       state.loading = false;
-//     });
-//   },
-// });
 export const homeContentSlice = createSlice({
   name: "homeContent",
   initialState,
   reducers: {
-    reset(state) {
-      state.loading = false;
-      state.currentPage = 1;
-      state.homeContent = [];
-      state.hasMorePost = true;
-      state.isError = false;
-    },
+    setPageIncrease:(state)=>{
+state.page +=1;
+console.log("Page value from reducer",state.page)
+
+    }
+
   },
   extraReducers: (builder) => {
     // When the fetchHomeContent action is pending (i.e., loading)
@@ -126,11 +119,25 @@ export const homeContentSlice = createSlice({
 
     // When the fetchHomeContent action is fulfilled (i.e., data is fetched successfully)
     builder.addCase(fetchHomeContent.fulfilled, (state, action) => {
-      state.homeContent = [...state.homeContent, ...action.payload.data];
-      state.hasMorePost = action.payload.hasMorePost;
-      state.loading = false;
-      state.isError = false;
-      state.currentPage += 1; // Increment current page for next request
+      const { data, totalPost} = action.payload;
+      const prevData = state.prevData;
+      if(JSON.stringify(data)===JSON.stringify(prevData)){
+        console.log("Page data is the same as previous page data. Skipping fetch.");
+        state.page+=1;
+        // state.hasMorePost = false; // No more data to fetch
+        return;
+      }
+      // const validData = Array.isArray(data)?data:[]
+      // if (Array.isArray(data)){
+
+        state.homeContent = [...state.homeContent,...data];
+      // }
+      state.prevData = data;
+      state.totalPost = totalPost;
+      state.hasMorePost = state.homeContent.length<totalPost;
+
+
+ // Increment current page for next request
     });
 
     // When the fetchHomeContent action is rejected (i.e., failed request)
@@ -227,6 +234,36 @@ export const userPostInteraction = createSlice({
     });
   },
 });
+export const SendproposalFunction=createAsyncThunk(
+  "Sendproposal",
+  async({message,post,budget})=>{
+const res = await fetch("http://localhost:5001/sendproposal",{
+  method:"POST",
+  credentials:"include",
+  headers:{
+    "Content-Type":"application/json"
+  }
+  , body:JSON.stringify({message,post,budget})
+})
+const data = await res.json();
+console.log("proposeeeee",data)
+return data;
+  }
+) 
+export const Sendproposal = createSlice({
+  name:"sendproposal",
+  initialState:sendproposalState,
+  reducers:{},
+  extraReducers:(builder)=>{
+    builder.addCase(SendproposalFunction.fulfilled,(state,action)=>{
+      state.proposal= action.payload
+    })
+
+  }
+})
+
+export const {setPageIncrease,setPageFromStorage} = homeContentSlice.actions;
+export const SendproposalReducer = Sendproposal.reducer;
 export const homeContentReducer = homeContentSlice.reducer;
 export const moreDetailReducer = moreDetailSlice.reducer;
 export const checkerReducer = Checker.reducer;

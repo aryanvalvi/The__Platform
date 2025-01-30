@@ -9,6 +9,9 @@ const Popup = ({ setopenPopup, data }) => {
     // SetPopup(!popup);
     setopenPopup(false);
   };
+  const SendMessage = ()=>{
+    
+  }
 
   return (
     <div>
@@ -32,7 +35,7 @@ const Popup = ({ setopenPopup, data }) => {
               <LuIndianRupee className="Rupee" />
             </span>
             <div className="btnSend">
-              <button className="btn4">Send Message</button>
+              <button onClick={SendMessage} className="btn4">Send Message</button>
             </div>
 
             <span className="close-modal" onClick={toggleModal}>

@@ -2,6 +2,8 @@ import React, { use, useCallback, useEffect, useRef, useState } from "react";
 import {
   fetchHomeContent,
   homeContentSlice,
+  setPageFromStorage,
+  setPageIncrease,
 } from "@/ReduxStore/slices/homeContentSlice";
 import { useAppDispatch, useAppSelector } from "@/ReduxStore/hook/CustomHook";
 import SkeletonLoader from "@/components/skeleton/Skeleton";
@@ -11,82 +13,113 @@ import { Fa500Px, FaHeart } from "react-icons/fa";
 import "./Sexplore.scss";
 import debounce from "lodash/debounce";
 const page = () => {
-  const myRef: any = useRef();
-
   const dispatch = useAppDispatch();
   const Data = useAppSelector((state) => state.homeContentReducer.homeContent);
-  const Gandu = useAppSelector((state) => state.homeContentReducer.loading);
+  const totalPost = useAppSelector((state) => state.homeContentReducer.totalPost);
   const has = useAppSelector((state) => state.homeContentReducer.hasMorePost);
-  console.log(has);
-  console.log("data is", Data);
-  console.log("gandu", Gandu);
-  const [page, setPage] = useState(0);
-  console.log(page);
-  const [loading, setLoading] = useState(false);
-  const [hasMorePos, setHasMorePost] = useState(true);
+  const  page = useAppSelector((state)=>state.homeContentReducer.page);
+  
 
-  console.log("befire ", page);
 
-  const _handleEntry = (entry: any) => {
-    const boundingRect = entry.boundingClientRect;
-    const intersectionRect = entry.intersectionRect;
+console.log(page)
 
-    if (
-      has &&
-      !Gandu &&
-      entry.isIntersecting &&
-      intersectionRect.bottom - boundingRect.bottom <= 5
-    ) {
-      dispatch(fetchHomeContent(page));
-      setPage(page + 6);
-    }
-  };
-  const handleEntry = debounce(_handleEntry, 500);
-  const onIntersect = useCallback(
-    (entries: any) => {
-      handleEntry(entries[0]);
-    },
-    [handleEntry]
-  );
-  useEffect(() => {
-    //  if(myRef.current){
-    //   const observer = new IntersectionObserver(onIntersect);
-    //   observer.observe(myRef.current);
 
-    //   return()=>{
-    //     observer.disconnect();
+
+  // const [page,setPage] = useState(0);
+
+
+  const LoadingRef=useRef(null);
+
+
+
+    // Store scroll position
+    // useEffect(() => {
+    //   const savedPosition = localStorage.getItem("scrollPosition");
+    //   if (savedPosition) {
+    //     window.scrollTo(0, parseInt(savedPosition, 10));
     //   }
+  
+    //   return () => {
+    //     localStorage.setItem("scrollPosition", `${window.scrollY}`);
+    //   };
+    // }, []);
+    // const isFetching = useRef(false);
+  const FetchData = async()=>{
+    // if(isFetching.current) return;
+    
+    // const skip =page *6;
+    setTimeout(() => {
+      
+      dispatch(fetchHomeContent(page))
+    }, 500);
 
-    //  }
+// isFetching.current = false
 
-    console.log("my ref", myRef.current);
-    const observer = new IntersectionObserver((entries) => {
-      const entry = entries[0];
-      if (entry.isIntersecting && hasMorePos && !loading) {
-        fetchMovie();
-      }
-      console.log("entry", entry);
-    });
-    if (myRef.current) {
-      observer.observe(myRef.current);
+  }
+
+
+
+
+
+  useEffect(()=>{
+ 
+    if(has){
+      
+      FetchData()
+
     }
-    return () => {
-      if (myRef.current) {
-        observer.unobserve(myRef.current);
-      }
-    };
-  }, [Gandu, myRef, onIntersect, hasMorePos, page]);
+  
+  },[page,dispatch,has])
 
-  const fetchMovie = async () => {
-    if (loading || !hasMorePos) return;
-    if (!Gandu) setLoading(true);
-    const result = await dispatch(fetchHomeContent(page));
-    setLoading(false);
-    setPage((prev) => prev + 6);
-    if (result.payload && result.payload.hasMorePost === false) {
-      setHasMorePost(false);
+  useEffect(()=>{
+    if(LoadingRef.current){
+      const observer = new IntersectionObserver(([entry])=>{
+        if(entry.isIntersecting){
+         dispatch( setPageIncrease())
+          // setPage((page)=>page+1)
+        }
+console.log(entry)
+      },{threshold:1} )
+      observer.observe(LoadingRef.current)
+      //remove the listener
+     return()=>{ if(LoadingRef.current){
+        observer.unobserve(LoadingRef.current)
+      }}
     }
-  };
+
+    
+  },[Data])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
   return (
     <>
       <div className="flex">
@@ -131,10 +164,13 @@ const page = () => {
           </div>
         ))}
       </div>
-      {Gandu && <SkeletonLoader count={page === 0 ? 6 : page}></SkeletonLoader>}
+      <div ref={LoadingRef} className="loading"></div>
+       {has && 
+       
+       <SkeletonLoader count={ 6}></SkeletonLoader>}
 
-      {hasMorePos && <div ref={myRef}></div>}
-      {!has && <p>All data fetched</p>}
+      {/* {hasMorePos && <div ref={myRef}></div>} */}
+      {/* {!has && <p>All data fetched</p>} } */}
       {/* )} */}
       {/* {loader && (
         <div className="Loader">

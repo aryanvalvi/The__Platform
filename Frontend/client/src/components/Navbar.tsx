@@ -42,7 +42,7 @@
               <Link href="/" className="Link">
                 <li className="home">home</li>
               </Link>
-              <Link href="/Explore" className="Link Explore">
+              <Link href="/createPost" className="Link Explore">
                 <li>Explore</li>
               </Link>
             </ul>
@@ -67,7 +67,7 @@
                     onMouseLeave={() => setIsHovered(false)}
                     className="profile"
                   >
-                    <Link href={`/profile/${user._id}`}>
+                    <Link href={`/user/profile/${user._id}`}>
                       {user && (
                         <img
                           className="profile-picture"

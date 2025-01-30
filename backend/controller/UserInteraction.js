@@ -9,8 +9,12 @@ const UserInteraction = async (req, res) => {
   switch (action) {
     case "follow":
       console.log(action, post, userId);
-      const receiver = await User.findById(post);
-      const isFollowing = receiver.followers.includes(userId);
+      
+
+
+
+      const admin = await User.findById(post);
+      const isFollowing = admin.followers.includes(userId);
       if (isFollowing) {
         //unfollow
 
@@ -111,6 +115,41 @@ const Check = async (req, res) => {
   }
 };
 
+//send proposal
+const SendProposal = async (req,res)=>{
+const {post,message,budget} = req.body;
+console.log("send proposal",post,message,budget)
+const userid = req.user._id;
+console.log("send proposal",userid)
+
+try {
+  if(post){
+const userPost = await User.findById(post);
+if(!userPost){
+  console.log("user not found")
+}
+ userPost.messages.push({message,budget,senderId:userid})
+await userPost.save();
+
+res.status(200).json({success:true,message:"Message and budget sent successfully"})
+
+
+  }
+  
+} catch (error) {
+  console.log("Send proposal not work because of", error)
+  
+}
+
+
+
+
+}
+
+
+
+
+
 const Dashboard = async (req, res) => {
   const { id } = req.body;
   const id2 = req.user._id;
@@ -133,4 +172,4 @@ const Dashboard = async (req, res) => {
     res.json({ data: false });
   }
 };
-module.exports = { UserInteraction, Check, Dashboard };
+module.exports = { UserInteraction, Check, Dashboard , SendProposal };

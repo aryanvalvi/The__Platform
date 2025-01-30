@@ -1,6 +1,7 @@
 "use client";
 import { Provider } from "react-redux";
 import { store } from "@/ReduxStore/store/store";
+
 interface Children {
   children: React.ReactNode;
 }

@@ -21,30 +21,33 @@ const User = require("../models/UserSchema");
 //   });
 //   console.log("get Function called", post.length);
 // };
-const GetData = async (req, res) => {
-  const skip = req.query.skip;
+const  GetData = async (req, res) => {
+  console.log("GetData Called")
+  const page = parseInt(req.query.page)||0;
+  console.log(page)
   const DEFAULAT_LIMIT = 6;
+  const skip  = (page-1)*DEFAULAT_LIMIT;
   try {
-    console.log(skip, DEFAULAT_LIMIT);
+    // console.log(skip, DEFAULAT_LIMIT);
+    const totalPost = await DesignUpload.countDocuments();
+    if(skip>=totalPost){
+
+      return res.status(200).json({
+      sucess: true,
+      message: "No More Post available",
+      data:[],
+    });
+    }
 
     const posts = await DesignUpload.find({})
       .populate("creator")
       .skip(skip)
       .limit(DEFAULAT_LIMIT);
 
-    const totalPost = await DesignUpload.countDocuments();
-    const hasMorePost = skip + DEFAULAT_LIMIT < totalPost;
-    console.log(totalPost, hasMorePost);
 
-    if (!posts || posts.length === 0) {
-      return res.status(200).json({
-        sucess: true,
-        message: "No More Post available",
-        hasMorePost: false,
-        data:[],
-      });
-    }
-    res.status(200).json({ sucrress: true, data: posts, hasMorePost: true });
+      res.status(200).json({ sucrress: true, data: posts,totalPost });
+
+  
   } catch (error) {
     res.status(400).json({
       error: `Error getting posts:${error.message}`,

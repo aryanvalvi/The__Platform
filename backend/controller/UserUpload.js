@@ -171,15 +171,16 @@ const UserPostImage = async (req, res) => {
         });
 
         console.log("File is uploaded and saved to DB");
+        res.status(200).json({success:true})
       } catch (error) {
         console.error("Error uploading to Cloudinary or saving to DB", error);
         res
           .status(500)
-          .json({ error: "Upload failed", details: error.message });
+          .json({ success:false,error: "Upload failed", details: error.message });
       }
     } else {
       console.log("User is not logged in");
-      res.status(401).json({ msg: "User is not logged in" });
+      res.status(401).json({ success:true, msg: "User is not logged in" });
     }
   });
 };
@@ -248,14 +249,17 @@ const UserVideo = async (req, res) => {
           //   $push: { CreatedProject2: [{ video: result.secure_url }] },
           // });
           console.log("File is uploaded and save to db");
+          res.status(200).json({success:true})
         } else {
           console.log("Not got the url");
         }
       } catch (error) {
         console.log("erro while both didnt work ", error);
+        res.status(200).json({success:false})
       }
     } else {
       console.log("Req.user is not there");
+      res.status(200).json({success:false})
     }
   });
 
@@ -341,15 +345,16 @@ const Both = async (req, res) => {
         });
 
         console.log("File is uploaded and saved to DB");
+        res.status(200).json({success:true})
       } catch (error) {
         console.error("Error uploading to Cloudinary or saving to DB", error);
         res
           .status(500)
-          .json({ error: "Upload failed", details: error.message });
+          .json({success:false, error: "Upload failed", details: error.message });
       }
     } else {
       console.log("User is not logged in");
-      res.status(401).json({ msg: "User is not logged in" });
+      res.status(401).json({success:false, msg: "User is not logged in" });
     }
   });
 };

@@ -4,7 +4,7 @@ import { MdImage } from "react-icons/md";
 import { RxCross2 } from "react-icons/rx";
 import Videoupload from "./Videoupload";
 import { Homecontext } from "../../Context/Home";
-import Both from "./Both";
+import Both from "./Both";  
 
 const Upload = () => {
   const VideoContext = useContext(Homecontext);

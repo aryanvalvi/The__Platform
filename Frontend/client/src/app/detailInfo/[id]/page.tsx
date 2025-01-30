@@ -13,6 +13,7 @@ import React, { useEffect, useState } from "react";
 import { FaBookmark } from "react-icons/fa";
 import { IoIosHeart } from "react-icons/io";
 import "./MoreInfo.scss";
+import Popup from "@/components/Popup";
 
 const page = () => {
   const { id } = useParams();
@@ -22,7 +23,7 @@ const page = () => {
   const [openPopup, setopenPopup] = useState(false);
   const [interactionChanged, setInteractionChanged] = useState(false);
   const [abc, setAbc] = useState();
-
+const [userid,setuserId] = useState(0)
   console.log("id is", id);
   const dispatch = useAppDispatch();
   const data = useAppSelector((state) => state.moreDetailReducer.homeContent);
@@ -34,7 +35,7 @@ const page = () => {
   );
   console.log("userpostInteraction", data3);
   console.log("checker", like);
-  console.log(data);
+
   const fetchData = async () => {
     const result = await dispatch(fetchMoreDetail(id));
     dispatch(checkerFunction(id));
@@ -53,7 +54,11 @@ const page = () => {
       fetchData();
     }
   }, [id, interactionChanged]);
-
+  useEffect(() => {
+    if (data?.creator?._id) {
+      setuserId(data.creator._id);
+    }
+  }, [data]);
   return (
     // <>
     // </>
@@ -103,7 +108,7 @@ const page = () => {
               </div>
             </div>
             {openPopup && (
-              <Popup setopenPopup={setopenPopup} data={data}></Popup>
+              <Popup setopenPopup={setopenPopup} data={data} post={userid}></Popup>
             )}
             <img className="bigImage" src={data.images} alt="" />
             <p className="desMore">{data.description}</p>

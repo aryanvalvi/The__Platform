@@ -10,6 +10,7 @@ const {
   UserInteraction,
   Check,
   Dashboard,
+  SendProposal,
 } = require("../controller/UserInteraction");
 const {
   testApi,
@@ -126,6 +127,7 @@ router.post("/getuserdesign", GetUserDesign);
 router.post("/userInteraction", UserInteraction);
 router.post("/Check", Check);
 router.post("/dashboard", Dashboard);
+router.post("/sendproposal",SendProposal)
 
 //Upload User Data
 

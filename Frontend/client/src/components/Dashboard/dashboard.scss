@@ -1,0 +1,62 @@
+.AdminDashboard {
+  margin-top: 90px;
+}
+.AdminUL {
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  li {
+    cursor: pointer;
+    margin-right: 20px;
+    list-style: none;
+  }
+}
+.ProfileImgg {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* Ensures the image covers the area without distortion */
+  border-radius: 10px;
+  transition: transform 0.3s ease; /* Optional smooth transition for hover */
+  // transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.PublishDesigns {
+  width: 100%;
+  padding: 20px;
+  // display: block;
+  min-height: 400px;
+}
+
+.swiperr {
+  width: 70%;
+  height: 500px;
+}
+
+.swiperSlidee {
+  text-align: center;
+  font-size: 18px;
+  background: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  // height: calc((100% - 30px) / 2) !important;
+}
+.swiperContainerr {
+  position: relative;
+  min-height: 500px;
+  button {
+    background: transparent;
+    border: none;
+  }
+}
+
+.customButton {
+  position: absolute;
+  top: 50%;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  transform: translateY(-50%);
+  z-index: 10;
+}
