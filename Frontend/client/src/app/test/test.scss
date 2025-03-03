@@ -1,0 +1,447 @@
+.FaP {
+  position: absolute;
+  top: 33%;
+  left: 5%;
+}
+.Fap2 {
+  position: absolute;
+  top: 80%;
+}
+.Fap3 {
+  opacity: 0;
+  // position: absolute;
+  // top: 33%;
+  // left: 6%;
+}
+.FaP4 {
+  position: absolute;
+  top: 53%;
+  left: 37%;
+  // right: 50%;
+}
+.uploadIconn2 {
+  font-size: 60px;
+  position: absolute;
+  left: 50%; /* Initially centered */
+  top: 40%;
+  transform: translate(-50%, -50%);
+  transition: all 1s ease-in-out;
+
+  padding: 10px;
+  // width: 100px;
+  // height: 100px;
+  background-color: #e0e0e0; /* Light gray background */
+  border-radius: 10%;
+  // display: flex;
+  // align-items: center;
+  // justify-content: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  // transition: 0.3s;
+}
+.uploadIcon3 {
+  font-size: 70px;
+  padding: 10px;
+  // width: 100px;
+  // height: 100px;
+  background-color: #e0e0e0; /* Light gray background */
+  border-radius: 10%;
+  // display: flex;
+  // align-items: center;
+  // justify-content: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  // transition: 0.3s;
+}
+.uploadIconn2.moveTopLeft {
+  left: 130px; /* Move to top-left */
+  top: 90px;
+  // transform: scale(0.8); /* Slightly shrink */
+}
+
+.lineContainer {
+  position: relative;
+}
+
+.linee2,
+.linee3 {
+  width: 2px;
+  height: 0;
+  background-color: #b0aaaa;
+  // position: absolute;
+  left: 18%; /* Start from new icon position */
+  top: 139px;
+  opacity: 0; /* Hidden initially */
+}
+
+.linee2 {
+  position: absolute;
+  left: 15%;
+  transform: rotate(33deg);
+  animation: growLinee 1s ease-in-out forwards 1s;
+}
+
+.linee3 {
+  position: absolute;
+  left: 22.5%;
+  transform: rotate(-33deg); /* Opposite direction */
+  animation: growLinee 1s ease-in-out forwards 1s;
+}
+
+@keyframes growLinee {
+  from {
+    height: 0;
+    opacity: 1;
+  }
+  to {
+    height: 100px; /* Adjust as needed */
+    opacity: 1;
+  }
+}
+
+.hiddenIcons {
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.showIcons {
+  display: flex;
+  position: absolute;
+  top: 60%;
+  left: 5%;
+  gap: 50px;
+  // margin-right: 300px;
+  opacity: 1;
+  // margin-left: 30px;
+}
+
+.swiper {
+  width: 100%;
+  height: 400px;
+}
+
+.swiperSlide {
+  text-align: center;
+  font-size: 18px;
+  background: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc((100% - 30px) / 2) !important;
+}
+.CreateContainer {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+.createMainImg {
+  width: 700px;
+  // margin-right: 200px;
+}
+.createFlex {
+  background-color: white;
+  box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.2);
+  border-radius: 15px;
+  height: auto;
+  font-size: 14px;
+  font-weight: 700;
+  color: #333;
+  margin: 50px auto;
+  margin-top: 100px;
+  display: flex;
+  // align-items: center;
+  justify-content: space-between;
+  // gap: 300px;
+}
+.rightCreateUpload {
+  position: relative;
+  width: 700px;
+  h1 {
+    // background: #d9cbd7;
+    width: auto;
+    position: absolute;
+    left: 5%;
+    top: 15%;
+    // margin-left: 200px;
+    // padding-left: 100px;
+    // padding-right: 100px;
+  }
+}
+.Createh1 {
+}
+.uploadOptionContainer {
+  // margin-top: 300px;
+  width: 100px;
+  height: 100px;
+  background-color: #e0e0e0; /* Light gray background */
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: 0.3s;
+  // gap: 400px;
+}
+.uploadOption {
+  position: absolute;
+  top: 35%;
+  left: 20%;
+  display: flex;
+  gap: 100px;
+}
+.uploadIcon2 {
+  // // position: absolute;
+  // margin-left: 40px;
+  // font-size: 60px;
+  // padding: 10px;
+  // // width: 100px;
+  // // height: 100px;
+  // background-color: #e0e0e0; /* Light gray background */
+  // border-radius: 10%;
+  // display: flex;
+  // align-items: center;
+  // justify-content: center;
+  // box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  // cursor: pointer;
+  // transition: 0.3s;
+}
+.uploadIcon2 {
+  position: absolute;
+  left: 50%; /* Initially centered */
+  top: 50%;
+  transform: translate(-50%, -50%);
+  transition: all 1s ease-in-out;
+}
+.verticalLine {
+  margin-top: -20px;
+  width: 2px;
+  height: 130px;
+  background-color: #333;
+}
+.LeftAddContent {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+  p {
+    margin-top: 20px;
+  }
+}
+.RightAddContent {
+  // position: fixed;
+  h1 {
+    // margin-top: 80px;
+    font-size: 1rem;
+  }
+}
+.AddContent {
+  margin-top: 120px;
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+  align-items: center;
+}
+.AddContent2 {
+  /* Remove transform: translateY(20px); */
+  transition: 1s ease-in;
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 20px; /* Adjust this value as needed */
+}
+.line-container {
+  position: relative;
+  width: 100%;
+  height: 10vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.lineContainer {
+  display: flex;
+  gap: 10px;
+}
+.line {
+  // position: absolute;
+  width: 2px; /* Line thickness */
+  height: 0;
+  left: 50%;
+  background-color: #b0aaaa;
+  animation: growLine 1s ease-in-out forwards;
+}
+.line2 {
+  width: 2px; /* Line thickness */
+  height: 0;
+  left: 80%;
+  background-color: #b0aaaa;
+  animation: growLine2 1s ease-in-out forwards;
+  transform: rotate(25deg);
+}
+.line3 {
+  width: 2px; /* Line thickness */
+  height: 0;
+  left: 80%;
+  background-color: #b0aaaa;
+  animation: growLine2 1s ease-in-out forwards;
+  transform: rotate(-25deg);
+}
+
+@keyframes growLine {
+  from {
+    height: 0;
+  }
+  to {
+    height: 10vh;
+  }
+}
+@keyframes growLine2 {
+  from {
+    height: 0;
+  }
+  to {
+    height: 10vh;
+  }
+}
+.secondUploadContainer {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  min-width: 300px;
+}
+.uploadIcon {
+  font-size: 60px;
+  padding: 10px;
+  // width: 100px;
+  // height: 100px;
+  background-color: #e0e0e0; /* Light gray background */
+  border-radius: 10%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.sideImagesContainer {
+  // position: absolute;
+  // max-width: 400px;
+  flex-direction: row;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  margin-left: -650px;
+  margin-top: -40px;
+}
+.sideImages {
+  border-radius: 10px;
+  background-color: #d9d9d9;
+  width: 200px;
+  height: 200px;
+}
+.sideimgs {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.afterselect {
+  margin-left: -500px;
+  // margin: 0;
+}
+
+.upload-container {
+  margin-left: 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  max-width: 300px;
+  // margin: 30px auto;
+  padding: 20px;
+  // background: #f9f9f9;
+  border-radius: 10px;
+  // box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+.upload-container2 {
+  margin-left: 340px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  max-width: 300px;
+  // margin: 30px auto;
+  padding: 20px;
+  // background: #f9f9f9;
+  border-radius: 10px;
+  // box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.input-label {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.description,
+.title-input,
+.tags-input {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  border: none;
+  border-bottom: 1px solid #ccc;
+  border-radius: 5px;
+  outline: none;
+  transition: 0.3s ease-in-out;
+}
+
+.description {
+  resize: none;
+  height: 80px;
+}
+
+.description:focus,
+.title-input:focus,
+.tags-input:focus {
+  border-color: #ff9429;
+  box-shadow: 0px 0px 5px rgba(0, 123, 255, 0.5);
+}
+
+.upload-btn {
+  background: #000000;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  padding: 10px;
+  // border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.upload-btn:hover {
+  background: #000000;
+  transform: scale(1.1);
+}
+
+.RightUplodFlex {
+  position: absolute;
+  left: 75%;
+  display: flex;
+}
+.Fap5 {
+  position: absolute;
+  top: 100%;
+  left: -6%;
+}
+.Fap6 {
+  width: 300px;
+  position: absolute;
+  top: 100%;
+  left: 60%;
+}

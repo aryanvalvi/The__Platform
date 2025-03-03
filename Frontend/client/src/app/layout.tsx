@@ -4,7 +4,7 @@ import "./globals.css"
 import Navbar from "@/components/Navbar"
 import Providers from "./provider"
 import Footer from "@/components/Footer"
-import Test from "@/components/Test"
+import Test from "@/app/test/page"
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",

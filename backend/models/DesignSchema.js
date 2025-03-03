@@ -1,22 +1,23 @@
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+const mongoose = require("mongoose")
+const Schema = mongoose.Schema
 const DesignSchema = new Schema({
-  availability: { type: String },
-  UserProfileImage: { type: String, required: true },
+  availability: {type: String},
+  UserProfileImage: {type: String, required: true},
   // username: { type: String, required: true },
   // userImage: { type: String, required: true },
-  title: { type: String, required: true },
-  description: { type: String },
-  images: [{ type: String }], // Array of URLs to images
-  video: { type: String }, // URL to video (if applicable)
-  tags: [{ type: String }], // Array of tags for categorization
-  creator: { type: Schema.Types.ObjectId, ref: "User", required: true }, // User who created the design
-  likes: [{ type: Schema.Types.ObjectId, ref: "User" }], // Users who liked the design
-  saves: [{ type: Schema.Types.ObjectId, ref: "User" }], // Users who saved the design
-  comments: [{ type: Schema.Types.ObjectId, ref: "Comment" }], // Array of comments
-  createdAt: { type: Date, default: Date.now },
-});
+  title: {type: String, required: true},
+  description: {type: String},
+  images: [{type: String}], // Array of URLs to images
+  sideImages: [{type: String}],
+  video: {type: String}, // URL to video (if applicable)
+  tags: [{type: String}], // Array of tags for categorization
+  creator: {type: Schema.Types.ObjectId, ref: "User", required: true}, // User who created the design
+  likes: [{type: Schema.Types.ObjectId, ref: "User"}], // Users who liked the design
+  saves: [{type: Schema.Types.ObjectId, ref: "User"}], // Users who saved the design
+  comments: [{type: Schema.Types.ObjectId, ref: "Comment"}], // Array of comments
+  createdAt: {type: Date, default: Date.now},
+})
 
-const DesignUpload = mongoose.model("Design", DesignSchema);
+const DesignUpload = mongoose.model("Design", DesignSchema)
 
-module.exports = DesignUpload;
+module.exports = DesignUpload

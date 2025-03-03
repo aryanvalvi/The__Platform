@@ -1,70 +1,67 @@
 "use client"
-import { useAppDispatch, useAppSelector } from '@/ReduxStore/hook/CustomHook';
-import React, { useEffect, useState } from 'react'
-import { MdImage } from "react-icons/md";
-import { RxCross2 } from "react-icons/rx";
-import{
-  setFile,setbuttonClick,setDescription,setTitle,setVideoFile,
-  postPostFunction
+import {useAppDispatch, useAppSelector} from "@/ReduxStore/hook/CustomHook"
+import React, {useEffect, useState} from "react"
+import {MdImage} from "react-icons/md"
+import {RxCross2} from "react-icons/rx"
+import {
+  setFile,
+  setbuttonClick,
+  setDescription,
+  setTitle,
+  setVideoFile,
+  postPostFunction,
 } from "../../ReduxStore/slices/PostpostSlice"
 import "./Upload.scss"
-import Videoupload from '@/components/Videoupload';
-import Both from '@/components/Both';
-import Popup from '@/components/Popup';
-import SuccessPopup from '@/components/successPopup';
+import Videoupload from "@/components/Videoupload"
+import Both from "@/components/Both"
+import Popup from "@/components/Popup"
+import SuccessPopup from "@/components/successPopup"
 const pages = () => {
-  const dispatch = useAppDispatch();
-  const Data = useAppSelector((state)=>state.postPostReducer)
-  console.log("Data",Data)
-   const [openPopup, setopenPopup] = useState(false);
+  const dispatch = useAppDispatch()
+  const Data = useAppSelector(state => state.postPostReducer)
+  console.log("Data", Data)
+  const [openPopup, setopenPopup] = useState(false)
   // const VideoContext = useContext(Homecontext);
   // console.log(VideoContext);
   const success = Data.success
-  const [file,setFile] = useState(null)
-  const filee =Data.file;
+  const [file, setFile] = useState(null)
+  const filee = Data.file
   console.log(file)
-  const Des  = Data.description
-  const Title = Data.Title;
+  const Des = Data.description
+  const Title = Data.Title
   // console.log("video file", file)
-  
+
   // VideoContext.VideoState.file;
-  const type = Data.type;
+  const type = Data.type
   // const Des = VideoContext.VideoState.description;
   // const Title = VideoContext.VideoState.Title;
   // console.log(Des);
   // console.log();
-  
 
   // const [description, setDescription] = useState("");
   // console.log(file);
 
-  const fileInputRef = React.createRef();
-  const HandleDiscriptionChange = (e) => {
-
-
-dispatch(setDescription(e.target.value))
-  
-  };
-  const HandleTitleChange = (e) => {
- dispatch(setTitle(e.target.value))
-  };
-  const handleFileChange = (e) => {
+  const fileInputRef = React.createRef()
+  const HandleDiscriptionChange = e => {
+    dispatch(setDescription(e.target.value))
+  }
+  const HandleTitleChange = e => {
+    dispatch(setTitle(e.target.value))
+  }
+  const handleFileChange = e => {
     setFile(e.target.files[0])
-
-  };
+  }
   // console.log(file.name);
-  const handleUpload = async (e) => {
-    e.preventDefault();
-    const formData = new FormData();
-    formData.append("image", file);
-    const DesTitle = { Des, Title };
-    formData.append("description", JSON.stringify(DesTitle));
-dispatch(postPostFunction({formData}))
-setopenPopup(true)
+  const handleUpload = async e => {
+    e.preventDefault()
+    const formData = new FormData()
+    formData.append("image", file)
+    const DesTitle = {Des, Title}
+    formData.append("description", JSON.stringify(DesTitle))
+    // dispatch(postPostFunction({formData}))
+    console.log(formData)
+    setopenPopup(true)
 
-
-
-  
     // const Data = { formData, Des };
     // formData.append("Des",Des);
     // try {
@@ -84,37 +81,32 @@ setopenPopup(true)
     // } catch (error) {
     //   console.log("error while uploading the img", error);
     // }
-
-  
-  };
+  }
   const handleButtonclick = (Bindex, div) => {
-
-    dispatch(setbuttonClick({buttonclick:Bindex,type:div}))
-  
-  };
-  const getButtonStyle = (index) => {
+    dispatch(setbuttonClick({buttonclick: Bindex, type: div}))
+  }
+  const getButtonStyle = index => {
     return {
-      backgroundColor:
-        Data.buttonclick === index ? "orange" : "white",
-    };
-  };
-  const getChnageLeft = (index) => {
+      backgroundColor: Data.buttonclick === index ? "orange" : "white",
+    }
+  }
+  const getChnageLeft = index => {
     switch (Data.buttonclick) {
       case 1:
-        return { left: "365px" };
+        return {left: "365px"}
       case 2:
-        return { left: "490px" };
+        return {left: "490px"}
       case 3:
-        return { left: "629px" };
+        return {left: "629px"}
       default:
-        return { left: "0px" };
+        return {left: "0px"}
     }
-  };
+  }
 
   const handleClearFile = () => {
-    setFile(null);
-    fileInputRef.current.value = null; // Reset the file input
-  };
+    setFile(null)
+    fileInputRef.current.value = null // Reset the file input
+  }
   // const Test = () => {
   //   console.log("Des when i", VideoContext.VideoState.file);
   //   console.log("Des when i2", Des);
@@ -170,6 +162,7 @@ setopenPopup(true)
                   </label>
                   {file ? (
                     <div className="ganddd">
+                      ß
                       <MdImage
                         style={{
                           fontSize: "30px",
@@ -181,7 +174,7 @@ setopenPopup(true)
                       <RxCross2
                         onClick={handleClearFile}
                         className="CrossIcon"
-                        style={{ fontSize: "30px" }}
+                        style={{fontSize: "30px"}}
                       />
                     </div>
                   ) : (
@@ -191,7 +184,7 @@ setopenPopup(true)
                     id="file-input"
                     name="image"
                     type="file"
-                    style={{ display: "none" }}
+                    style={{display: "none"}}
                     onChange={handleFileChange}
                     ref={fileInputRef}
                   />
@@ -225,10 +218,12 @@ setopenPopup(true)
             {type === "div2" && <Videoupload></Videoupload>}
             {type === "div3" && <Both></Both>}
 
-
-
             {openPopup && (
-              <SuccessPopup setopenPopup={setopenPopup}  openPopup={openPopup} success={success}></SuccessPopup>
+              <SuccessPopup
+                setopenPopup={setopenPopup}
+                openPopup={openPopup}
+                success={success}
+              ></SuccessPopup>
             )}
 
             <div className="rightdescription">
@@ -238,8 +233,7 @@ setopenPopup(true)
         </div>
       </div>
     </div>
-  );
-
+  )
 }
 
 export default pages
