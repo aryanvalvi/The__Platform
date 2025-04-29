@@ -110,34 +110,35 @@ const Test = () => {
               src={`${url ? url : "./image/Your Design2.jpg"}`}
               alt=""
             />
+            <h1>Select a type of Content that you have to publish</h1>
+          </div>
 
-            <div className="rightCreateUpload">
-              {!select ? (
-                <>
-                  <h1>Select a type of Content that you have to publish</h1>
-                  <div className="uploadOption">
-                    <div
-                      onClick={() => setSelect("image")}
-                      className="uploadOptionContainer"
-                    >
-                      <IoMdImage style={{fontSize: "60px"}}></IoMdImage>
-                    </div>
-                    <p className="Fap5">Images with sub-images</p>
-                    <div className="verticalLine"></div>
-                    <div
-                      onClick={() => setSelect("video")}
-                      className="uploadOptionContainer"
-                    >
-                      <RiFolderVideoFill
-                        style={{fontSize: "60px"}}
-                      ></RiFolderVideoFill>
-                    </div>
-                    <p className="Fap6">Video with Sub-Images or Sub-Videos</p>
+          <div className="rightCreateUpload">
+            {!select ? (
+              <>
+                <div className="uploadOption">
+                  <div
+                    onClick={() => setSelect("image")}
+                    className="uploadOptionContainer"
+                  >
+                    <IoMdImage style={{fontSize: "60px"}}></IoMdImage>
                   </div>
-                </>
-              ) : (
-                <>
-                  {/* <div className={`${visible3 ? "RightUplodFlex" : ""}`}>
+                  <p className="Fap5">Images with sub-images</p>
+                  <div className="verticalLine"></div>
+                  <div
+                    onClick={() => setSelect("video")}
+                    className="uploadOptionContainer"
+                  >
+                    <RiFolderVideoFill
+                      style={{fontSize: "60px"}}
+                    ></RiFolderVideoFill>
+                  </div>
+                  <p className="Fap6">Video with Sub-Images or Sub-Videos</p>
+                </div>
+              </>
+            ) : (
+              <>
+                {/* <div className={`${visible3 ? "RightUplodFlex" : ""}`}>
                   <div className={`${visible3 ? "afterselect" : ""}`}>
                     <div
                       className={`${!visible ? "AddContent" : "AddContent2"}`}
@@ -210,9 +211,8 @@ const Test = () => {
                     </div>
                   )}
                 </div> */}
-                </>
-              )}
-            </div>
+              </>
+            )}
           </div>
         </div>
       )}

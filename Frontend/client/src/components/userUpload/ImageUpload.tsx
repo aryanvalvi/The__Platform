@@ -1,7 +1,6 @@
 "use client"
 import {useAppDispatch, useAppSelector} from "@/ReduxStore/hook/CustomHook"
-
-import React, {use, useEffect, useState} from "react"
+import React, {useEffect, useState} from "react"
 import {RiFolderVideoFill} from "react-icons/ri"
 import {IoMdImage} from "react-icons/io"
 import {FaCloudUploadAlt} from "react-icons/fa"
@@ -11,7 +10,7 @@ import "swiper/css"
 import "swiper/css/navigation"
 import "swiper/css/pagination"
 import "swiper/css/scrollbar"
-
+import {dribbbleTags} from "../../utils/tags/tags"
 // import "./test.scss"
 import {
   postPostFunction,
@@ -19,12 +18,15 @@ import {
   setFile,
   setTitle,
 } from "@/ReduxStore/slices/PostpostSlice"
+import {isArray} from "lodash"
+
 const ImageUpload = () => {
   const dispatch = useAppDispatch()
   const Data = useAppSelector(state => state.postPostReducer)
   const Des = Data.description
   const Title = Data.Title
   console.log(Des, Title)
+
   const [select, setSelect] = useState(false)
   const [visible, setVisible] = useState(false)
   const [visible2, setVisible2] = useState(false)
@@ -34,6 +36,10 @@ const ImageUpload = () => {
   const [multi, setMulti] = useState([])
   const [multiImgFile, setMultiImgFile] = useState([])
   const [url, setUrl] = useState("")
+  const [inputTag, setInputTag] = useState("") // For the tag input value
+  const [tags, setTags] = useState([]) // Array of selected tags
+  const [filtertag, setFilterTag] = useState([])
+  console.log(tags)
   console.log(multi)
 
   const HandleDiscriptionChange = e => {
@@ -70,20 +76,16 @@ const ImageUpload = () => {
     })
     const DesTitle = {Des, Title}
     formData.append("description", JSON.stringify(DesTitle))
-    formData.append("side images", multi)
+    formData.append("side_images", multi)
+    formData.append("tags", JSON.stringify(tags)) // Send tags as JSON string
     console.log("FormData Entries:")
     for (let pair of formData.entries()) {
-      console.log(pair[0], pair[1]) // Debugging: See all appended formData values
+      console.log(pair[0], pair[1])
     }
-    // console.log("end form data", formData)
     dispatch(postPostFunction({formData}))
-    // setopenPopup(true)
   }
-  useEffect(() => {
-    // setTimeout(() => {
-    //   setVisible(true)
-    // }, 2000)
 
+  useEffect(() => {
     if (file) {
       console.log(file)
       setVisible(true)
@@ -92,7 +94,6 @@ const ImageUpload = () => {
         setVisible4(true)
       }, 1110)
       setVisible3(true)
-
       return () => clearTimeout(timeout)
     }
     if (multi) {
@@ -102,6 +103,33 @@ const ImageUpload = () => {
       console.log(url)
     }
   }, [file, multi])
+
+  const TagChanged = e => {
+    const inputValue = e
+    setInputTag(inputValue) // Update the input value
+    if (inputValue) {
+      const result = dribbbleTags.filter(tag =>
+        tag.toLowerCase().startsWith(inputValue.toLowerCase())
+      )
+      setFilterTag(result)
+      console.log("filtered tags", result)
+    } else {
+      setFilterTag([])
+    }
+  }
+
+  const addTag = selectedTag => {
+    if (!tags.includes(selectedTag)) {
+      setTags([...tags, selectedTag]) // Add the selected tag to the array
+    }
+    setInputTag("") // Clear the input
+    setFilterTag([]) // Clear the suggestions
+  }
+
+  const removeTag = tagToRemove => {
+    setTags(tags.filter(tag => tag !== tagToRemove)) // Remove the tag
+  }
+
   return (
     <>
       <div className="CreateContainer">
@@ -111,83 +139,118 @@ const ImageUpload = () => {
             src={`${url ? url : "./image/Your Design2.jpg"}`}
             alt=""
           />
+        </div>
 
-          <div className="rightCreateUpload">
-            <>
-              <div className={`${visible3 ? "RightUplodFlex" : ""}`}>
-                <div className={`${visible3 ? "afterselect" : ""}`}>
-                  <div className={`${!visible ? "AddContent" : "AddContent2"}`}>
-                    <div className="LeftAddContent">
-                      <label htmlFor="file-input">
-                        <FaCloudUploadAlt className="uploadIcon" />
-                      </label>
-                      <input
-                        id="file-input"
-                        name="image"
-                        type="file"
-                        style={{display: "none"}}
-                        onChange={handleFileChange}
-                      />
-                      <p>Click to select main title image</p>
-                      <div className={`${visible && "line"}`}></div>
-                      {visible2 && (
-                        <>
-                          <label htmlFor="file-input2">
-                            <FaCloudUploadAlt className="uploadIcon" />
-                          </label>
-                          <input
-                            id="file-input2"
-                            name="image"
-                            multiple
-                            type="file"
-                            style={{display: "none"}}
-                            onChange={MultipleFileChange}
-                          />
-                          <p>Select upto max 3 side images</p>
-                        </>
-                      )}
-                    </div>
+        <div className="rightCreateUpload">
+          <>
+            <div className={`${visible3 ? "RightUplodFlex" : ""}`}>
+              <div className={`${visible3 ? "afterselect" : ""}`}>
+                <div className={`${!visible ? "AddContent" : "AddContent2"}`}>
+                  <div className="LeftAddContent">
+                    <label htmlFor="file-input">
+                      <FaCloudUploadAlt className="uploadIcon" />
+                    </label>
+                    <input
+                      id="file-input"
+                      name="image"
+                      type="file"
+                      style={{display: "none"}}
+                      onChange={handleFileChange}
+                    />
+                    <p>Click to select main title image</p>
+                    <div className={`${visible && "line"}`}></div>
+                    {visible2 && (
+                      <>
+                        <label htmlFor="file-input2">
+                          <FaCloudUploadAlt className="uploadIcon" />
+                        </label>
+                        <input
+                          id="file-input2"
+                          name="image"
+                          multiple
+                          type="file"
+                          style={{display: "none"}}
+                          onChange={MultipleFileChange}
+                        />
+                        <p>Select upto max 3 side images</p>
+                      </>
+                    )}
                   </div>
                 </div>
-                {visible4 && (
-                  <div className="upload-container">
-                    <label className="input-label">Description:</label>
-                    <textarea
-                      name="message"
-                      rows="4"
-                      cols="50"
-                      placeholder="Write your description..."
-                      className="description"
-                      onChange={HandleDiscriptionChange}
-                    ></textarea>
-
-                    <label className="input-label">Title:</label>
-                    <input
-                      onChange={HandleTitleChange}
-                      className="title-input"
-                      type="text"
-                      placeholder="Enter title..."
-                    />
-
-                    <label className="input-label">Tags:</label>
-                    <input
-                      type="text"
-                      className="tags-input"
-                      placeholder="Add tags..."
-                    />
-
-                    <button onClick={handleUpload} className="upload-btn">
-                      Upload
-                    </button>
-                  </div>
-                )}
               </div>
-            </>
-          </div>
+              {visible4 && (
+                <div className="upload-container">
+                  <label className="input-label">Description:</label>
+                  <textarea
+                    name="message"
+                    rows="4"
+                    cols="50"
+                    placeholder="Write your description..."
+                    className="description"
+                    onChange={HandleDiscriptionChange}
+                    value={Des}
+                  ></textarea>
+
+                  <label className="input-label">Title:</label>
+                  <input
+                    onChange={HandleTitleChange}
+                    className="title-input"
+                    type="text"
+                    placeholder="Enter title..."
+                    value={Title}
+                  />
+
+                  <label className="input-label">Tags:</label>
+                  <input
+                    onInput={e => TagChanged(e.target.value)}
+                    value={inputTag}
+                    type="text"
+                    className="tags-input"
+                    placeholder="Add tags..."
+                  />
+                  {/* Display selected tags */}
+                  {tags.length > 0 && (
+                    <div className="selected-tags">
+                      {tags.map((tag, index) => (
+                        <span key={index} className="tag-chip">
+                          {tag}
+                          <button
+                            onClick={() => removeTag(tag)}
+                            className="remove-tag-btn"
+                          >
+                            x
+                          </button>
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                  {/* Display tag suggestions */}
+                  {filtertag.length > 0 && (
+                    <div className="tag-suggestions">
+                      {filtertag.map((e, index) => (
+                        <div className="tags-input2" key={index}>
+                          <p onClick={() => addTag(e)}>{e}</p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  <p>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab
+                    porro ipsa ex reprehenderit corrupti, eos corporis
+                    obcaecati! Obcaecati tempore vero aut, officiis excepturi
+                    culpa ea nesciunt beatae, tempora, temporibus incidunt.
+                  </p>
+
+                  <button onClick={handleUpload} className="upload-btn">
+                    Upload
+                  </button>
+                </div>
+              )}
+            </div>
+          </>
         </div>
       </div>
       <div className="sideImagesContainer">
-        {/* <p>Side images</p> */}
         {multi.length > 1 ? (
           <>
             {multi.map(img => (
@@ -200,7 +263,6 @@ const ImageUpload = () => {
           <></>
         )}
       </div>
-      {/* <h1>Description:</h1> */}
     </>
   )
 }

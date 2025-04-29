@@ -1,34 +1,34 @@
 "use client"
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import Skeleton from "react-loading-skeleton";
+import React, {useState, useEffect} from "react"
+import axios from "axios"
+import Skeleton from "react-loading-skeleton"
 
 interface PostCardProps {
   post: {
-    id: number;
-    title: string;
-    body: string;
-  };
+    id: number
+    title: string
+    body: string
+  }
 }
 
-const PostCard: React.FC<PostCardProps> = ({ post }) => {
-  const [imageUrl, setImageUrl] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(true);
+const PostCard: React.FC<PostCardProps> = ({post}) => {
+  const [imageUrl, setImageUrl] = useState<string>("")
+  const [loading, setLoading] = useState<boolean>(true)
 
   useEffect(() => {
-    fetchImage();
-  }, []);
+    fetchImage()
+  }, [])
 
   const fetchImage = () => {
-    setLoading(true);
+    setLoading(true)
     axios
       .get("https://picsum.photos/200")
-      .then((response) => {
-        setImageUrl(response.request.responseURL);
-        setLoading(false);
+      .then(response => {
+        setImageUrl(response.request.responseURL)
+        setLoading(false)
       })
-      .catch((error) => console.error(error));
-  };
+      .catch(error => console.error(error))
+  }
 
   return (
     <div className="post-card">
@@ -45,7 +45,7 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
             <Skeleton
               height={20}
               width={200}
-              style={{ marginBottom: "10px", marginTop: "10px" }}
+              style={{marginBottom: "10px", marginTop: "10px"}}
               className="skeleton"
             />
             <Skeleton height={60} count={3} className="skeleton" />
@@ -60,7 +60,7 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
         )}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default PostCard;
+export default PostCard

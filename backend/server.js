@@ -9,6 +9,8 @@ const passport = require("passport")
 const router = require("./routes/route")
 const mongoose = require("mongoose")
 const session = require("express-session")
+const {checkConnection} = require("./elasticSearch/elastic")
+const retrive = require("./modification/modify")
 require("dotenv").config()
 
 // Middleware setup
@@ -66,7 +68,8 @@ mongoose
   .catch(err => {
     console.log("Database connection error: " + err)
   })
-
+checkConnection()
+retrive()
 app.listen(5001, () => {
   console.log("Server is running on port 5000")
 })

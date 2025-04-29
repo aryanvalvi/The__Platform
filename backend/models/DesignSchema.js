@@ -16,6 +16,10 @@ const DesignSchema = new Schema({
   saves: [{type: Schema.Types.ObjectId, ref: "User"}], // Users who saved the design
   comments: [{type: Schema.Types.ObjectId, ref: "Comment"}], // Array of comments
   createdAt: {type: Date, default: Date.now},
+  views: {type: Number, default: 0}, // 👈 new
+  downloads: {type: Number, default: 0}, // 👈 new
+  visibility: {type: String, default: "public"}, //
+  category: {type: String}, // 👈 new
 })
 
 const DesignUpload = mongoose.model("Design", DesignSchema)
