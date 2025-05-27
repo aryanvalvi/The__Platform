@@ -12,7 +12,7 @@ const session = require("express-session")
 const {checkConnection} = require("./elasticSearch/elastic")
 const retrive = require("./modification/modify")
 require("dotenv").config()
-
+const client = require("./elasticSearchSync/sync")
 // Middleware setup
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
@@ -59,6 +59,28 @@ app.use("/", require("./routes/route"))
 app.use("/auth", router)
 app.use("/profile", profileRoute)
 
+// In your Express route
+app.get("/search", async (req, res) => {
+  const {query} = req.query
+  console.log(query)
+  try {
+    const result = await client.search({
+      index: "designs",
+      query: {
+        multi_match: {
+          query,
+          fields: ["title", "description", "tags"],
+        },
+      },
+    })
+
+    res.json(result.hits.hits.map(hit => hit._source))
+  } catch (error) {
+    console.error(error)
+    res.status(500).send("Search failed")
+  }
+})
+
 // Database connection
 mongoose
   .connect(process.env.MONGO_URI, {})
@@ -68,7 +90,7 @@ mongoose
   .catch(err => {
     console.log("Database connection error: " + err)
   })
-checkConnection()
+// checkConnection()
 retrive()
 app.listen(5001, () => {
   console.log("Server is running on port 5000")

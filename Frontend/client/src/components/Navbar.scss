@@ -1,6 +1,8 @@
 * {
   margin: 0;
   padding: 0;
+  background-color: #ffffff;
+  // font-family: Kaushan Script;
 }
 .popup-backdrop {
   // background: rgba(49, 49, 49, 0.8);
@@ -47,121 +49,95 @@
   margin-left: -30px;
 }
 .Explore {
-  margin-right: 20px;
+  // margin-right: 20px;
 }
 .Navlogo {
+  // margin-right: 300px;
   cursor: pointer;
-  width: 6.5%;
+  // width: 6.5%;
   // margin-top: 22px;
   // margin-left: -20px;
 }
-.NavbarContaine {
-  // background-image: url("/image/bg1 (3).jpg");
-  // background-size: cover;
-  // // height: 300px;
-  // height: 100vh;
-}
-.NavbarContainer {
+
+.NavbarContain {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
+  // max-width: 1200px;
+  width: 100%;
   align-items: center;
+}
 
-  .NavSearchBar {
-    // margin-top: 35px;
-    position: relative;
+.navbarElements {
+  display: flex;
+  gap: 20px;
+  .Learn {
+    // margin-top: 9px;
     // margin-left: -30px;
+    // margin-right: 30px;
+  }
+  li {
     cursor: pointer;
-    input {
-      border: 1.5px solid rgb(110, 110, 110);
-      font-family: "Kaushan Script";
-      // padding-right: 50px;
-      width: 500px;
-      height: 30px;
-      border-radius: 100px;
-      font-size: 15px;
-      letter-spacing: 1px;
-      padding-left: 10px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
 
-    img {
-      margin-left: 90px;
-      position: absolute;
-      top: 8px;
-      width: 6%;
-      right: 8px;
-    }
+    color: #000;
+
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    transition: 0.4s;
   }
-  .navbarElements {
-    .Learn {
-      margin-top: 5px;
-      margin-left: -30px;
-      margin-right: 30px;
-    }
-    li {
-      cursor: pointer;
-
-      color: #000;
-      font-family: "Kaushan Script";
-      font-size: 18px;
-      font-style: normal;
-      font-weight: 400;
-      line-height: normal;
-      transition: 0.4s;
-    }
-    li:hover {
-      transform: scale(1.1);
-    }
-    .logout {
-      position: absolute;
-    }
-    button {
-      cursor: pointer;
-
-      color: #000;
-      font-family: Kaushan Script;
-      font-size: 20px;
-      font-style: normal;
-      font-weight: 400;
-      line-height: normal;
-      transition: 0.6s;
-    }
-    button:hover {
-      transform: scale(1.1);
-      color: #ffffff;
-      background: #000;
-    }
-    .sign {
-      width: 101px;
-      height: 37px;
-      flex-shrink: 0;
-      border-radius: 10px;
-      background: rgba(251, 133, 0, 0.83);
-    }
-    .login {
-      color: #ffffff;
-      width: 101px;
-      height: 37px;
-      flex-shrink: 0;
-      border-radius: 10px;
-      background: #000;
-    }
-    .login:hover {
-      background: #ffffff;
-      color: rgba(251, 133, 0, 0.83);
-    }
-    // margin-top: 75px;
-    list-style: none;
-    // margin-left: 50px;
-    gap: 10px;
-    display: flex;
+  li:hover {
+    transform: scale(1.1);
   }
+
+  button {
+    cursor: pointer;
+
+    color: #000;
+
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    transition: 0.6s;
+  }
+  button:hover {
+    transform: scale(1.1);
+    color: #ffffff;
+    background: #000;
+  }
+  .sign {
+    border: 1px solid rgb(82, 77, 78);
+    margin-right: 30px;
+    margin-left: auto;
+    width: 101px;
+    height: 37px;
+    flex-shrink: 0;
+    border-radius: 5px;
+    background: #fc9a44;
+    // background: #fd5733;
+    color: #ffffff;
+  }
+  .login {
+    color: #ffffff;
+    width: 101px;
+    height: 37px;
+    flex-shrink: 0;
+    border-radius: 10px;
+    background: #000;
+  }
+  .login:hover {
+    background: #ffffff;
+    color: rgba(251, 133, 0, 0.83);
+  }
+  list-style: none;
 }
 .profile-name {
-  margin-top: -10px;
-  font-family: "Kaushan Script";
+  // position: absolute;
+  // position: relative;
+  // margin-top: -10px;
+  // position: absolute;
+  left: 0;
   // padding-right: 50px;
   // width: 467px;
   // height: 40px;
@@ -173,10 +149,10 @@
   // text-overflow: ellipsis;
 }
 .profile-picture {
-  // margin-left: 10px;
+  // margin-left: 30px;
   width: 50px;
   height: 50px;
-  margin-top: -20px;
+  margin-top: 20px;
   border-radius: 300px;
   transition: 0.3s;
   // transition: smooth;
@@ -184,10 +160,29 @@
 .profile-picture:hover {
   scale: (1.1);
 }
-.home {
-  margin-right: 40px;
-}
 
 .Link {
   text-decoration: none;
+  li {
+    font-size: 20px;
+    font-weight: 300;
+    color: #000000;
+  }
+}
+.NavProfile {
+  // position: relative;
+  // margin-right: 30px;
+}
+.logout {
+  position: absolute;
+  bottom: -30px;
+}
+.pname {
+  margin-right: 10px;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }

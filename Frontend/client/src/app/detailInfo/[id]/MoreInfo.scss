@@ -143,14 +143,12 @@
 .desMore {
   width: 800px;
   font-size: 1.5rem;
-  font-family: "Libre Franklin";
+
   font-weight: 100;
   color: rgb(67, 67, 67);
   margin-top: 100px;
 }
 * {
-  font-family: "Libre Franklin";
-  font-style: italic;
 }
 
 //
@@ -196,10 +194,10 @@ body.active-modal {
   bottom: 0;
   position: fixed;
 }
-.connectt{
+.connectt {
   position: relative;
 }
-.tik{
+.tik {
   position: absolute;
   top: -160%;
   left: 40%;
@@ -287,24 +285,21 @@ body.active-modal {
 }
 @keyframes rotate {
   from {
-      transform: rotate(0deg);
+    transform: rotate(0deg);
   }
-  to { 
-      transform: rotate(360deg);
+  to {
+    transform: rotate(360deg);
   }
 }
-
 
 @-webkit-keyframes rotate {
   from {
-      -webkit-transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
   }
-  to { 
-      -webkit-transform: rotate(360deg);
+  to {
+    -webkit-transform: rotate(360deg);
   }
 }
-
-
 
 .loader {
   margin-left: 40%;
@@ -312,22 +307,90 @@ body.active-modal {
   aspect-ratio: 1;
   border-radius: 50%;
   border: 8px solid #514b82;
-  animation:
-    l20-1 0.8s infinite linear alternate,
-    l20-2 1.6s infinite linear;
+  animation: l20-1 0.8s infinite linear alternate, l20-2 1.6s infinite linear;
 }
-@keyframes l20-1{
-   0%    {clip-path: polygon(50% 50%,0       0,  50%   0%,  50%    0%, 50%    0%, 50%    0%, 50%    0% )}
-   12.5% {clip-path: polygon(50% 50%,0       0,  50%   0%,  100%   0%, 100%   0%, 100%   0%, 100%   0% )}
-   25%   {clip-path: polygon(50% 50%,0       0,  50%   0%,  100%   0%, 100% 100%, 100% 100%, 100% 100% )}
-   50%   {clip-path: polygon(50% 50%,0       0,  50%   0%,  100%   0%, 100% 100%, 50%  100%, 0%   100% )}
-   62.5% {clip-path: polygon(50% 50%,100%    0, 100%   0%,  100%   0%, 100% 100%, 50%  100%, 0%   100% )}
-   75%   {clip-path: polygon(50% 50%,100% 100%, 100% 100%,  100% 100%, 100% 100%, 50%  100%, 0%   100% )}
-   100%  {clip-path: polygon(50% 50%,50%  100%,  50% 100%,   50% 100%,  50% 100%, 50%  100%, 0%   100% )}
+@keyframes l20-1 {
+  0% {
+    clip-path: polygon(50% 50%, 0 0, 50% 0%, 50% 0%, 50% 0%, 50% 0%, 50% 0%);
+  }
+  12.5% {
+    clip-path: polygon(
+      50% 50%,
+      0 0,
+      50% 0%,
+      100% 0%,
+      100% 0%,
+      100% 0%,
+      100% 0%
+    );
+  }
+  25% {
+    clip-path: polygon(
+      50% 50%,
+      0 0,
+      50% 0%,
+      100% 0%,
+      100% 100%,
+      100% 100%,
+      100% 100%
+    );
+  }
+  50% {
+    clip-path: polygon(
+      50% 50%,
+      0 0,
+      50% 0%,
+      100% 0%,
+      100% 100%,
+      50% 100%,
+      0% 100%
+    );
+  }
+  62.5% {
+    clip-path: polygon(
+      50% 50%,
+      100% 0,
+      100% 0%,
+      100% 0%,
+      100% 100%,
+      50% 100%,
+      0% 100%
+    );
+  }
+  75% {
+    clip-path: polygon(
+      50% 50%,
+      100% 100%,
+      100% 100%,
+      100% 100%,
+      100% 100%,
+      50% 100%,
+      0% 100%
+    );
+  }
+  100% {
+    clip-path: polygon(
+      50% 50%,
+      50% 100%,
+      50% 100%,
+      50% 100%,
+      50% 100%,
+      50% 100%,
+      0% 100%
+    );
+  }
 }
-@keyframes l20-2{ 
-  0%    {transform:scaleY(1)  rotate(0deg)}
-  49.99%{transform:scaleY(1)  rotate(135deg)}
-  50%   {transform:scaleY(-1) rotate(0deg)}
-  100%  {transform:scaleY(-1) rotate(-135deg)}
+@keyframes l20-2 {
+  0% {
+    transform: scaleY(1) rotate(0deg);
+  }
+  49.99% {
+    transform: scaleY(1) rotate(135deg);
+  }
+  50% {
+    transform: scaleY(-1) rotate(0deg);
+  }
+  100% {
+    transform: scaleY(-1) rotate(-135deg);
+  }
 }
