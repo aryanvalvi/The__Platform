@@ -60,24 +60,66 @@ app.use("/auth", router)
 app.use("/profile", profileRoute)
 
 // In your Express route
+// app.get("/search", async (req, res) => {
+//   const {query} = req.query
+//   console.log(query)
+//   try {
+//     const result = await client.search({
+//       index: "designs",
+//       query: {
+//         multi_match: {
+//           query,
+//           fields: ["title", "description", "tags"],
+//         },
+//       },
+//     })
+//     // console.log(result.hits.hits)
+//     // res.json(result.hits.hits.map(hit => hit._source))
+//     res.json(result.hits.hits)
+//   } catch (error) {
+//     console.error(error)
+//     res.status(500).send("Search failed")
+//   }
+// })
+
 app.get("/search", async (req, res) => {
+  console.log("search hit")
   const {query} = req.query
-  console.log(query)
+
+  if (!query || query.trim() === "") {
+    return res.status(400).json({error: "Search query is required"})
+  }
+
   try {
     const result = await client.search({
       index: "designs",
       query: {
         multi_match: {
           query,
-          fields: ["title", "description", "tags"],
+          fields: ["title^2", "description", "tags"], // Boost title matches
+          fuzziness: "AUTO", // Allow typo tolerance
         },
       },
     })
 
-    res.json(result.hits.hits.map(hit => hit._source))
+    // Map results to a clean format
+    const hits = result.hits.hits.map(hit => ({
+      id: hit._id,
+      title: hit._source.title,
+      description: hit._source.description,
+      images: hit._source.images,
+      creator: hit._source.creator,
+      category: hit._source.category || "N/A",
+      createdAt: hit._source.createdAt,
+      views: hit._source.views,
+      downloads: hit._source.downloads,
+      visibility: hit._source.visibility,
+    }))
+
+    res.json(hits)
   } catch (error) {
-    console.error(error)
-    res.status(500).send("Search failed")
+    console.error("Search error:", error)
+    res.status(500).json({error: "Search failed"})
   }
 })
 

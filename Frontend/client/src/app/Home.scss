@@ -3,6 +3,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  // background-color: #ffffff;
 }
 
 .Homecontainer {
@@ -91,6 +92,7 @@
   color: #e07b30;
 }
 .NavSearchBar {
+  z-index: 10;
   position: relative;
   width: 100%;
   max-width: 1000px; /* Constrain search bar width */
@@ -176,3 +178,41 @@
   }
 }
 // the homecontent should be on the left side of the page not in the center i have tried many times but its not working properly when i zoom out the page the
+.searchResultContainer {
+  position: absolute;
+  top: 100%; /* Place directly below the input */
+  left: 0; /* Align with the left edge of the input */
+  width: 100%; /* Match the input’s width */
+  max-width: 900px; /* Match the input’s max-width */
+  max-height: 300px; /* Limit height to prevent overlap */
+  overflow-y: auto;
+  background-color: #ffffff; /* White background for visibility */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 0 0 10px 10px; /* Rounded corners at the bottom */
+  z-index: 9999; /* High enough to stay above other content */
+  text-align: left; /* Ensure text alignment is left */
+}
+.searchbruh {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* Align content to the left */
+  // padding: 10px 20px; /* Consistent padding */
+  border-bottom: 1px solid #eee; /* Separator between results */
+  width: 100%; /* Ensure full width */
+}
+
+.searchbruh p {
+  // padding-left: 10px;
+  // margin-left: 20px;
+  // margin: 0; /* Remove default margin */
+  padding: 15px 20px; /* Add padding for better spacing */
+  font-size: 16px;
+  color: #343a40;
+  background-color: transparent; /* No background by default */
+  width: 100%; /* Ensure full width */
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* Smooth hover transition */
+}
+.searchbruh p:hover {
+  background-color: #e0e0e0; /* Lighter gray on hover (replacing #c4c4c4 for better contrast) */
+}

@@ -34,7 +34,8 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "src/app/post/[id]",
-    "src/app/detailInfo/[id]"
+    "src/app/detailInfo/[id]",
+    ".next/types/app/result/page.tsx"
   ],
   "exclude": [
     "node_modules"

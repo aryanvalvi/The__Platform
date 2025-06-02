@@ -1,394 +1,206 @@
+/* Reset default margins and padding */
 * {
-  // background-color: #000000;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
+
+/* Container for the cards */
 .flex {
   display: flex;
   flex-wrap: wrap;
-  gap: 40px; /* Add spacing between items */
-  justify-content: center; /* Center the items */
-  // gap: 9px;
+  gap: 30px; /* Increased spacing between cards for a cleaner look */
+  justify-content: center; /* Centered layout (you can change to flex-start if needed) */
+  padding: 20px; /* Add padding around the container */
 }
-// // .gand {
-// //   p {
-// //     margin-top: 30px;
-// //     // color: #000;
-// //     font-family: Kaushan Script;
-// //     font-size: 20px;
-// //     font-style: normal;
-// //     font-weight: 400;
-// //     line-height: normal;
-// //   }
 
-// //   padding: 30px;
-// //   margin-bottom: 20px;
-// //   .profile {
-// //     position: absolute;
+/* Individual card container */
+.gand {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 380px; /* Match the max-width of the image */
+  background-color: #ffffff; /* White background for the card */
+  border-radius: 15 dew point 15px; /* Slightly larger radius for a softer look */
+  box-shadow: 0 4px12px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
 
-// //     width: 38px;
-// //     height: 38px;
-// //   }
-// // }
+/* Hover effect for the card */
+.gand:hover {
+  transform: translateY(-5px); /* Slight lift effect on hover */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
+}
 
+/* Image or video container */
+.imageContent {
+  width: 100%;
+  height: 250px; /* Fixed height for consistency */
+  border-radius: 15px 15px 0 0; /* Rounded corners on top only */
+  overflow: hidden; /* Hide overflow for zoom effect */
+}
+
+/* Image or video styling */
 .mgand {
-  width: 100%; /* Make it responsive to container */
-  max-width: 380px; /* Limit the maximum width */
-  height: 250px;
-  border-radius: 15px; /* Slightly larger rounding for a smoother effect */
-  object-fit: cover; /* Ensures image fits within the container */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth zoom and shadow effect */
-  cursor: pointer; /* Makes the image interactive */
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensure the image/video fills the container */
+  transition: transform 0.3s ease; /* Smooth zoom effect */
 }
-.mgand:hover {
-  background-color: #000;
-  // transform: scale(1.05); /* Zoom in slightly */
-  // box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Enhance shadow on hover */
+
+/* Zoom effect on hover */
+.imageContent:hover .mgand {
+  transform: scale(1.1); /* Slight zoom on hover */
 }
-.profile {
-  width: 30px;
-  border-radius: 30px;
+
+/* Title styling */
+.ImageTitle {
+  padding: 10px 15px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #333; /* Darker text for better contrast */
+  background-color: rgba(
+    255,
+    255,
+    255,
+    0.9
+  ); /* Semi-transparent white background */
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  transition: background-color 0.3s ease;
 }
+
+/* Hover effect for the title */
+.gand:hover .ImageTitle {
+  background-color: rgba(255, 255, 255, 1); /* Fully opaque on hover */
+}
+
+/* Profile, username, and heart section */
 .ImgAndHeart {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  p {
-    margin-left: -150px;
-  }
-  span {
-    margin-right: -150px;
-  }
+  padding: 10px 15px;
+  background-color: #f8f9fa; /* Light gray background */
+  border-radius: 0 0 15px 15px; /* Rounded corners on bottom */
 }
-.imageContent {
-  position: relative;
-  overflow: hidden;
-  border-radius: 10px;
+
+/* Profile image */
+.profile {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid #fff; /* White border for contrast */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  transition: transform 0.3s ease;
 }
-.ImageTitle {
-  width: 100%;
-  position: absolute;
-  bottom: 0%;
-  left: 0%;
-  // background-color: rgba(0, 0, 0, 0.8);
-  color: white;
+
+/* Hover effect for profile image */
+.profile:hover {
+  transform: scale(1.1); /* Slight zoom on hover */
+}
+
+/* Username styling */
+.overlayText {
+  font-size: 16px;
+  font-weight: 500;
+  color: #555; /* Medium gray for readability */
+  flex-grow: 1; /* Take up remaining space */
+  margin-left: 10px; /* Space between profile and username */
+}
+
+/* Like count and heart icon */
+.ImgAndHeart span {
+  font-size: 16px;
+  color: #777; /* Lighter gray for the count */
+  margin-right: 5px; /* Space between count and heart */
+}
+
+/* Heart icon styling */
+.ImgAndHeart svg {
   font-size: 20px;
-  padding: 10px;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
-  height: 20%; /* Adjust this height as per your design */
-  background: linear-gradient(
-    transparent,
-    rgba(0, 0, 0, 0.8),
-    rgba(0, 0, 0, 1)
-  );
-  align-items: flex-end;
-  transition: opacity 0.3s ease;
+  color: #ccc; /* Gray by default */
+  cursor: pointer;
+  transition: color 0.3s ease, transform 0.3s ease;
 }
 
-.imageContent:hover {
-  background-color: #e0e0e0;
+/* Hover effect for heart */
+.ImgAndHeart svg:hover {
+  color: #e63946; /* Red on hover */
+  transform: scale(1.2); /* Slight zoom on hover */
 }
-.imageContent:hover .ImageTitle {
-  opacity: 1;
-}
-// // .gand {
-// //   position: relative;
-// //   // display: flex;
-// //   .profile {
-// //     position: absolute;
-// //     top: 98%;
-// //   }
-// //   .p {
-// //     position: absolute;
-// //     top: 90%;
-// //     left: 17%;
-// //   }
-// //   .like {
-// //     width: 6%;
-// //     position: absolute;
-// //     top: 100%;
-// //     left: 80%;
-// //     // fill: #bab1b1;
-// //     transition: 0.2s;
-// //   }
-// //   .like:hover {
-// //     fill: rgb(222, 25, 25);
-// //     transform: scale(1.1);
-// //   }
-// //   .like:active {
-// //     transform: translateY(-1px);
-// //     // box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-// //   }
-// //   .like::after {
-// //     z-index: -1;
-// //   }
-// //   .likee {
-// //     width: 6.5%;
-// //     position: absolute;
-// //     top: 100%;
-// //     left: 90%;
-// //     fill: #671e1e;
-// //   }
-// //   .likee:hover {
-// //     fill: #000000;
-// //   }
-// // }
 
-// // .des {
-// //   position: absolute;
-// //   border-radius: 30px;
-// //   width: 400px;
-// //   height: 350px;
-// //   position: absolute;
-// //   top: 0%;
-// //   left: 10%;
-// //   background: rgba(0, 0, 0, 0.6);
-
-// //   opacity: 0;
-// //   transition: 0.6s;
-// // }
-// // .des:hover {
-// //   opacity: 1;
-// // }
-
-// // .imageContent {
-// //   position: relative;
-// //   display: inline-block;
-// //   width: 100%;
-// //   height: 100%;
-// //   // position: relative;
-// //   .mgand {
-// //     position: relative;
-// //     max-width: 400px;
-// //     max-height: 350px;
-// //   }
-// //   img {
-// //     display: block;
-// //   }
-// // }
-// // .overlayText {
-// //   position: absolute;
-// //   bottom: 0;
-// //   left: 0;
-// //   width: 100%;
-// //   background-color: rgba(0, 0, 0, 0.5); /* Black background with transparency */
-// //   color: white;
-// //   text-align: center;
-// //   padding: 10px;
-// //   opacity: 0; /* Initially hidden */
-// //   transition: opacity 0.3s ease; /* Smooth transition */
-// // }
-// // .imageContent:hover .overlayText {
-// //   opacity: 1; /* Show text on hover */
-// // }
-// // // .content {
-// // //   p {
-// // //     color: aliceblue;
-// // //   }
-// // //   // border-radius: 30px;
-// // //   position: absolute;
-// // //   width: 350px;
-// // //   height: 250px;
-// // //   top: 9%;
-// // //   left: 9%;
-// // //   background: rgba(0, 0, 0, 0.2);
-// // //   display: flex;
-// // //   justify-content: center;
-// // //   align-items: center;
-// // //   opacity: 0;
-// // //   transition: 0.6s;
-// // // }
-// // // .content:hover {
-// // //   opacity: 1;
-// // // }
+/* Explore button container */
 .exploreButton {
-  margin-top: 30px;
+  margin: 40px 0;
   display: flex;
-  align-items: center;
   justify-content: center;
-  button {
-    border-radius: 10px;
-    background: #000;
-    color: #fff;
-
-    font-size: 20px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-    transition: 0.6s;
-  }
-  button:hover {
-    background: #ffffff;
-    color: #000000;
-    transform: scale(1.1);
-  }
 }
 
-// // .hoverText {
-// //   position: absolute;
-// //   bottom: 0;
-// //   left: 0;
-// //   right: 0;
-// //   background-color: rgba(0, 0, 0, 0.8);
-// //   color: white;
-// //   font-size: 16px;
-// //   padding: 10px;
-// //   opacity: 0;
-// //   transition: opacity 0.3s ease;
-// //   border-bottom-left-radius: 10px;
-// //   border-bottom-right-radius: 10px;
-// // }
+/* Button styling */
+.exploreButton button {
+  padding: 12px 30px;
+  background-color: #343a40; /* Dark gray background */
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 18px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
 
-// // .hoverBox:hover {
-// //   background-color: #e0e0e0;
-// // }
+/* Hover effect for button */
+.exploreButton button:hover {
+  background-color: #495057; /* Slightly lighter gray on hover */
+  transform: scale(1.05); /* Slight zoom on hover */
+}
 
-// // .hoverBox:hover .hoverText {
-// //   opacity: 1; /* Shows the hover text on hover */
-// // }
-
-// // /* BoxHover.scss */
-// // .boxContainer {
-// //   display: flex;
-// //   justify-content: center;
-// //   align-items: center;
-// //   height: 100vh; /* Full height of the viewport */
-// // }
-
-// // .hoverBox {
-// //   width: 300px;
-// //   height: 200px;
-// //   background-color: #f0f0f0;
-// //   border: 2px solid #ccc;
-// //   border-radius: 10px;
-// //   position: relative;
-// //   text-align: center;
-// //   display: flex;
-// //   justify-content: center;
-// //   align-items: center;
-// //   transition: background-color 0.3s ease;
-// // }
-
-// // .boxContent {
-// //   font-size: 20px;
-// //   z-index: 1;
-// // }
-
-// // .hoverText {
-// //   position: absolute;
-// //   bottom: 0;
-// //   left: 0;
-// //   right: 0;
-// //   background-color: rgba(0, 0, 0, 0.8);
-// //   color: white;
-// //   font-size: 16px;
-// //   padding: 10px;
-// //   opacity: 0;
-// //   transition: opacity 0.3s ease;
-// //   border-bottom-left-radius: 10px;
-// //   border-bottom-right-radius: 10px;
-// // }
-
-// // .hoverBox:hover {
-// //   background-color: #e0e0e0;
-// // }
-
-// // .hoverBox:hover .hoverText {
-// //   opacity: 1; /* Shows the hover text on hover */
-// // }
-// .flex {
-//   display: flex;
-//   flex-wrap: wrap;
-//   gap: 20px; /* Space between items */
-//   justify-content: center; /* Center items in the container */
-// }
-
-// .gand {
-//   position: relative;
-//   width: 300px; /* Adjust the width of each item */
-//   height: 200px; /* Adjust the height of each item */
-//   margin: 10px;
-//   cursor: pointer;
-// }
-
-// .imageContent {
-//   position: relative;
-//   overflow: hidden;
-//   border-radius: 10px;
-// }
-
-// .mgand {
-//   width: 100%;
-//   height: 100%;
-//   object-fit: cover; /* Ensures image/video fits within the container */
-//   transition: transform 0.3s ease; /* Smooth zoom effect */
-// }
-
-// .imageContent:hover .mgand {
-//   transform: scale(1.1); /* Zooms in on hover */
-// }
-
-// .overlayText {
-//   position: absolute;
-//   bottom: 10px;
-//   left: 10px;
-//   color: white;
-//   font-size: 16px;
-//   font-weight: bold;
-//   background-color: rgba(0, 0, 0, 0.5); /* Slight background overlay */
-//   padding: 5px 10px;
-//   border-radius: 5px;
-//   opacity: 0;
-//   transition: opacity 0.3s ease; /* Smooth transition for text visibility */
-// }
-
-// .imageContent:hover .overlayText {
-//   opacity: 1; /* Show text on hover */
-// }
-
-// .profile {
-//   position: absolute;
-//   top: 10px;
-//   left: 10px;
-//   width: 40px;
-//   height: 40px;
-//   border-radius: 50%;
-//   border: 2px solid white;
-// }
-
-// .like {
-//   position: absolute;
-//   bottom: 10px;
-//   right: 10px;
-//   cursor: pointer;
-//   transition: color 0.3s ease;
-// }
-
-// .like:hover {
-//   color: red; /* Changes color on hover */
-// }
-
+/* Loader styling */
 .Loader {
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+  padding: 20px;
 }
+
 .loader {
   width: 40px;
   aspect-ratio: 1;
   border-radius: 50%;
-  border: 8px solid;
-  border-color: #000 #0000;
+  border: 6px solid;
+  border-color: #343a40 transparent; /* Dark gray spinner */
   animation: l1 1s infinite;
 }
+
 @keyframes l1 {
   to {
     transform: rotate(0.5turn);
   }
 }
 
+/* Skeleton loader container */
+.SkeletonContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* Skeleton item */
+.skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 400px 100%;
+  animation: skeleton-loading 1.2s infinite ease-in-out;
+  border-radius: 15px;
+  width: 100%;
+  max-width: 380px;
+  height: 310px; /* Match card height (250px image + 60px footer) */
+  border: 1px solid #eee;
+}
+
+/* Skeleton loading animation */
 @keyframes skeleton-loading {
   0% {
     background-position: -200px 0;
@@ -397,27 +209,51 @@
     background-position: 200px 0;
   }
 }
-.SkeletonContainer {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: 40px;
-}
-.skeleton {
-  background: linear-gradient(
-    90deg,
-    #eeeeee 25%,
-    #dddddd 50%,
-    #eeeeee 75%
-  ); /* Shimmer effect */
-  background-size: 400px 100%;
-  animation: skeleton-loading 1.2s infinite ease-in-out;
-  align-items: center;
-  border-radius: 10px;
 
-  display: flex;
-  min-height: 250px;
-  min-width: 380px;
-  border: 1px solid white;
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+  .gand {
+    max-width: 340px; /* Slightly smaller cards on medium screens */
+  }
+
+  .mgand {
+    height: 220px; /* Adjust image height */
+  }
+
+  .skeleton {
+    max-width: 340px;
+    height: 280px; /* Match adjusted card height */
+  }
+}
+
+@media (max-width: 768px) {
+  .gand {
+    max-width: 100%; /* Full width on smaller screens */
+  }
+
+  .mgand {
+    height: 200px; /* Smaller image height on mobile */
+  }
+
+  .ImageTitle {
+    font-size: 16px; /* Smaller font size */
+    padding: 8px 12px;
+  }
+
+  .overlayText {
+    font-size: 14px; /* Smaller username font */
+  }
+
+  .ImgAndHeart span {
+    font-size: 14px; /* Smaller like count */
+  }
+
+  .ImgAndHeart svg {
+    font-size: 18px; /* Smaller heart icon */
+  }
+
+  .skeleton {
+    max-width: 100%;
+    height: 260px; /* Match adjusted card height */
+  }
 }

@@ -1,129 +1,85 @@
-import React, { use, useCallback, useEffect, useRef, useState } from "react";
+import React, {use, useCallback, useEffect, useRef, useState} from "react"
 import {
   fetchHomeContent,
   homeContentSlice,
   setPageFromStorage,
   setPageIncrease,
-} from "@/ReduxStore/slices/homeContentSlice";
-import { useAppDispatch, useAppSelector } from "@/ReduxStore/hook/CustomHook";
-import SkeletonLoader from "@/components/skeleton/Skeleton";
-import Link from "next/link";
+} from "@/ReduxStore/slices/homeContentSlice"
+import {useAppDispatch, useAppSelector} from "@/ReduxStore/hook/CustomHook"
+import SkeletonLoader from "@/components/skeleton/Skeleton"
+import Link from "next/link"
 
-import { Fa500Px, FaHeart } from "react-icons/fa";
-import "./Sexplore.scss";
-import debounce from "lodash/debounce";
+import {Fa500Px, FaHeart} from "react-icons/fa"
+import "./Sexplore.scss"
+import debounce from "lodash/debounce"
 const page = () => {
-  const dispatch = useAppDispatch();
-  const Data = useAppSelector((state) => state.homeContentReducer.homeContent);
-  const totalPost = useAppSelector((state) => state.homeContentReducer.totalPost);
-  const has = useAppSelector((state) => state.homeContentReducer.hasMorePost);
-  const  page = useAppSelector((state)=>state.homeContentReducer.page);
-  
+  const dispatch = useAppDispatch()
+  const Data = useAppSelector(state => state.homeContentReducer.homeContent)
+  const totalPost = useAppSelector(state => state.homeContentReducer.totalPost)
+  const has = useAppSelector(state => state.homeContentReducer.hasMorePost)
+  const page = useAppSelector(state => state.homeContentReducer.page)
 
-
-console.log(page)
-
-
+  console.log(page)
 
   // const [page,setPage] = useState(0);
 
+  const LoadingRef = useRef(null)
 
-  const LoadingRef=useRef(null);
+  // Store scroll position
+  // useEffect(() => {
+  //   const savedPosition = localStorage.getItem("scrollPosition");
+  //   if (savedPosition) {
+  //     window.scrollTo(0, parseInt(savedPosition, 10));
+  //   }
 
-
-
-    // Store scroll position
-    // useEffect(() => {
-    //   const savedPosition = localStorage.getItem("scrollPosition");
-    //   if (savedPosition) {
-    //     window.scrollTo(0, parseInt(savedPosition, 10));
-    //   }
-  
-    //   return () => {
-    //     localStorage.setItem("scrollPosition", `${window.scrollY}`);
-    //   };
-    // }, []);
-    // const isFetching = useRef(false);
-  const FetchData = async()=>{
+  //   return () => {
+  //     localStorage.setItem("scrollPosition", `${window.scrollY}`);
+  //   };
+  // }, []);
+  // const isFetching = useRef(false);
+  const FetchData = async () => {
     // if(isFetching.current) return;
-    
+
     // const skip =page *6;
     setTimeout(() => {
-      
       dispatch(fetchHomeContent(page))
-    }, 500);
+    }, 500)
 
-// isFetching.current = false
-
+    // isFetching.current = false
   }
 
-
-
-
-
-  useEffect(()=>{
- 
-    if(has){
-      
+  useEffect(() => {
+    if (has) {
       FetchData()
-
     }
-  
-  },[page,dispatch,has])
+  }, [page, dispatch, has])
 
-  useEffect(()=>{
-    if(LoadingRef.current){
-      const observer = new IntersectionObserver(([entry])=>{
-        if(entry.isIntersecting){
-         dispatch( setPageIncrease())
-          // setPage((page)=>page+1)
-        }
-console.log(entry)
-      },{threshold:1} )
+  useEffect(() => {
+    if (LoadingRef.current) {
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            dispatch(setPageIncrease())
+            // setPage((page)=>page+1)
+          }
+          console.log(entry)
+        },
+        {threshold: 1}
+      )
       observer.observe(LoadingRef.current)
       //remove the listener
-     return()=>{ if(LoadingRef.current){
-        observer.unobserve(LoadingRef.current)
-      }}
+      return () => {
+        if (LoadingRef.current) {
+          observer.unobserve(LoadingRef.current)
+        }
+      }
     }
+  }, [Data])
 
-    
-  },[Data])
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
   return (
     <>
       <div className="flex">
-        {Data.map((f) => (
+        {Data.map(f => (
           <div key={f._id} className="gand">
             <div className="imageContent">
               <Link href={`/detailInfo/${f._id}`}>
@@ -165,9 +121,7 @@ console.log(entry)
         ))}
       </div>
       <div ref={LoadingRef} className="loading"></div>
-       {has && 
-       
-       <SkeletonLoader count={ 6}></SkeletonLoader>}
+      {has && <SkeletonLoader count={6}></SkeletonLoader>}
 
       {/* {hasMorePos && <div ref={myRef}></div>} */}
       {/* {!has && <p>All data fetched</p>} } */}
@@ -186,7 +140,7 @@ console.log(entry)
         )} */}
       </div>
     </>
-  );
-};
+  )
+}
 
-export default page;
+export default page

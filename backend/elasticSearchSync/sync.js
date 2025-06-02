@@ -5,7 +5,7 @@ const Design = require("../models/DesignSchema")
 const {Client} = require("@elastic/elasticsearch")
 require("dotenv").config({path: "../.env"})
 const client = new Client({
-  node: "https://localhost:9200",
+  node: "http://localhost:9200",
   auth: {username: "elastic", password: ""},
   tls: {
     rejectUnauthorized: false,
@@ -68,5 +68,5 @@ async function migrateData() {
   }
 }
 
-migrateData()
+// migrateData()
 module.exports = client
