@@ -1,7 +1,7 @@
 const mongoose = require("mongoose")
 const Schema = mongoose.Schema
 const mongoosastic = require("mongoosastic")
-
+require("dotenv").config({path: "../.env"})
 const DesignSchema = new Schema({
   availability: {type: String},
   UserProfileImage: {type: String, required: true},
@@ -27,8 +27,8 @@ DesignSchema.plugin(mongoosastic, {
   port: 9200,
   protocol: "https",
   auth: {
-    username: "elastic",
-    password: "Ak_AzM=fBAkkM+4CabxE",
+    username: process.env.ElasticSearchUsername,
+    password: process.env.ElasticSearchPassword,
   },
   ssl: {
     rejectUnauthorized: false,
@@ -37,12 +37,5 @@ DesignSchema.plugin(mongoosastic, {
 })
 
 const Design = mongoose.model("Design", DesignSchema)
-
-// Manually attach Elasticsearch client
-// const elasticsearch = require("elasticsearch")
-// Design.esClient = new elasticsearch.Client({
-//   host: "https://elastic:Ak_AzM=fBAkkM+4CabxE@localhost:9200",
-//   ssl: {rejectUnauthorized: false},
-// })
 
 module.exports = Design

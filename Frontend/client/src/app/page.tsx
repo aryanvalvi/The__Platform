@@ -4,18 +4,21 @@ import {animateScroll as scroll} from "react-scroll"
 import "./Home.scss"
 import HomeContent from "./homeContent/page"
 import {Typewriter} from "react-simple-typewriter"
-import {useEffect, useState} from "react"
+import {useEffect, useRef, useState} from "react"
 import debounce from "lodash/debounce"
 import Link from "next/link"
 import {useRouter} from "next/navigation"
 import {search} from "../utils/search/search"
 export default function Home() {
+  const wrapperRef = useRef(null)
   // console.log(search.map(e => e))
   const [showLine, setShowLine] = useState(false)
   const [showGet, setShowNotice] = useState(false)
-  const [searchValue, setSearchValue] = useState("Search the project")
+  const [searchValue, setSearchValue] = useState("")
   const [searchResultData, setSearchResultData] = useState()
   const [filterData, setFilterData] = useState()
+  const [showSearchOption, setShowSearchOption] = useState(false)
+  console.log("show", showSearchOption)
   console.log("search", searchValue)
   const router = useRouter()
   const scrollButoon = () => {
@@ -47,7 +50,7 @@ export default function Home() {
 
   const searchChange = e => {
     setSearchValue(e)
-
+    setShowSearchOption(true)
     const filterdata = search
       .filter(key => key.toLowerCase().includes(e.toLowerCase()))
       .slice(0, 5)
@@ -55,11 +58,32 @@ export default function Home() {
     console.log(filterdata)
     setFilterData(filterdata)
   }
+
+  const handleClickSearch = e => {
+    // e.preventDefault()
+    if (searchValue.trim()) {
+      router.push(`/result?q=${encodeURIComponent(e)}`)
+    }
+    console.log("clicked option", e)
+    setSearchValue(e)
+  }
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowLine(true)
     }, 3000)
     return () => clearTimeout(timer)
+  }, [])
+
+  useEffect(() => {
+    const handleClickOutside = e => {
+      if (wrapperRef.current && !wrapperRef.current.contains(e.target)) {
+        setShowSearchOption(false)
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside)
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
   }, [])
 
   return (
@@ -110,26 +134,31 @@ export default function Home() {
               </div>
             )}
           </div>
-          <form className="NavSearchBar" onSubmit={handleSearch}>
+          <form
+            ref={wrapperRef}
+            className="NavSearchBar"
+            onSubmit={handleSearch}
+          >
             <input
               placeholder="Search the project"
-              // value={searchValue}
+              value={searchValue}
               type="text"
               onChange={e => searchChange(e.target.value)}
             />
             <button type="submit">
               <img src="/image/search.svg" alt="Search icon" />
             </button>
+            <div className="searchResultContainer">
+              {showSearchOption &&
+                filterData?.map(e => (
+                  // <Link href={`/detailInfo/${e._id}`}>
+                  <div key={e} className="searchbruh">
+                    <p onClick={() => handleClickSearch(e)}>{e}</p>
+                  </div>
+                  // </Link>
+                ))}
+            </div>
           </form>
-          <div className="searchResultContainer">
-            {filterData?.map(e => (
-              <div className="searchbruh">
-                <Link href={`/detailInfo/${e._id}`}>
-                  <p key={e}>{e}</p>
-                </Link>
-              </div>
-            ))}
-          </div>
         </div>
         <button onClick={scrollButoon} className="HomeButton">
           See What People have made

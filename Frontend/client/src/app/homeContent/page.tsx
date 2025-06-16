@@ -18,7 +18,7 @@ const page = () => {
   const totalPost = useAppSelector(state => state.homeContentReducer.totalPost)
   const has = useAppSelector(state => state.homeContentReducer.hasMorePost)
   const page = useAppSelector(state => state.homeContentReducer.page)
-
+  console.log(Data)
   console.log(page)
 
   // const [page,setPage] = useState(0);

@@ -1,32 +1,34 @@
-/* Reset default margins and padding */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  // background-color: #ffffff;
+}
+
+body {
+  overflow-x: hidden;
 }
 
 .Homecontainer {
   background-size: cover;
   height: 80vh;
   width: 100vw;
-  position: relative; /* Ensure this is the positioned ancestor for absolute children */
+  position: relative;
+  z-index: 1000;
 }
 
 .HomeContent {
   position: absolute;
   top: 20%;
-  left: 40%; /* Center horizontally */
-  transform: translateX(-50%); /* Adjust to center the element */
+  left: 40%;
+  transform: translateX(-50%);
   display: flex;
   flex-direction: column;
-  align-items: flex-start; /* Align children to the left */
+  align-items: flex-start;
   justify-content: center;
-  // gap: 20px; /* Space between elements */
-  text-align: left; /* Align text to the left */
+  text-align: left;
   width: 100%;
-  max-width: 800px; /* Constrain width for better readability */
-  /* Add padding for mobile */
+  max-width: 800px;
+  z-index: 1100;
 }
 
 .HomeP {
@@ -41,78 +43,49 @@
   height: 120px;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  display: flex;
-  flex-direction: column;
   align-items: center;
-  /* Align Typewriter lines to the left */
-  // gap: 10px; /* Space between the two Typewriter lines */
-  // margin: 20px 0;
 }
-
-.NavSearchBar {
-  gap: 20px; /* Space between elements */
-  text-align: center;
-  width: 100%;
-
-  max-width: 800px; /* Constrain width for better readability */
-  /* Add padding for mobile */
-}
-
-// .HomeP {
-//   color: #000;
-
-//   font-size: 50px;
-//   font-weight: 800;
-//   letter-spacing: 26.1px;
-// }
 
 .TypewriterLine {
-  color: #343a40; /* Dark gray for readability */
-
+  color: #343a40;
   font-size: 40px;
   font-weight: 200;
   line-height: 1.2;
-  display: inline-block; /* Ensure the wrapper is inline-block to keep cursor inline */
+  display: inline-block;
   text-align: center;
 }
 
-/* Style the cursor directly if needed */
-// .TypewriterLine .Typewriter__cursor {
-//   font-size: 40px; /* Match the text size */
-//   line-height: 1; /* Align with text */
-//   margin-left: 2px; /* Small space between text and cursor */
-//   color: #343a40; /* Match text color */
-// }
 .TypewriterLine2 {
   margin-left: -115px;
-  // font-weight: 200;
 }
+
 .highlighter {
   color: #e07b30;
 }
+
 .NavSearchBar {
-  z-index: 10;
   position: relative;
   width: 100%;
-  max-width: 1000px; /* Constrain search bar width */
+  max-width: 900px;
   display: flex;
   align-items: center;
+  z-index: 1200;
 
   input {
     border: 1.5px solid rgb(110, 110, 110);
-    width: 900px;
+    width: 100%;
     height: 60px;
     border-radius: 10px;
     font-size: 15px;
     letter-spacing: 1px;
     padding-left: 15px;
-    padding-right: 50px; /* Space for the search icon */
+    padding-right: 50px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     outline: none;
   }
+
   input:focus {
     border-color: #e07b30;
   }
@@ -122,18 +95,55 @@
     top: 50%;
     right: 15px;
     transform: translateY(-50%);
-    width: 30px; /* Adjust size */
-    height: auto;
+    width: 30px;
+    height: 30px;
   }
+}
+
+.searchResultContainer {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  max-width: 900px;
+  max-height: 300px;
+  overflow-y: auto;
+  background-color: #ffffff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 0 0 10px 10px;
+  z-index: 1300;
+  text-align: left;
+}
+
+.searchbruh {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  border-bottom: 1px solid #eee;
+  width: 100%;
+  transition: background-color 0.3s ease;
+}
+
+.searchbruh:hover {
+  background-color: #e0e0e0;
+}
+
+.searchbruh p {
+  padding: 15px 20px;
+  font-size: 16px;
+  color: #343a40;
+  background-color: transparent;
+  width: 100%;
+  margin: 0;
+  cursor: pointer;
 }
 
 .HomeButton {
   position: absolute;
   right: 0;
   bottom: 10%;
-  color: #ffffff; /* White text for accessibility */
-  background: #f28c38; /* Orange from your logo */
-
+  color: #ffffff;
+  background: #f28c38;
   font-size: 20px;
   font-weight: 100;
   width: 100%;
@@ -146,12 +156,11 @@
 }
 
 .HomeButton:hover {
-  background: #e07b30; /* Darker orange on hover */
+  background: #e07b30;
   transform: scale(1.1);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
   .HomeP {
     font-size: 40px;
@@ -163,7 +172,11 @@
   }
 
   .TypewriterLine .Typewriter__cursor {
-    font-size: 30px; /* Match the smaller text size */
+    font-size: 30px;
+  }
+
+  .NavSearchBar {
+    max-width: 100%;
   }
 
   .NavSearchBar input {
@@ -171,48 +184,13 @@
     font-size: 14px;
   }
 
+  .searchResultContainer {
+    max-width: 100%;
+  }
+
   .HomeButton {
     max-width: 300px;
     height: 50px;
     font-size: 18px;
   }
-}
-// the homecontent should be on the left side of the page not in the center i have tried many times but its not working properly when i zoom out the page the
-.searchResultContainer {
-  position: absolute;
-  top: 100%; /* Place directly below the input */
-  left: 0; /* Align with the left edge of the input */
-  width: 100%; /* Match the input’s width */
-  max-width: 900px; /* Match the input’s max-width */
-  max-height: 300px; /* Limit height to prevent overlap */
-  overflow-y: auto;
-  background-color: #ffffff; /* White background for visibility */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  border-radius: 0 0 10px 10px; /* Rounded corners at the bottom */
-  z-index: 9999; /* High enough to stay above other content */
-  text-align: left; /* Ensure text alignment is left */
-}
-.searchbruh {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start; /* Align content to the left */
-  // padding: 10px 20px; /* Consistent padding */
-  border-bottom: 1px solid #eee; /* Separator between results */
-  width: 100%; /* Ensure full width */
-}
-
-.searchbruh p {
-  // padding-left: 10px;
-  // margin-left: 20px;
-  // margin: 0; /* Remove default margin */
-  padding: 15px 20px; /* Add padding for better spacing */
-  font-size: 16px;
-  color: #343a40;
-  background-color: transparent; /* No background by default */
-  width: 100%; /* Ensure full width */
-  cursor: pointer;
-  transition: background-color 0.3s ease; /* Smooth hover transition */
-}
-.searchbruh p:hover {
-  background-color: #e0e0e0; /* Lighter gray on hover (replacing #c4c4c4 for better contrast) */
 }
