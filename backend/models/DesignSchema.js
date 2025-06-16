@@ -22,19 +22,19 @@ const DesignSchema = new Schema({
   category: {type: String},
 })
 
-DesignSchema.plugin(mongoosastic, {
-  host: "localhost",
-  port: 9200,
-  protocol: "https",
-  auth: {
-    username: process.env.ElasticSearchUsername,
-    password: process.env.ElasticSearchPassword,
-  },
-  ssl: {
-    rejectUnauthorized: false,
-  },
-  index: "design",
-})
+// DesignSchema.plugin(mongoosastic, {
+//   host: "localhost",
+//   port: 9200,
+//   protocol: "https",
+//   auth: {
+//     username: process.env.ElasticSearchUsername,
+//     password: process.env.ElasticSearchPassword,
+//   },
+//   ssl: {
+//     rejectUnauthorized: false,
+//   },
+//   index: "design",
+// })
 
 const Design = mongoose.model("Design", DesignSchema)
 
