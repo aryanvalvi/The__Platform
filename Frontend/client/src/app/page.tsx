@@ -94,7 +94,8 @@ export default function Home() {
           <div className="HomeP2">
             <div className="TypewriterLine">
               <Typewriter
-                words={["Designs that speak louder than words"]}
+                // words={["Designs that speak louder than words"]}
+                words={["This project is on development stage..."]}
                 loop={1}
                 typeSpeed={60}
                 deleteSpeed={0}

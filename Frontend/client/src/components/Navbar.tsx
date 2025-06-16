@@ -40,8 +40,8 @@ const Navbar = () => {
               <Link href="/" className="Link">
                 <li className="home">home</li>
               </Link>
-              <Link href="/createPost" className="Link Explore">
-                <li>Explore</li>
+              <Link href="/test" className="Link Explore">
+                <li>Publish</li>
               </Link>
               <Link className="Link" href="/">
                 <li className="Learn">Learn</li>
