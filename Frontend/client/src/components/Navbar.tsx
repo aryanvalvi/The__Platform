@@ -2,7 +2,7 @@
 import Image from "next/image"
 import Link from "next/link"
 import React, {use, useEffect, useState} from "react"
-import Logo from "../../public/image/logo.png"
+// import Logo from "../../public/image/logo.png"
 import {useAppDispatch, useAppSelector} from "@/ReduxStore/hook/CustomHook"
 import {fetchUserData, logoutUser} from "@/ReduxStore/slices/dataFetchSlice"
 import "./Navbar.scss"
