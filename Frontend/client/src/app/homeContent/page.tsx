@@ -1,3 +1,4 @@
+"use client"
 import React, {use, useCallback, useEffect, useRef, useState} from "react"
 import {
   fetchHomeContent,
