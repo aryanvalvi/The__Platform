@@ -31,7 +31,13 @@ const Navbar = () => {
       <div className="NavbarContain">
         <div>
           <Link href="/">
-            <Image className="Navlogo" src={Logo} alt="Logo"></Image>
+            <Image
+              className="Navlogo"
+              width={100}
+              height={50}
+              src="/image/logo.png"
+              alt="Logo"
+            ></Image>
           </Link>
         </div>
         <div>

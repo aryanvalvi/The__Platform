@@ -15,7 +15,7 @@ import "./Upload.scss"
 import Videoupload from "@/components/Videoupload"
 import Both from "@/components/Both"
 import Popup from "@/components/Popup"
-import SuccessPopup from "@/components/successPopup"
+// import SuccessPopup from "@/components/successPopup"
 const pages = () => {
   const dispatch = useAppDispatch()
   const Data = useAppSelector(state => state.postPostReducer)
