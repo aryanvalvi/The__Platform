@@ -12,7 +12,7 @@ import {useRouter} from "next/router"
 import React, {useEffect, useState} from "react"
 import {FaBookmark} from "react-icons/fa"
 import {IoIosHeart} from "react-icons/io"
-import "./Moreinfo.scss"
+import "./MoreInfo.scss"
 import Popup from "@/components/Popup"
 
 const page = () => {
