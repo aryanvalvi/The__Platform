@@ -1,28 +1,28 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import {createSlice, createAsyncThunk} from "@reduxjs/toolkit"
+import axios from "axios"
 
 export interface userData {
-  user:boolean,
-  followers?: [];
-  following?: [];
-  googleId?: string;
-  likedBy?: [];
-  likedDesigns?: [];
-  saveDesigns?: [];
-  userImage?: string;
-  username?: string;
-  _id?: string;
+  user: boolean
+  followers?: []
+  following?: []
+  googleId?: string
+  likedBy?: []
+  likedDesigns?: []
+  saveDesigns?: []
+  userImage?: string
+  username?: string
+  _id?: string
 }
 
 interface userDataType {
-  userData: userData;
-  pending: boolean;
-  isError: boolean;
+  userData: userData
+  pending: boolean
+  isError: boolean
 }
 
 const initialState: userDataType = {
   userData: {
-    user:false,
+    user: false,
     followers: [],
     following: [],
     likedBy: [],
@@ -34,7 +34,7 @@ const initialState: userDataType = {
   },
   pending: false,
   isError: false,
-};
+}
 
 export const fetchUserData = createAsyncThunk<userData>(
   "FETCH_DATA",
@@ -42,29 +42,28 @@ export const fetchUserData = createAsyncThunk<userData>(
     const res = await fetch(`http://localhost:5001/auth/getuserdata`, {
       method: "GET",
       credentials: "include",
-    });
+    })
     // const res = await axios.get(`http://localhost:5000/auth/getuserdata`, {
     //   withCredentials:true,
     // })
     //   console.log(res.data)
     //   const Data = res.data;
     //   return Data;
-    
-    const data = await res.json();
-    console.log("data is ",data.user)
-    return data;
+
+    const data = await res.json()
+    console.log("data is ", data.user)
+    return data
   }
-);
+)
 
 export const dataFetching = createSlice({
   name: "dataFetching",
   initialState,
   reducers: {
-    
-    logoutUser(state){
+    logoutUser(state) {
       console.log("oye ")
       state.userData = {
-        user:false,
+        user: false,
         followers: [],
         following: [],
         likedBy: [],
@@ -74,25 +73,25 @@ export const dataFetching = createSlice({
         username: "",
         _id: "",
       }
-    }
+    },
   },
-  extraReducers: (builder) => {
+  extraReducers: builder => {
     //pendingState
     builder.addCase(fetchUserData.pending, (state, action) => {
-      state.pending = true;
-    });
+      state.pending = true
+    })
 
     //fullfill
     builder.addCase(fetchUserData.fulfilled, (state, action) => {
-      state.userData = action.payload;
-    });
+      state.userData = action.payload
+    })
 
     //error state
     builder.addCase(fetchUserData.rejected, (state, action) => {
-      state.isError = true;
-    });
+      state.isError = true
+    })
   },
-});
+})
 
-export const {logoutUser} = dataFetching.actions;
-export default dataFetching.reducer;
+export const {logoutUser} = dataFetching.actions
+export default dataFetching.reducer
