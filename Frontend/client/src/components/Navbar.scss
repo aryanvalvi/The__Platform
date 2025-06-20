@@ -54,6 +54,9 @@
 .Navlogo {
   // margin-right: 300px;
   cursor: pointer;
+  object-fit: contain;
+  width: 200px; /* Match Image component props */
+  height: 100px;
   // width: 6.5%;
   // margin-top: 22px;
   // margin-left: -20px;
@@ -62,8 +65,10 @@
 .NavbarContain {
   display: flex;
   justify-content: space-between;
+  position: relative;
   // max-width: 1200px;
   width: 100%;
+  min-height: 100px;
   align-items: center;
 }
 
@@ -185,4 +190,86 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* Grayish with low opacity */
+  z-index: 999; /* Below navbarElements but above page content */
+  display: none; /* Hidden by default, controlled by ham state */
+
+  &.active {
+    display: block; /* Shown when ham is true */
+  }
+}
+
+@media (max-width: 1199.98px) {
+  .navbarElements {
+    li {
+      font-size: 14px;
+    }
+    button {
+      font-size: 1rem;
+    }
+    .sign {
+      width: 60px;
+      height: 30px;
+    }
+  }
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+}
+
+.ham {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .ham {
+    display: block;
+    position: absolute;
+    top: 30%;
+    right: 3%;
+    font-size: 1.7rem;
+  }
+
+  .navbarElements {
+    background-color: #cc0000;
+    height: 300px;
+    width: 100%;
+    display: none;
+    position: absolute;
+    top: 70px;
+    right: 0;
+    // background: #444;
+    // padding: 1rem;
+    // border-radius: 8px;
+    z-index: 99999;
+    li {
+      color: #000000; /* White text for contrast on dark background */
+      padding: 0.5rem 1rem;
+      width: 100%;
+      text-align: right;
+      background: transparent; /* Remove individual li backgrounds */
+      border-radius: 0; /* Remove individual li border-radius */
+    }
+    .Link {
+      background: transparent;
+      background-color: transparent;
+      display: block; /* Ensure Link renders as block for full-width clickable area */
+      width: 100%;
+    }
+  }
+  .navbarElements.open {
+    display: flex;
+    flex-direction: column;
+  }
+  .backdrop.active {
+    display: block;
+  }
 }

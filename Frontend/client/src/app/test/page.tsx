@@ -88,6 +88,7 @@ const ImageUpload = () => {
   const [l, setL] = useState()
   const [edit, setEdit] = useState(false)
   console.log("selected tags", selectedTag)
+  const [toggle1, setToggle1] = useState(false)
   console.log("NEXT", next)
   // const [s]
   console.log(arryImage)
@@ -132,6 +133,7 @@ const ImageUpload = () => {
     }
   }
   const TagSelectorFucntion = e => {
+    setShowSearchOption(false)
     setSelectedTags(prev => [...prev, e])
     console.log(e)
   }
@@ -218,6 +220,7 @@ const ImageUpload = () => {
     const urls = selectMultiple.map(file => URL.createObjectURL(file))
     setArryImage(prev => [...prev, ...urls])
     console.log(urls)
+    setToggle1(true)
     // setMultiImgFile(filesArray)
     // setMulti(urls)
   }
@@ -386,6 +389,7 @@ const ImageUpload = () => {
                 </SwiperSlide>
               )}
 
+              {/* {toggle1 && ( */}
               <>
                 <div className="custom-swiper-button-prev">
                   <FaArrowLeft
@@ -398,6 +402,7 @@ const ImageUpload = () => {
                   />
                 </div>
               </>
+              {/* )} */}
             </Swiper>
           </div>
           <div
@@ -512,13 +517,6 @@ const ImageUpload = () => {
                               ))
                             : null}
                         </div>
-                        <button
-                          type="submit"
-                          onClick={nextFunc}
-                          className="next-btn"
-                        >
-                          Next
-                        </button>
                       </div>
                       <div className="tags">
                         {selectedTag?.map(e => (
@@ -531,6 +529,13 @@ const ImageUpload = () => {
                           </div>
                         ))}
                       </div>
+                      <button
+                        type="submit"
+                        onClick={nextFunc}
+                        className="next-btn"
+                      >
+                        Next
+                      </button>
                     </form>
                   </div>
                 )}
@@ -548,22 +553,22 @@ const ImageUpload = () => {
                             {dropdownValue}
                             <RiArrowDropDownLine className="drop-icon" />
                           </div>
+                          {dropdown && (
+                            <div className="select-options">
+                              {hugeProjectTypes.map(e => (
+                                <div
+                                  onClick={() => {
+                                    setDropDownValue(e), setDropdown(false)
+                                  }}
+                                  className="search-tag"
+                                  key={e}
+                                >
+                                  {e}
+                                </div>
+                              ))}
+                            </div>
+                          )}
                         </div>
-                        {dropdown && (
-                          <div className="select-options">
-                            {hugeProjectTypes.map(e => (
-                              <div
-                                onClick={() => {
-                                  setDropDownValue(e), setDropdown(false)
-                                }}
-                                className="search-tag"
-                                key={e}
-                              >
-                                {e}
-                              </div>
-                            ))}
-                          </div>
-                        )}
                       </div>
 
                       <div className="tools">
@@ -576,22 +581,22 @@ const ImageUpload = () => {
                             {dropdownValue2}
                             <RiArrowDropDownLine className="drop-icon" />
                           </div>
+                          {dropdown2 && (
+                            <div className="select-options">
+                              {hugeToolsList.map(e => (
+                                <div
+                                  onClick={() => {
+                                    setDropDownValue2(e), setDropdown2(false)
+                                  }}
+                                  className="search-tag"
+                                  key={e}
+                                >
+                                  {e}
+                                </div>
+                              ))}
+                            </div>
+                          )}
                         </div>
-                        {dropdown2 && (
-                          <div className="select-options">
-                            {hugeToolsList.map(e => (
-                              <div
-                                onClick={() => {
-                                  setDropDownValue2(e), setDropdown2(false)
-                                }}
-                                className="search-tag"
-                                key={e}
-                              >
-                                {e}
-                              </div>
-                            ))}
-                          </div>
-                        )}
                       </div>
 
                       <div className="external-link-container">

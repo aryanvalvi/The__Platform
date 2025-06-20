@@ -87,14 +87,13 @@ export const fetchHomeContent = createAsyncThunk(
     // const page = state.homeContent.page;
     console.log("pageNumber", page)
 
-    // const res = await fetch(`http://localhost:5001/auth/Getdata?page=${page}`, {
-    const res = await fetch(
-      `https://the-platform-backend-9a4a.onrender.com/auth/Getdata?page=${page}`,
-      {
-        method: "GET",
-        credentials: "include",
-      }
-    )
+    const res = await fetch(`http://localhost:5001/auth/Getdata?page=${page}`, {
+      // const res = await fetch(
+      //   `https://the-platform-backend-9a4a.onrender.com/auth/Getdata?page=${page}`,
+      //   {
+      method: "GET",
+      credentials: "include",
+    })
     const {data, totalPost} = await res.json()
     console.log("HomeContentSlie", data)
     return {data, totalPost}

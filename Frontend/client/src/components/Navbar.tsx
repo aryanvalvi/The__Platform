@@ -1,19 +1,24 @@
 "use client"
 import Image from "next/image"
 import Link from "next/link"
-import React, {use, useEffect, useState} from "react"
-// import Logo from "../../public/image/logo.png"
+import React, {useEffect, useState} from "react"
 import {useAppDispatch, useAppSelector} from "@/ReduxStore/hook/CustomHook"
 import {fetchUserData, logoutUser} from "@/ReduxStore/slices/dataFetchSlice"
 import "./Navbar.scss"
+import {RxHamburgerMenu} from "react-icons/rx"
+
 const Navbar = () => {
   const [isHovered, setIsHovered] = useState(false)
   const dispatch = useAppDispatch()
   const {user} = useAppSelector(state => state.UserDataFetchReducer.userData)
-  console.log(user)
+  const [ham, setHam] = useState(false)
+
+  console.log("Ham state:", ham) // Debug log
+
   const HandleLogin = () => {
     window.location.href = "http://localhost:5001/auth/google"
   }
+
   const handleLogout = async () => {
     const res = await fetch("http://localhost:5001/auth/logout", {
       method: "GET",
@@ -23,26 +28,41 @@ const Navbar = () => {
     console.log("Logout", data)
     dispatch(logoutUser())
   }
+
   useEffect(() => {
-    dispatch(fetchUserData())
-  }, [dispatch])
+    if (!user) dispatch(fetchUserData())
+  }, [dispatch, user])
+
   return (
     <div className="NavContainer">
+      {/* Backdrop overlay with dynamic class */}
+      <div
+        className={`backdrop ${ham ? "active" : ""}`}
+        onClick={() => setHam(false)}
+        aria-hidden={ham}
+      ></div>
       <div className="NavbarContain">
         <div>
           <Link href="/">
             <Image
               className="Navlogo"
-              width={100}
-              height={50}
-              src="/image/logo.png"
+              width={200}
+              height={100}
+              src="/image/logo.svg"
               alt="Logo"
-            ></Image>
+            />
           </Link>
         </div>
         <div>
           <nav>
-            <ul className="navbarElements">
+            <span className="ham">
+              <RxHamburgerMenu
+                onClick={() => setHam(prev => !prev)}
+                aria-label="Toggle menu"
+                aria-expanded={ham}
+              />
+            </span>
+            <ul className={`navbarElements ${ham ? "open" : ""}`}>
               <Link href="/" className="Link">
                 <li className="home">home</li>
               </Link>
@@ -55,44 +75,38 @@ const Navbar = () => {
             </ul>
           </nav>
         </div>
-
         <div>
           <nav>
             <ul className="navbarElements">
-              <>
-                {user === null || user === false ? (
-                  <li>
-                    <button onClick={HandleLogin} className="sign">
-                      log in
-                    </button>
-                  </li>
-                ) : (
-                  <>
-                    <div
-                      onMouseEnter={() => setIsHovered(true)}
-                      onMouseLeave={() => setIsHovered(false)}
-                      className="NavProfile"
-                    >
-                      <div className="pname">
-                        <Link href={`/user/profile/${user._id}`}>
-                          {user && (
-                            <img
-                              className="profile-picture"
-                              src={`${user.userImage || Logo}`}
-                            />
-                          )}
-                        </Link>
-                        <p className="profile-name">{user.username}</p>
-                        {isHovered && (
-                          <button onClick={handleLogout} className="logout">
-                            LogOut
-                          </button>
-                        )}
-                      </div>
-                    </div>
-                  </>
-                )}
-              </>
+              {user === null || user === false ? (
+                <li>
+                  <button onClick={HandleLogin} className="sign">
+                    log in
+                  </button>
+                </li>
+              ) : (
+                <div
+                  onMouseEnter={() => setIsHovered(true)}
+                  onMouseLeave={() => setIsHovered(false)}
+                  className="NavProfile"
+                >
+                  <div className="pname">
+                    <Link href={`/user/profile/${user._id}`}>
+                      <img
+                        className="profile-picture"
+                        src={user.userImage || "/image/fallback.png"}
+                        alt="Profile picture"
+                      />
+                    </Link>
+                    <p className="profile-name">{user.username}</p>
+                    {isHovered && (
+                      <button onClick={handleLogout} className="logout">
+                        LogOut
+                      </button>
+                    )}
+                  </div>
+                </div>
+              )}
             </ul>
           </nav>
         </div>
