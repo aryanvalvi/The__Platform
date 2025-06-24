@@ -9,41 +9,50 @@ body {
 }
 
 .Homecontainer {
+  // display: flex;
+  // align-items: center;
+  // justify-content: center;
   background-size: cover;
   height: 80vh;
   width: 100vw;
   position: relative;
-  z-index: 1000;
+  z-index: 2;
 }
 
 .HomeContent {
+  // display: flex;
+  // align-items: center;
+  // justify-content: center;
   position: absolute;
-  top: 20%;
-  left: 40%;
-  transform: translateX(-50%);
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
+  top: 25%;
+  left: 10%;
+  // transform: translateX(-50%);
+  display: block;
+  // flex-direction: column;
+  // align-items: flex-start;
+  // justify-content: center;
   text-align: left;
-  width: 100%;
-  max-width: 800px;
+  max-width: 100%;
+  // max-width: 800px;
   z-index: 1100;
 }
 
 .HomeP {
   color: #000000;
-  margin-left: -10px;
+  // margin-left: -10px;
   font-size: 80px;
   font-weight: 500;
   letter-spacing: 26.1px;
+  display: block;
 }
 
 .HomeP2 {
   height: 120px;
   display: flex;
+  // vertical-align: middle;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
+  justify-content: flex-start;
 }
 
 .TypewriterLine {
@@ -51,12 +60,18 @@ body {
   font-size: 40px;
   font-weight: 200;
   line-height: 1.2;
-  display: inline-block;
-  text-align: center;
+  display: inline;
+  text-align: left;
+  white-space: nowrap;
+  // justify-content: flex-start;
 }
 
 .TypewriterLine2 {
-  margin-left: -115px;
+  width: auto;
+  text-align: left;
+  display: inline;
+  white-space: nowrap;
+  // margin-left: -115px;
 }
 
 .highlighter {
@@ -64,13 +79,23 @@ body {
 }
 
 .NavSearchBar {
+  // margin-top: 20px;
   position: relative;
-  width: 100%;
-  max-width: 900px;
+  // width: 100%;
+  width: 740px;
+  max-width: 800px;
   display: flex;
   align-items: center;
   z-index: 1200;
-
+  button {
+    background: none;
+    border: none;
+    outline: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+    cursor: pointer;
+  }
   input {
     border: 1.5px solid rgb(110, 110, 110);
     width: 100%;
@@ -90,7 +115,8 @@ body {
     border-color: #e07b30;
   }
 
-  img {
+  .img {
+    background-color: transparent;
     position: absolute;
     top: 50%;
     right: 15px;
@@ -142,12 +168,14 @@ body {
   position: absolute;
   right: 0;
   bottom: 10%;
+
   color: #ffffff;
   background: #f28c38;
   font-size: 20px;
   font-weight: 100;
   width: 100%;
   max-width: 412px;
+  // padding: 10px;
   height: 58px;
   border-radius: 30px;
   border: none;
@@ -160,10 +188,24 @@ body {
   transform: scale(1.1);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+@media (max-width: 828px) {
+  .NavSearchBar {
+    width: 500px;
+  }
+  .TypewriterLine {
+    font-size: 35px;
+  }
+}
 
 @media (max-width: 768px) {
+  .HomeContent {
+    top: 10%;
+  }
+  .NavSearchBar {
+    max-width: 600px;
+  }
   .HomeP {
-    font-size: 40px;
+    font-size: 60px;
     letter-spacing: 15px;
   }
 
@@ -173,10 +215,6 @@ body {
 
   .TypewriterLine .Typewriter__cursor {
     font-size: 30px;
-  }
-
-  .NavSearchBar {
-    max-width: 100%;
   }
 
   .NavSearchBar input {
@@ -192,5 +230,73 @@ body {
     max-width: 300px;
     height: 50px;
     font-size: 18px;
+  }
+}
+@media (max-width: 617px) {
+  .HomeContent {
+    top: 17%;
+  }
+  .HomeP {
+    font-size: 40px;
+    letter-spacing: 12px;
+  }
+  .TypewriterLine {
+    font-size: 22px;
+  }
+  .NavSearchBar input {
+    height: 30px;
+    font-size: 12px;
+  }
+  .NavSearchBar {
+    // margin-top: -40px;
+    max-width: 400px;
+    .img {
+      width: 20px;
+      height: 20px;
+    }
+  }
+  .HomeP2 {
+    height: 80px;
+  }
+  .HomeButton {
+    display: inline-block;
+    // bottom: 30%;
+    // right: 0;
+    max-width: 80%;
+    bottom: 23%;
+    left: 10%;
+    right: 10%;
+    // display: none;
+    // right: 10%;
+  }
+}
+@media (max-width: 407px) {
+  .TypewriterLine {
+    font-size: 20px;
+    display: inline;
+  }
+  .HomeP2 {
+    // height: 10px;
+  }
+}
+@media (max-width: 454px) {
+  .TypewriterLine {
+    font-size: 18px;
+    display: inline;
+  }
+  .NavSearchBar {
+    width: 100%;
+  }
+}
+@media (max-width: 373px) {
+  .TypewriterLine {
+    font-size: 16px;
+    display: inline;
+  }
+}
+@media (max-width: 330px) {
+  .TypewriterLine {
+    font-size: 14px;
+    display: inline;
   }
 }

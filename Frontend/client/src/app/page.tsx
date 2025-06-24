@@ -7,6 +7,8 @@ import {Typewriter} from "react-simple-typewriter"
 import {useEffect, useRef, useState} from "react"
 import debounce from "lodash/debounce"
 import Link from "next/link"
+import {MdSearch} from "react-icons/md"
+
 import {useRouter} from "next/navigation"
 import {search} from "../utils/search/search"
 export default function Home() {
@@ -70,7 +72,7 @@ export default function Home() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowLine(true)
-    }, 3000)
+    }, 2000)
     return () => clearTimeout(timer)
   }, [])
 
@@ -90,14 +92,14 @@ export default function Home() {
     <>
       <div className="Homecontainer">
         <div className="HomeContent">
-          <p className="HomeP">ThePlatForm</p>
+          <p className="HomeP">PIXELTAK</p>
           <div className="HomeP2">
             <div className="TypewriterLine">
               <Typewriter
-                // words={["Designs that speak louder than words"]}
-                words={["This project is on development stage..."]}
+                words={["Designs that speak louder than words"]}
+                // words={["This project is on development stage..."]}
                 loop={1}
-                typeSpeed={60}
+                typeSpeed={30}
                 deleteSpeed={0}
                 delaySpeed={1000}
               />
@@ -110,13 +112,13 @@ export default function Home() {
                   loop={1}
                   // cursor
                   cursorStyle="|"
-                  typeSpeed={60}
+                  typeSpeed={30}
                   deleteSpeed={0}
                   delaySpeed={1000}
                   onType={() => {
                     setTimeout(() => {
                       setShowNotice(true)
-                    }, 1200)
+                    }, 1000)
                   }}
                 />
                 {showGet && (
@@ -147,7 +149,8 @@ export default function Home() {
               onChange={e => searchChange(e.target.value)}
             />
             <button type="submit">
-              <img src="/image/search.svg" alt="Search icon" />
+              <MdSearch className="img"></MdSearch>
+              {/* <img src="/image/search.svg" alt="Search icon" /> */}
             </button>
             <div className="searchResultContainer">
               {showSearchOption &&

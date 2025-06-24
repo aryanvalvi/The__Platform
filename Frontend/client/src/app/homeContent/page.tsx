@@ -96,9 +96,9 @@ const page = () => {
                     alt={f.title}
                   ></video>
                 )}
-                <p className="ImageTitle">{f.title}</p>
               </Link>
             </div>
+            {/* <p className="ImageTitle">{f.title}</p> */}
             <div className="ImgAndHeart">
               <Link href={`/profile/${f.creator._id}`}>
                 <img
@@ -107,7 +107,8 @@ const page = () => {
                   alt="Profile"
                 />
               </Link>
-              <p className="overlayText">{f.creator.username}</p>
+              {/* <p className="overlayText">{f.creator.username}</p> */}
+              <p className="overlayText">{f.title}</p>
               <span className="">0</span>
               <FaHeart
               // onClick={() => ItemClicked(f.id)}

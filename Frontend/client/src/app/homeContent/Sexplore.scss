@@ -9,9 +9,11 @@
 .flex {
   display: flex;
   flex-wrap: wrap;
-  gap: 30px; /* Increased spacing between cards for a cleaner look */
+  gap: 20px; /* Increased spacing between cards for a cleaner look */
   justify-content: center; /* Centered layout (you can change to flex-start if needed) */
   padding: 20px; /* Add padding around the container */
+  max-width: 1900px;
+  margin: 0 auto;
 }
 
 /* Individual card container */
@@ -19,9 +21,10 @@
   display: flex;
   flex-direction: column;
   width: 100%;
+  min-height: 280px;
   max-width: 380px; /* Match the max-width of the image */
   background-color: #ffffff; /* White background for the card */
-  border-radius: 15 dew point 15px; /* Slightly larger radius for a softer look */
+  // border-radius: 15 dew point 15px; /* Slightly larger radius for a softer look */
   box-shadow: 0 4px12px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
@@ -35,13 +38,15 @@
 /* Image or video container */
 .imageContent {
   width: 100%;
-  height: 250px; /* Fixed height for consistency */
-  border-radius: 15px 15px 0 0; /* Rounded corners on top only */
+  aspect-ratio: 4/3;
+  // height: 250px; /* Fixed height for consistency */
+  // border-radius: 15px 15px 0 0; /* Rounded corners on top only */
   overflow: hidden; /* Hide overflow for zoom effect */
 }
 
 /* Image or video styling */
 .mgand {
+  // border-radius: 10px;
   width: 100%;
   height: 100%;
   object-fit: cover; /* Ensure the image/video fills the container */
@@ -77,18 +82,19 @@
 
 /* Profile, username, and heart section */
 .ImgAndHeart {
+  // margin-top: 40px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 15px;
-  background-color: #f8f9fa; /* Light gray background */
-  border-radius: 0 0 15px 15px; /* Rounded corners on bottom */
+  padding: 10px 15px 15px 0px;
+  // background-color: #f8f9fa; /* Light gray background */
+  // border-radius: 0 0 15px 15px; /* Rounded corners on bottom */
 }
 
 /* Profile image */
 .profile {
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   border: 2px solid #fff; /* White border for contrast */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
@@ -211,49 +217,87 @@
 }
 
 /* Responsive adjustments */
-@media (max-width: 1200px) {
-  .gand {
-    max-width: 340px; /* Slightly smaller cards on medium screens */
-  }
-
-  .mgand {
-    height: 220px; /* Adjust image height */
-  }
-
+@media (max-width: 1220px) {
+  .gand,
   .skeleton {
-    max-width: 340px;
-    height: 280px; /* Match adjusted card height */
+    max-width: calc(100% / 3 - 20px);
   }
 }
 
+@media (max-width: 1000px) {
+  .gand,
+  .skeleton {
+    max-width: calc(100% / 2 - 20px);
+  }
+  .flex {
+    // width: 1200px;
+  }
+  .gand {
+    // width: 500px;
+    // flex: 1 1 200px;
+    // flex-grow: 1;
+    // flex-shrink: 1;
+    // flex-basis: 400px;
+  }
+}
 @media (max-width: 768px) {
-  .gand {
-    max-width: 100%; /* Full width on smaller screens */
-  }
-
-  .mgand {
-    height: 200px; /* Smaller image height on mobile */
-  }
-
-  .ImageTitle {
-    font-size: 16px; /* Smaller font size */
-    padding: 8px 12px;
-  }
-
-  .overlayText {
-    font-size: 14px; /* Smaller username font */
-  }
-
-  .ImgAndHeart span {
-    font-size: 14px; /* Smaller like count */
-  }
-
-  .ImgAndHeart svg {
-    font-size: 18px; /* Smaller heart icon */
-  }
-
+  .gand,
   .skeleton {
-    max-width: 100%;
-    height: 260px; /* Match adjusted card height */
+    max-width: calc(100% - 20px);
+  }
+  .overlayText {
+    font-size: 14px;
+  }
+  .ImgAndHeart span {
+    font-size: 14px;
+  }
+  .ImgAndHeart svg {
+    font-size: 18px;
   }
 }
+@media (max-width: 480px) {
+  .gand,
+  .skeleton {
+    min-width: 240px; /* Slightly smaller minimum width */
+  }
+  .imageContent {
+    aspect-ratio: 4 / 3; /* Maintain aspect ratio */
+  }
+}
+// @media (max-width: 829px) {
+//   .gand {
+//     max-width: 300px;
+//     // width: auto;
+//   }
+//   .imageContent {
+//     // width: auto;
+//     height: 300px;
+//   }
+//   .flex {
+//     gap: 15px;
+//   }
+// }
+// @media (max-width: 768px) {
+//   .gand {
+//     max-width: 100%;
+//   }
+//   .imageContent {
+//     height: 300px;
+//   }
+
+//   .overlayText {
+//     font-size: 14px;
+//   }
+
+//   .ImgAndHeart span {
+//     font-size: 14px;
+//   }
+
+//   .ImgAndHeart svg {
+//     font-size: 18px;
+//   }
+
+//   .skeleton {
+//     min-height: 260px;
+//   }
+// }

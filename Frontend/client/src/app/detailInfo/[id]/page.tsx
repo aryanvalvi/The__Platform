@@ -14,12 +14,20 @@ import {FaBookmark} from "react-icons/fa"
 import {IoIosHeart} from "react-icons/io"
 import "./MoreInfo.scss"
 import Popup from "@/components/Popup"
+import {IoChatbubblesOutline} from "react-icons/io5"
+import {PiContactlessPaymentFill} from "react-icons/pi"
+import {IoMdShareAlt} from "react-icons/io"
+import {AiOutlineLike} from "react-icons/ai"
+import {IoBookmarksOutline} from "react-icons/io5"
+import {BsBookmarksFill} from "react-icons/bs"
+import {AiFillLike} from "react-icons/ai"
 
 const page = () => {
   const {id} = useParams()
   // const [follow, setfollow] = useState(false);
-  // const [save, setSave] = useState(false);
-  // const [like, setLike] = useState(false);
+  const [savee, setSave] = useState(false)
+  const [likee, setLike] = useState(false)
+  console.log(savee, likee)
   const [openPopup, setopenPopup] = useState(false)
   const [interactionChanged, setInteractionChanged] = useState(false)
   const [abc, setAbc] = useState()
@@ -67,7 +75,27 @@ const page = () => {
         </>
       ) : (
         <div className="MoreInfoDad">
-          <button onClick={CheckStatus}>click</button>
+          <div className="leftSideDetails">
+            <span onClick={() => setopenPopup(!openPopup)}>
+              <span className="LeftSideDetails-Icon">
+                <PiContactlessPaymentFill className="LeftSideDetails-Icon-Inside" />
+              </span>
+              <p>Contact</p>
+            </span>
+            <span>
+              <span className="LeftSideDetails-Icon">
+                <IoChatbubblesOutline className="LeftSideDetails-Icon-Inside" />
+              </span>
+              <p>Comments</p>
+            </span>
+            <span>
+              <span className="LeftSideDetails-Icon">
+                <IoMdShareAlt className="LeftSideDetails-Icon-Inside" />
+              </span>
+              <p>Share</p>
+            </span>
+          </div>
+          {/* <button onClick={CheckStatus}>click</button> */}
           <div className="MoreInfoContainer">
             <div className="TopInfo">
               <div className="TopInfo1">
@@ -77,32 +105,47 @@ const page = () => {
                   alt="img"
                 />
                 <div className="TopInfo3">
-                  <p>{data.creator?.username}</p>
+                  <p>{data.title}</p>
+                  <p>by {data.creator?.username}</p>
                   <button onClick={() => HandleInter("follow")}>
                     {follow ? <>Following</> : <>follow</>}
                   </button>
                 </div>
               </div>
               <div className="TopInfo2">
-                <div className="iconContainer">
-                  <FaBookmark
-                    onClick={() => HandleInter("save")}
-                    className={` ${save ? "saved" : "Icon2"}  `}
-                  />
+                <div className="detail-icon-flex">
+                  <span
+                    className="iconContainer"
+                    onClick={() => setSave(prev => !prev)}
+                  >
+                    <BsBookmarksFill
+                      // onClick={() => HandleInter("save")}
+
+                      className={`${savee ? "saved" : "saved2"}  `}
+                    />
+                  </span>
+                  <p>save</p>
                 </div>
 
-                <div className="iconContainer">
-                  <IoIosHeart
-                    onClick={() => HandleInter("like")}
-                    className={` ${like ? "saved2" : "Icon"}`}
-                  />
+                <div className="detail-icon-flex">
+                  <span
+                    className="iconContainer"
+                    onClick={() => setLike(prev => !prev)}
+                  >
+                    <AiFillLike
+                      // onClick={() => HandleInter("like")}
+
+                      className={` ${likee ? "like" : "like2"}`}
+                    />
+                  </span>
+                  <p>like</p>
                 </div>
-                <button
-                  onClick={() => setopenPopup(!openPopup)}
+                {/* <button
+  
                   className="btn4"
                 >
                   Get in touch
-                </button>
+                </button> */}
               </div>
             </div>
             {openPopup && (

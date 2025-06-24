@@ -77,7 +77,7 @@ const Navbar = () => {
         </div>
         <div>
           <nav>
-            <ul className="navbarElements">
+            <ul className="navbarElement">
               {user === null || user === false ? (
                 <li>
                   <button onClick={HandleLogin} className="sign">
