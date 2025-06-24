@@ -1,29 +1,27 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice} from "@reduxjs/toolkit"
 interface admin {
-  followers: string[];
-  following: string[];
-  googleID: string;
-  likedBY: string[];
-  likedDesigns: string[];
-  messages: any[];
-  savedDesigns: string[];
-  userImage: string;
-  username: string;
-  __v: number;
-  _id: string;
-  
+  followers: string[]
+  following: string[]
+  googleID: string
+  likedBY: string[]
+  likedDesigns: string[]
+  messages: any[]
+  savedDesigns: string[]
+  userImage: string
+  username: string
+  __v: number
+  _id: string
 }
 
-interface InitialState  {
-data :any[];
- Admin:admin;
+interface InitialState {
+  data: any[]
+  Admin: admin
 
-IdMatched:Boolean,
-
-};
-const initialState :InitialState={
-  data:[],
-  Admin:{
+  IdMatched: Boolean
+}
+const initialState: InitialState = {
+  data: [],
+  Admin: {
     followers: [],
     following: [],
     googleID: "",
@@ -37,46 +35,39 @@ const initialState :InitialState={
     _id: "",
   },
 
-IdMatched:false
+  IdMatched: false,
 }
 
-
-
+const baseUrl = process.env.NEXT_API_URL || "http://localhost:5001"
 export const UserProfileSliceFunction = createAsyncThunk(
   "userprofile",
-  async(id)=>{
-    const res = await fetch("http://localhost:5001/auth/dashboard",{
-      method:"POST",
-      credentials:"include",
-      headers:{
-        "Content-Type":"application/json"
+  async id => {
+    const res = await fetch(`${baseUrl}/auth/dashboard`, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
       },
-      body:JSON.stringify({id})
+      body: JSON.stringify({id}),
     })
-    const data = await res.json();
+    const data = await res.json()
     console.log(id)
-    console.log("User profile",data)
-    return data;
+    console.log("User profile", data)
+    return data
   }
 )
 
-
 export const UserProfileSlice = createSlice({
-name:"userProfile",
-initialState,
-reducers:{
+  name: "userProfile",
+  initialState,
+  reducers: {},
+  extraReducers: builder => {
+    builder.addCase(UserProfileSliceFunction.fulfilled, (state, action) => {
+      ;(state.Admin = action.payload.Admin),
+        (state.IdMatched = action.payload.IdMatched),
+        (state.data = action.payload.data)
+    })
+  },
+})
 
-},
-extraReducers:(builder)=>{
-  builder.addCase(UserProfileSliceFunction.fulfilled,(state,action)=>{
-    state.Admin = action.payload.Admin,
-    state.IdMatched = action.payload.IdMatched,
-  state.data = action.payload.data
-  })
-
-
-
-}}
-) 
-
-export const UserProfileSliceReducer = UserProfileSlice.reducer;
+export const UserProfileSliceReducer = UserProfileSlice.reducer

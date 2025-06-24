@@ -19,11 +19,11 @@ const initialState: postPost = {
   Title: "",
   success: false,
 }
-
+const baseUrl = process.env.NEXT_API_URL || "http://localhost:5001"
 export const postPostFunction = createAsyncThunk(
   "postPost",
   async ({formData}) => {
-    const res = await fetch("http://localhost:5001/auth/xyz", {
+    const res = await fetch(`${baseUrl}/auth/xyz`, {
       method: "POST",
       credentials: "include",
       body: formData,
@@ -39,7 +39,7 @@ export const postPostFunction = createAsyncThunk(
 export const postPostFunction2 = createAsyncThunk(
   "postVideo",
   async ({formData}) => {
-    const res = await fetch("http://localhost:5001/auth/UserVideoUpload", {
+    const res = await fetch(`${baseUrl}/auth/UserVideoUpload`, {
       method: "POST",
       credentials: "include",
       body: formData,
@@ -55,7 +55,7 @@ export const postPostFunction2 = createAsyncThunk(
 export const postPostFunction3 = createAsyncThunk(
   "postBoth",
   async ({formData}) => {
-    const res = await fetch("http://localhost:5001/auth/both", {
+    const res = await fetch(`${baseUrl}/auth/both`, {
       method: "POST",
       credentials: "include",
       body: formData,

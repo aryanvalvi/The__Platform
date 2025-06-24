@@ -79,6 +79,7 @@ const sendproposalState: sendproposalState = {
   proposal: [],
 }
 
+const baseUrl = process.env.NEXT_API_URL || "http://localhost:5001"
 export const fetchHomeContent = createAsyncThunk(
   "homeContent/fetchHomeContent",
   async page => {
@@ -87,7 +88,7 @@ export const fetchHomeContent = createAsyncThunk(
     // const page = state.homeContent.page;
     console.log("pageNumber", page)
 
-    const res = await fetch(`http://localhost:5001/auth/Getdata?page=${page}`, {
+    const res = await fetch(`${baseUrl}/auth/Getdata?page=${page}`, {
       // const res = await fetch(
       //   `https://the-platform-backend-9a4a.onrender.com/auth/Getdata?page=${page}`,
       //   {
@@ -150,7 +151,7 @@ export const homeContentSlice = createSlice({
 export const fetchMoreDetail = createAsyncThunk(
   "FETCH_MORE_DETAILS",
   async (id: any) => {
-    const res = await fetch(`http://localhost:5001/auth/getmore`, {
+    const res = await fetch(`${baseUrl}/auth/getmore`, {
       method: "POST",
       credentials: "include",
       headers: {
@@ -178,7 +179,7 @@ export const moreDetailSlice = createSlice({
 export const checkerFunction = createAsyncThunk(
   "checkerFunction",
   async (id: any) => {
-    const res = await fetch("http://localhost:5001/auth/Check", {
+    const res = await fetch(`${baseUrl}/auth/Check`, {
       method: "POST",
       credentials: "include",
       headers: {
@@ -209,7 +210,7 @@ export const userPostInteractionFunction = createAsyncThunk(
       post,
     }
     console.log("action receiverId", userdata)
-    const res = await fetch("http://localhost:5001/auth/userInteraction", {
+    const res = await fetch(`${baseUrl}/auth/userInteraction`, {
       method: "POST",
       credentials: "include",
       headers: {
@@ -236,7 +237,7 @@ export const userPostInteraction = createSlice({
 export const SendproposalFunction = createAsyncThunk(
   "Sendproposal",
   async ({message, post, budget}) => {
-    const res = await fetch("http://localhost:5001/sendproposal", {
+    const res = await fetch(`${baseUrl}/sendproposal`, {
       method: "POST",
       credentials: "include",
       headers: {
