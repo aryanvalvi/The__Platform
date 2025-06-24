@@ -27,10 +27,10 @@ app.use((req, res, next) => {
   )
   next()
 })
-
+//  "http://localhost:3000"
 app.use(
   cors({
-    origin: process.env.frontendUrl || "http://localhost:3000",
+    origin: "http://localhost:3000",
     methods: "GET,POST,PUT,DELETE",
     credentials: true,
   })
