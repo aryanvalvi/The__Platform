@@ -58,6 +58,7 @@ app.use(express.static(path.join(__dirname, "cimage")))
 app.use("/", require("./routes/route"))
 app.use("/auth", router)
 app.use("/profile", profileRoute)
+app.get("/testing", (req, res) => res.json("working"))
 
 // In your Express route
 // app.get("/search", async (req, res) => {
