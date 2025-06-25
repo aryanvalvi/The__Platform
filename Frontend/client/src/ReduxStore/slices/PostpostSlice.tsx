@@ -19,7 +19,7 @@ const initialState: postPost = {
   Title: "",
   success: false,
 }
-const baseUrl = process.env.NEXT_API_URL || "http://localhost:5001"
+const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5001"
 export const postPostFunction = createAsyncThunk(
   "postPost",
   async ({formData}) => {

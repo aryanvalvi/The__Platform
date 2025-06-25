@@ -79,7 +79,8 @@ const sendproposalState: sendproposalState = {
   proposal: [],
 }
 
-const baseUrl = process.env.NEXT_API_URL || "http://localhost:5001"
+const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5001"
+console.log(baseUrl)
 export const fetchHomeContent = createAsyncThunk(
   "homeContent/fetchHomeContent",
   async page => {
@@ -89,7 +90,7 @@ export const fetchHomeContent = createAsyncThunk(
     console.log("pageNumber", page)
 
     const res = await fetch(
-      `${process.env.NEXT_API_URL}/auth/Getdata?page=${page}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/auth/Getdata?page=${page}`,
       {
         // const res = await fetch(
         //   `https://the-platform-backend-9a4a.onrender.com/auth/Getdata?page=${page}`,

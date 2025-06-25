@@ -8,6 +8,7 @@ import "./Navbar.scss"
 import {RxHamburgerMenu} from "react-icons/rx"
 
 const Navbar = () => {
+  console.log("bsdk", process.env.NEXT_PUBLIC_API_URL)
   const [isHovered, setIsHovered] = useState(false)
   const dispatch = useAppDispatch()
   const {user} = useAppSelector(state => state.UserDataFetchReducer.userData)
