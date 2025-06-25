@@ -587,6 +587,7 @@ body.active-modal {
 
 @media (max-width: 600px) {
   .TopInfo {
+    width: 100%;
     .TopInfo1 {
       .profile2 {
         width: 25px;
@@ -614,9 +615,10 @@ body.active-modal {
     }
   }
   .MoreInfoContainer {
+    padding: 0;
     .bigImageContainer {
       .bigImage {
-        margin-top: 1px;
+        max-width: 100%;
       }
     }
     .desMore {
