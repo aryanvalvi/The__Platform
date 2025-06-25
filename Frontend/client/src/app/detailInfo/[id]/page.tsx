@@ -75,26 +75,6 @@ const page = () => {
         </>
       ) : (
         <div className="MoreInfoDad">
-          <div className="leftSideDetails">
-            <span onClick={() => setopenPopup(!openPopup)}>
-              <span className="LeftSideDetails-Icon">
-                <PiContactlessPaymentFill className="LeftSideDetails-Icon-Inside" />
-              </span>
-              <p>Contact</p>
-            </span>
-            <span>
-              <span className="LeftSideDetails-Icon">
-                <IoChatbubblesOutline className="LeftSideDetails-Icon-Inside" />
-              </span>
-              <p>Comments</p>
-            </span>
-            <span>
-              <span className="LeftSideDetails-Icon">
-                <IoMdShareAlt className="LeftSideDetails-Icon-Inside" />
-              </span>
-              <p>Share</p>
-            </span>
-          </div>
           {/* <button onClick={CheckStatus}>click</button> */}
           <div className="MoreInfoContainer">
             <div className="TopInfo">
@@ -106,48 +86,17 @@ const page = () => {
                 />
                 <div className="TopInfo3">
                   <p>{data.title}</p>
-                  <p>by {data.creator?.username}</p>
-                  <button onClick={() => HandleInter("follow")}>
-                    {follow ? <>Following</> : <>follow</>}
-                  </button>
-                </div>
-              </div>
-              <div className="TopInfo2">
-                <div className="detail-icon-flex">
-                  <span
-                    className="iconContainer"
-                    onClick={() => setSave(prev => !prev)}
-                  >
-                    <BsBookmarksFill
-                      // onClick={() => HandleInter("save")}
+                  <span className="TopInfo3-span">
+                    <p>by {data.creator?.username}</p>
 
-                      className={`${savee ? "saved" : "saved2"}  `}
-                    />
+                    <button onClick={() => HandleInter("follow")}>
+                      {follow ? <>Following</> : <>follow</>}
+                    </button>
                   </span>
-                  <p>save</p>
                 </div>
-
-                <div className="detail-icon-flex">
-                  <span
-                    className="iconContainer"
-                    onClick={() => setLike(prev => !prev)}
-                  >
-                    <AiFillLike
-                      // onClick={() => HandleInter("like")}
-
-                      className={` ${likee ? "like" : "like2"}`}
-                    />
-                  </span>
-                  <p>like</p>
-                </div>
-                {/* <button
-  
-                  className="btn4"
-                >
-                  Get in touch
-                </button> */}
               </div>
             </div>
+
             {openPopup && (
               <Popup
                 setopenPopup={setopenPopup}
@@ -155,7 +104,66 @@ const page = () => {
                 post={userid}
               ></Popup>
             )}
-            <img className="bigImage" src={data.images} alt="" />
+            <div className="bigImageContainer">
+              <img className="bigImage" src={data.images} alt="" />
+
+              <div className="leftSideDetails">
+                {/* <div className="detail-icon-flex">
+                  <span className="iconContainer">
+                    <AiFillLike
+                      // onClick={() => HandleInter("like")}
+
+                      className={` ${likee ? "like" : "like2"}`}
+                    />
+                  </span>
+                  <p>like</p>
+                </div> */}
+                <span onClick={() => setLike(prev => !prev)}>
+                  <span className="LeftSideDetails-Icon">
+                    <AiFillLike className={` ${likee ? "like" : "like2"}`} />
+                  </span>
+                  <p>Contact</p>
+                </span>
+                <span onClick={() => setopenPopup(!openPopup)}>
+                  <span className="LeftSideDetails-Icon">
+                    <PiContactlessPaymentFill className="LeftSideDetails-Icon-Inside" />
+                  </span>
+                  <p>Contact</p>
+                </span>
+                <span>
+                  <span className="LeftSideDetails-Icon">
+                    <IoChatbubblesOutline className="LeftSideDetails-Icon-Inside" />
+                  </span>
+                  <p>Comments</p>
+                </span>
+                <span>
+                  <span className="LeftSideDetails-Icon">
+                    <IoMdShareAlt className="LeftSideDetails-Icon-Inside" />
+                  </span>
+                  <p>Share</p>
+                </span>
+                <span onClick={() => setSave(prev => !prev)}>
+                  <span className="LeftSideDetails-Icon">
+                    <BsBookmarksFill
+                      className={`${savee ? "saved" : "saved2"}  `}
+                    />
+                  </span>
+                  <p>Share</p>
+                </span>
+
+                {/* <div className="detail-icon-flex">
+                  <span className="iconContainer">
+                    <BsBookmarksFill
+                      // onClick={() => HandleInter("save")}
+
+                      className={`${savee ? "saved" : "saved2"}  `}
+                    />
+                  </span>
+                  <p>save</p>
+                </div> */}
+              </div>
+            </div>
+
             <p className="desMore">{data.description}</p>
           </div>
           <div className="More">

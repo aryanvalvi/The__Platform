@@ -12,13 +12,16 @@
 }
 
 .leftSideDetails {
-  position: fixed;
-  top: 300px;
-  left: 10%;
+  position: absolute;
+  transform: translateX(-50%);
+  background-color: transparent;
+  top: 100%;
+  left: 50%;
   display: flex;
-  flex-direction: column;
-  gap: 30px;
-  z-index: 10;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  gap: 40px;
 
   span {
     display: flex;
@@ -45,11 +48,11 @@
         transition: all 0.3s ease;
       }
       &:hover {
-        background: linear-gradient(
-          45deg,
-          #fc9a44,
-          #fccc9f
-        ); // Updated gradient with #fc9a44
+        // background: linear-gradient(
+        //   45deg,
+        //   #fc9a44,
+        //   #fccc9f
+        // ); // Updated gradient with #fc9a44
         color: white;
         box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
         transform: translateY(-3px);
@@ -81,102 +84,101 @@
   flex-direction: column;
   gap: 20px;
   z-index: 10;
+}
+.detail-icon-flex {
+  // background-color: red;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  padding: 10px;
 
-  .detail-icon-flex {
+  .iconContainer {
+    font-size: 20px;
+    width: 50px;
+    height: 50px;
     display: flex;
-    flex-direction: column;
     align-items: center;
-    cursor: pointer;
-    padding: 10px;
+    justify-content: center;
+    border: 1px solid #ddd;
+    border-radius: 50%;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
 
+    // .Icon {
+    //   font-size: 24px;
+    //   color: #ccc;
+    //   transition: all 0.3s ease;
+    // }
+
+    // .Icon2 {
+    //   font-size: 24px;
+    //   // fill: #ccc;
+    //   // fill: rgb(255, 0, 0);
+    //   // background-color: red;
+    //   color: #fc9a44;
+    //   transition: all 0.3s ease;
+    // }
+  }
+
+  p {
+    font-size: 12px;
+    color: #555;
+    margin-top: 8px;
+  }
+
+  &:hover {
     .iconContainer {
-      font-size: 20px;
-      width: 50px;
-      height: 50px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: 1px solid #ddd;
-      border-radius: 50%;
-      background-color: white;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-      transition: all 0.3s ease;
+      border-color: #bbb;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+      transform: translateY(-3px);
+    }
+    .saved2 {
+      fill: #ccc; // Updated to #fc9a44 for like icon hover
+    }
 
-      // .Icon {
-      //   font-size: 24px;
-      //   color: #ccc;
-      //   transition: all 0.3s ease;
-      // }
+    .saved {
+      fill: #fc9a44; // Updated to #fc9a44 for like icon hover
+    }
 
-      // .Icon2 {
-      //   font-size: 24px;
-      //   // fill: #ccc;
-      //   // fill: rgb(255, 0, 0);
-      //   // background-color: red;
-      //   color: #fc9a44;
-      //   transition: all 0.3s ease;
-      // }
-
-      .saved {
-        color: #ccc;
-        font-size: 24px;
-        transition: all 0.3s ease;
-      }
-
-      .saved2 {
-        font-size: 24px;
-        color: #fc9a44; // Updated to #fc9a44 for active like icon
-        transition: all 0.3s ease;
-      }
-      .like {
-        color: #ccc;
-        font-size: 24px;
-        transition: all 0.3s ease;
-      }
-      .like2 {
-        font-size: 24px;
-        color: #fc9a44; // Updated to #fc9a44 for active like icon
-        transition: all 0.3s ease;
-      }
+    .like {
+      fill: #fc9a44;
+    }
+    .like2 {
+      fill: #ccc;
     }
 
     p {
-      font-size: 12px;
-      color: #555;
-      margin-top: 8px;
-    }
-
-    &:hover {
-      .iconContainer {
-        border-color: #bbb;
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-        transform: translateY(-3px);
-      }
-      .saved2 {
-        fill: #ccc; // Updated to #fc9a44 for like icon hover
-      }
-
-      .saved {
-        fill: #fc9a44; // Updated to #fc9a44 for like icon hover
-      }
-
-      .like {
-        fill: #fc9a44;
-      }
-      .like2 {
-        fill: #ccc;
-      }
-
-      p {
-        color: #000;
-      }
-    }
-
-    &:active .iconContainer {
-      transform: translateY(0);
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      color: #000;
     }
   }
+
+  &:active .iconContainer {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+}
+.saved {
+  color: #ccc;
+  font-size: 24px;
+  transition: all 0.3s ease;
+}
+
+.saved2 {
+  font-size: 24px;
+  color: #fc9a44; // Updated to #fc9a44 for active like icon
+  transition: all 0.3s ease;
+}
+.like {
+  color: #ccc;
+  font-size: 24px;
+  transition: all 0.3s ease;
+}
+.like2 {
+  font-size: 24px;
+  color: #fc9a44; // Updated to #fc9a44 for active like icon
+  transition: all 0.3s ease;
 }
 
 .MoreInfoContainer {
@@ -186,13 +188,20 @@
   margin-top: 50px;
   max-width: 1200px;
   width: 100%;
+  height: 100%;
   padding: 0 20px;
 
-  .bigImage {
-    max-width: 80%;
-    height: auto;
-    margin-top: 20px;
-    border-radius: 8px;
+  .bigImageContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    .bigImage {
+      max-width: 80%;
+      height: auto;
+      margin-top: 20px;
+      border-radius: 8px;
+    }
   }
 
   .desMore {
@@ -233,6 +242,7 @@
     .TopInfo3 {
       display: flex;
       flex-direction: column;
+      align-items: flex-start;
 
       p {
         font-weight: bold;
@@ -241,8 +251,9 @@
         &:first-child {
           font-size: 1.2rem;
         }
-
-        &:nth-child(2) {
+      }
+      span {
+        p {
           font-size: 0.9rem;
           font-weight: 300;
           color: #555;
@@ -250,7 +261,8 @@
       }
 
       button {
-        margin-top: 10px;
+        margin-left: 10px;
+        // margin-top: 10px;
         border: none;
         background-color: transparent;
         color: #fc9a44; // Updated to #fc9a44 for follow button
@@ -496,32 +508,32 @@ body.active-modal {
     transform: scale(1);
   }
 }
-@media (max-width: 1400px) {
-  .leftSideDetails {
-    left: calc(100% - 98%);
-  }
-  .TopInfo2 {
-    right: calc(100% - 98%);
-  }
-  .MoreInfoContainer {
-    // margin-top: 80px;
-  }
-  .MoreInfoDad {
-    // min-height: 50%;
-  }
-}
+
 @media (max-width: 1200px) {
   .MoreInfoContainer {
     margin-top: 40px;
   }
 }
 @media (max-width: 1100px) {
+  .MoreInfoContainer {
+    .bigImage {
+      position: relative;
+    }
+    .bigImage {
+      max-width: 70%;
+    }
+    .desMore {
+      width: 70%;
+      font-size: 1rem;
+    }
+  }
   .TopInfo {
     margin-bottom: 0;
+    width: 80%;
     .TopInfo1 {
       .profile2 {
-        width: 45px;
-        height: 45px;
+        width: 35px;
+        height: 35px;
       }
       .TopInfo3 {
         margin-top: 10px;
@@ -534,27 +546,111 @@ body.active-modal {
           }
         }
         button {
-          margin-top: 5px;
+          // margin-top: 5px;
+          font-size: 0.7rem;
         }
       }
     }
   }
+  .TopInfo2 {
+    display: none;
+  }
   .leftSideDetails {
+    position: absolute;
+    transform: translateX(-50%);
+    background-color: transparent;
+    top: 100%;
+    left: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    gap: calc(100% - 99%);
+
     span {
       .LeftSideDetails-Icon {
-        font-size: 18px;
-        width: 30px;
-        height: 30px;
-      }
-    }
-  }
-  .TopInfo2 {
-    .detail-icon-flex {
-      .iconContainer {
-        font-size: 18px;
+        font-size: 28px;
         width: 40px;
         height: 40px;
       }
     }
   }
+
+  .detail-icon-flex {
+    .iconContainer {
+      font-size: 18px;
+      width: 40px;
+      height: 40px;
+    }
+  }
 }
+
+@media (max-width: 600px) {
+  .TopInfo {
+    .TopInfo1 {
+      .profile2 {
+        width: 25px;
+        height: 25px;
+      }
+      .TopInfo3 {
+        // position: relative;
+        p {
+          &:first-child {
+            font-size: 0.7rem;
+          }
+          &:nth-child(2) {
+            font-size: 0.6rem;
+          }
+        }
+        .TopInfo3-span {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        button {
+          font-size: 0.6rem;
+        }
+      }
+    }
+  }
+  .MoreInfoContainer {
+    .bigImageContainer {
+      .bigImage {
+        margin-top: 1px;
+      }
+    }
+    .desMore {
+      width: 70%;
+      font-size: 0.7rem;
+    }
+  }
+  .leftSideDetails {
+    gap: calc(100% - 79%);
+    span {
+      font-size: 20px;
+      width: 25px;
+      height: 25px;
+      p {
+        font-size: 0.5rem;
+      }
+    }
+  }
+  .detail-icon-flex {
+    .iconContainer {
+      // font-size: 18px;
+      width: 25px;
+      height: 25px;
+    }
+  }
+}
+// @media (min-width: 481px) and (max-width: 767px) {
+//   .MoreInfoContainer {
+//     .bigImage {
+//       max-width: 70%;
+//     }
+//     .desMore {
+//       width: 70%;
+//       font-size: 1rem;
+//     }
+//   }
+// }
