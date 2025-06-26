@@ -28,9 +28,10 @@ app.use((req, res, next) => {
   next()
 })
 //  "http://localhost:3000"
+const allowOriginsare = process.env.frontendUrl.split(",")
 app.use(
   cors({
-    origin: process.env.frontendUrl,
+    origin: allowOriginsare,
     methods: "GET,POST,PUT,DELETE",
     credentials: true,
   })
