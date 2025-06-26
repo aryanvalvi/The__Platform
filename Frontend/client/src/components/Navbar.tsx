@@ -47,9 +47,9 @@ const Navbar = () => {
           <Link href="/">
             <Image
               className="Navlogo"
-              width={200}
-              height={100}
-              src="/image/logo.svg"
+              width={300}
+              height={300}
+              src="/client_images/LOGO.svg"
               alt="Logo"
             />
           </Link>

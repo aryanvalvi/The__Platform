@@ -55,7 +55,7 @@
   // margin-right: 300px;
   cursor: pointer;
   object-fit: contain;
-  width: 200px; /* Match Image component props */
+  width: 400px; /* Match Image component props */
   height: 100px;
   // width: 6.5%;
   // margin-top: 22px;
@@ -294,6 +294,10 @@
 }
 
 @media (max-width: 768px) {
+  .Navlogo {
+    width: 150px;
+    // height: 150px;
+  }
   .ham {
     display: block;
     position: absolute;
@@ -344,6 +348,21 @@
     .sign {
       width: 60px;
       height: 30px;
+    }
+  }
+}
+
+@media (max-width: 500px) {
+  .Navlogo {
+    width: 130px;
+  }
+  .navbarElement {
+    button {
+      font-size: 10px;
+    }
+    .sign {
+      width: 40px;
+      height: 25px;
     }
   }
 }
