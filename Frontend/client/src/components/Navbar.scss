@@ -55,11 +55,14 @@
   // margin-right: 300px;
   cursor: pointer;
   object-fit: contain;
-  width: 400px; /* Match Image component props */
+  width: 200px; /* Match Image component props */
   height: 100px;
   // width: 6.5%;
   // margin-top: 22px;
   // margin-left: -20px;
+}
+.signContainer {
+  width: 200px;
 }
 
 .NavbarContain {

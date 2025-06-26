@@ -47,9 +47,9 @@ const Navbar = () => {
           <Link href="/">
             <Image
               className="Navlogo"
-              width={300}
+              width={200}
               height={300}
-              src="/client_images/LOGO.svg"
+              src="/client_images/logoooo1.svg"
               alt="Logo"
             />
           </Link>
@@ -77,7 +77,7 @@ const Navbar = () => {
           </nav>
         </div>
         <div>
-          <nav>
+          <nav className="signContainer">
             <ul className="navbarElement">
               {user === null || user === false ? (
                 <li>

@@ -92,7 +92,7 @@ export default function Home() {
     <>
       <div className="Homecontainer">
         <div className="HomeContent">
-          <p className="HomeP">PIXELTAK</p>
+          <p className="HomeP">Uiuxyn</p>
           <div className="HomeP2">
             <div className="TypewriterLine">
               <Typewriter
