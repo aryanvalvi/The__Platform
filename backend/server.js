@@ -59,6 +59,10 @@ app.use("/", require("./routes/route"))
 app.use("/auth", router)
 app.use("/profile", profileRoute)
 app.get("/testing", (req, res) => res.json("working"))
+app.use((req, res, next) => {
+  console.log("Incoming Origin:", req.headers.origin)
+  next()
+})
 
 // In your Express route
 // app.get("/search", async (req, res) => {
