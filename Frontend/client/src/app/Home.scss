@@ -168,18 +168,27 @@ body {
   cursor: pointer;
 }
 
-.HomeButton {
+.homebuttonContainer {
   position: absolute;
-  right: 0;
-  bottom: 10%;
-  z-index: 9;
+  bottom: 20px;
+  right: 20px;
+  z-index: 10;
+}
+.HomeButton {
+  // position: absolute;
+  // display: flex;
+  // justify-content: flex-end;
+  // right: 0;
+  // bottom: 10%;
+
   color: #ffffff;
   background: #f28c38;
   font-size: 20px;
   font-weight: 100;
   width: 100%;
-  max-width: 412px;
-  // padding: 10px;
+  margin: 0 auto;
+  // max-width: 412px;
+  padding: 10px;
   height: 58px;
   border-radius: 30px;
   border: none;
@@ -302,5 +311,16 @@ body {
   .TypewriterLine {
     font-size: 14px;
     display: inline;
+  }
+}
+@media (max-height: 600px) {
+  .HomeContent {
+    padding-top: 50px;
+  }
+  .HomeP {
+    font-size: 60px;
+  }
+  .TypewriterLine {
+    font-size: 30px;
   }
 }

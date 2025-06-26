@@ -164,9 +164,11 @@ export default function Home() {
             </div>
           </form>
         </div>
-        <button onClick={scrollButoon} className="HomeButton">
-          See What People have made
-        </button>
+        <div className="homebuttonContainer">
+          <button onClick={scrollButoon} className="HomeButton">
+            See What People have made
+          </button>
+        </div>
       </div>
       <div>
         <HomeContent />
