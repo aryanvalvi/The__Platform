@@ -91,8 +91,11 @@ export default function Home() {
   return (
     <>
       <div className="Homecontainer">
+        <div className="gradient"></div>
         <div className="HomeContent">
-          <p className="HomeP">Uiuxyn</p>
+          <p className="HomeP">
+            U <span>iuxyn</span>
+          </p>
           <div className="HomeP2">
             <div className="TypewriterLine">
               <Typewriter
@@ -150,25 +153,32 @@ export default function Home() {
             />
             <button type="submit">
               <MdSearch className="img"></MdSearch>
-              {/* <img src="/image/search.svg" alt="Search icon" /> */}
             </button>
             <div className="searchResultContainer">
               {showSearchOption &&
                 filterData?.map(e => (
-                  // <Link href={`/detailInfo/${e._id}`}>
                   <div key={e} className="searchbruh">
                     <p onClick={() => handleClickSearch(e)}>{e}</p>
                   </div>
-                  // </Link>
                 ))}
             </div>
           </form>
+
+          <svg viewBox="0 0 1440 150" className="bottom-wave">
+            {/* <path
+              fill="#fb9a44"
+              fillOpacity="0.3"
+              d="M0,96L60,101.3C120,107,240,117,360,122.7C480,128,600,128,720,122.7C840,117,960,107,1080,117.3C1200,128,1320,160,1380,176L1440,192L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"
+            ></path> */}
+          </svg>
         </div>
         <div className="homebuttonContainer">
           <button onClick={scrollButoon} className="HomeButton">
             See What People have made
           </button>
         </div>
+        <img src="/bruhh.svg" alt="" className="top-wave" />
+        <img src="/wavy.svg" alt="" className="bottom-wave" />
       </div>
       <div>
         <HomeContent />

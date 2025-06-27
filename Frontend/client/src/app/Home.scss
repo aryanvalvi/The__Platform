@@ -8,7 +8,26 @@ body {
   overflow-x: hidden;
 }
 
+.gradient {
+  background: linear-gradient(rgba(252, 255, 255, 1), transparent);
+  // right: 0;
+  top: -50px;
+  right: -100px;
+  width: 500px;
+  height: 500px;
+  // background: radial-gradient(circle at center, #fb9a44 0%, transparent 70%);
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.3;
+  z-index: 0;
+  pointer-events: none;
+  z-index: 99;
+  // height: 100vh;
+  // width: 100vw;
+}
 .Homecontainer {
+  overflow: hidden;
+  // background-color: #e0e0e0;
   // display: flex;
   // align-items: center;
   // justify-content: center;
@@ -16,7 +35,7 @@ body {
   height: 80vh;
   width: 100vw;
   position: relative;
-  z-index: 2;
+  z-index: 9;
 }
 
 .HomeContent {
@@ -38,19 +57,40 @@ body {
   text-align: left;
   max-width: 100%;
   // max-width: 800px;
-  z-index: 0;
+  z-index: 10;
+}
+.HomeP,
+.HomeP2,
+.NavSearchBar,
+.homebuttonContainer {
+  z-index: 10; /* Ensure all content is above waves */
 }
 
 .HomeP {
+  z-index: 2;
   color: #000000;
   // margin-left: -10px;
   font-size: 80px;
   font-weight: 500;
-  letter-spacing: 20.1px;
+  letter-spacing: 10px;
   display: block;
+  color: #000000;
+  margin: 0;
+  padding: 0;
+  // font-family: "Satisfy";
+  // font-family: "Nunito", sans-serif;
+  font-family: "Poppins", sans-serif;
+
+  span {
+    margin: 0;
+    padding: 0;
+    color: #f96c00;
+    margin-left: -20px;
+  }
 }
 
 .HomeP2 {
+  z-index: 2;
   height: 120px;
   display: flex;
   // vertical-align: middle;
@@ -90,7 +130,7 @@ body {
   max-width: 800px;
   display: flex;
   align-items: center;
-  z-index: 0;
+  z-index: 2;
   button {
     background: none;
     border: none;
@@ -170,9 +210,10 @@ body {
 
 .homebuttonContainer {
   position: absolute;
-  bottom: 20px;
-  right: 20px;
+  bottom: 100px;
+  right: 70px;
   z-index: 10;
+  background-color: transparent;
 }
 .HomeButton {
   // position: absolute;
@@ -180,9 +221,8 @@ body {
   // justify-content: flex-end;
   // right: 0;
   // bottom: 10%;
-
   color: #ffffff;
-  background: #f28c38;
+  background: #f96c00;
   font-size: 20px;
   font-weight: 100;
   width: 100%;
@@ -313,7 +353,7 @@ body {
     display: inline;
   }
 }
-@media (max-height: 600px) {
+@media (max-height: 850px) {
   .HomeContent {
     padding-top: 50px;
   }
@@ -323,4 +363,45 @@ body {
   .TypewriterLine {
     font-size: 30px;
   }
+
+  .HomeP2 {
+    height: 80px;
+  }
+  .NavSearchBar {
+    width: 554px;
+    input {
+      height: 40px;
+    }
+    .img {
+      width: 20px;
+      height: 20px;
+    }
+  }
+}
+@media (max-height: 700px) {
+  .homebuttonContainer {
+    bottom: 1;
+  }
+  .HomeButton {
+    font-size: 17px;
+    height: 40px;
+  }
+}
+
+.top-wave {
+  position: absolute;
+  top: 0;
+
+  right: 0%;
+  // min-width: 1800px; /* or % if it's responsive */
+  // height: 500px;
+  z-index: 1;
+  pointer-events: none;
+}
+.bottom-wave {
+  position: absolute;
+  bottom: 0%;
+  z-index: 1;
+  pointer-events: none;
+  width: 100vw;
 }
