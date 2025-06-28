@@ -11,7 +11,29 @@
   min-height: 100vh;
 }
 
+.leftSideDetails span,
+.leftSideDetails span * {
+  outline: none !important;
+  box-shadow: none !important;
+  -webkit-tap-highlight-color: transparent !important; /* For mobile tap highlight */
+  -webkit-focus-ring-color: transparent !important; /* For Webkit focus ring */
+  -moz-outline: none !important; /* For Firefox */
+}
+
+.leftSideDetails span:focus,
+.leftSideDetails span:focus-within,
+.leftSideDetails span:active,
+.leftSideDetails span:focus .LeftSideDetails-Icon,
+.leftSideDetails span:focus-within .LeftSideDetails-Icon,
+.leftSideDetails span:active .LeftSideDetails-Icon {
+  outline: none !important;
+  box-shadow: none !important;
+  border: none !important; /* Ensure no border is added on focus */
+}
 .leftSideDetails {
+  span:focus {
+    outline: none;
+  }
   position: absolute;
   transform: translateX(-50%);
   background-color: transparent;
@@ -53,6 +75,7 @@
         //   #fc9a44,
         //   #fccc9f
         // ); // Updated gradient with #fc9a44
+        // outline: none;
         color: white;
         box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
         transform: translateY(-3px);
@@ -589,7 +612,9 @@ body.active-modal {
   .TopInfo {
     width: 100%;
     .TopInfo1 {
+      gap: 10px;
       .profile2 {
+        margin-top: 10px;
         width: 25px;
         height: 25px;
       }
