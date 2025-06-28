@@ -365,12 +365,20 @@ body {
   }
 }
 @media (max-width: 454px) {
+  .HomeP2 {
+    max-width: 454px !important;
+  }
   .TypewriterLine {
     font-size: 18px;
     display: inline;
   }
   .NavSearchBar {
     width: 85%;
+  }
+}
+@media (max-width: 320px) {
+  .HomeP2 {
+    max-width: 373px !important;
   }
 }
 @media (max-width: 373px) {
