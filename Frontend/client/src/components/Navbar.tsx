@@ -73,44 +73,44 @@ const Navbar = () => {
               <Link className="Link" href="/">
                 <li className="Learn">Learn</li>
               </Link>
-            </ul>
-          </nav>
-        </div>
-        <div>
-          <nav className="signContainer">
-            <ul className="navbarElement">
-              {user === null || user === false ? (
-                <li>
+
+              <li className="signCont">
+                {user === null || user === false ? (
                   <button onClick={HandleLogin} className="sign">
                     log in
                   </button>
-                </li>
-              ) : (
-                <div
-                  onMouseEnter={() => setIsHovered(true)}
-                  onMouseLeave={() => setIsHovered(false)}
-                  className="NavProfile"
-                >
-                  <div className="pname">
-                    <Link href={`/user/profile/${user._id}`}>
-                      <img
-                        className="profile-picture"
-                        src={user.userImage || "/image/fallback.png"}
-                        alt="Profile picture"
-                      />
-                    </Link>
-                    <p className="profile-name">{user.username}</p>
-                    {isHovered && (
-                      <button onClick={handleLogout} className="logout">
-                        LogOut
-                      </button>
-                    )}
+                ) : (
+                  <div
+                    onMouseEnter={() => setIsHovered(true)}
+                    onMouseLeave={() => setIsHovered(false)}
+                    className="NavProfile"
+                  >
+                    <div className="pname">
+                      <Link href={`/user/profile/${user._id}`}>
+                        <img
+                          className="profile-picture"
+                          src={user.userImage || "/image/fallback.png"}
+                          alt="Profile picture"
+                        />
+                      </Link>
+                      <p className="profile-name">{user.username}</p>
+                      {isHovered && (
+                        <button onClick={handleLogout} className="logout">
+                          LogOut
+                        </button>
+                      )}
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
+              </li>
             </ul>
           </nav>
         </div>
+        {/* <div>
+          <nav className="signContainer">
+            <ul className="navbarElement"></ul>
+          </nav>
+        </div> */}
       </div>
     </div>
   )

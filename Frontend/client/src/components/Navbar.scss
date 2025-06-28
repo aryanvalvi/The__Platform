@@ -71,74 +71,65 @@
   position: relative;
   // max-width: 1200px;
   width: 100%;
-  min-height: 100px;
+  height: 100px;
   align-items: center;
   z-index: 10;
 }
 
 .navbarElements {
   display: flex;
+  align-items: center;
+  justify-content: center;
   gap: 20px;
   .Learn {
     // margin-top: 9px;
     // margin-left: -30px;
     // margin-right: 30px;
   }
-  li {
-    cursor: pointer;
+  // li {
+  //   cursor: pointer;
 
-    color: #000;
+  //   color: #000;
 
-    font-size: 18px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-    transition: 0.4s;
-  }
-  li:hover {
-    transform: scale(1.1);
-  }
+  //   font-size: 18px;
+  //   font-style: normal;
+  //   font-weight: 400;
+  //   line-height: normal;
+  //   transition: 0.4s;
+  // }
+  // li:hover {
+  //   transform: scale(1.1);
+  // }
 
-  button {
-    cursor: pointer;
+  // button {
+  //   cursor: pointer;
 
-    color: #000;
+  //   // color: #000;
 
-    font-size: 20px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-    transition: 0.6s;
-  }
-  button:hover {
-    transform: scale(1.1);
-    color: #ffffff;
-    background: #000;
-  }
-  .sign {
-    border: 1px solid rgb(82, 77, 78);
-    margin-right: 30px;
-    margin-left: auto;
-    width: 101px;
-    height: 37px;
-    flex-shrink: 0;
-    border-radius: 5px;
-    background: #fc9a44;
-    // background: #fd5733;
-    color: #ffffff;
-  }
-  .login {
-    color: #ffffff;
-    width: 101px;
-    height: 37px;
-    flex-shrink: 0;
-    border-radius: 10px;
-    background: #000;
-  }
-  .login:hover {
-    background: #ffffff;
-    color: rgba(251, 133, 0, 0.83);
-  }
+  //   font-size: 20px;
+  //   font-style: normal;
+  //   font-weight: 400;
+  //   line-height: normal;
+  //   transition: 0.6s;
+  // }
+  // button:hover {
+  //   transform: scale(0.1);
+  //   color: #ffffff;
+  //   background: #000;
+  // }
+
+  // .login {
+  //   color: #ffffff;
+  //   width: 101px;
+  //   height: 37px;
+  //   flex-shrink: 0;
+  //   border-radius: 10px;
+  //   background: #000;
+  // }
+  // .login:hover {
+  //   background: #ffffff;
+  //   color: rgba(251, 133, 0, 0.83);
+  // }
   list-style: none;
 }
 .profile-name {
@@ -157,50 +148,66 @@
   // overflow: hidden;
   // text-overflow: ellipsis;
 }
-.navbarElement {
-  margin-top: -10px;
-  button {
-    cursor: pointer;
 
-    color: #000;
-
-    font-size: 20px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-    transition: 0.6s;
-  }
-  button:hover {
-    transform: scale(1.1);
-    color: #ffffff;
-    background: #000;
-  }
-  .sign {
-    border: 1px solid rgb(82, 77, 78);
-    margin-right: 70px;
-    margin-left: auto;
-    width: 101px;
-    height: 37px;
-    flex-shrink: 0;
-    border-radius: 5px;
-    background: #fc9a44;
-    // background: #fd5733;
-    color: #ffffff;
-  }
-  .login {
-    color: #ffffff;
-    width: 101px;
-    height: 37px;
-    flex-shrink: 0;
-    border-radius: 10px;
-    background: #000;
-  }
-  .login:hover {
-    background: #ffffff;
-    color: rgba(251, 133, 0, 0.83);
-  }
-  list-style: none;
+.signCont {
+  margin-right: 70px;
+  // background-color: red;
 }
+.sign {
+  font-size: 1rem;
+  border: 1px solid rgb(82, 77, 78);
+  margin-left: auto;
+  width: 101px;
+  height: 37px;
+  flex-shrink: 0;
+  border-radius: 50px;
+  background: #fc9a44;
+  // background: #fd5733;
+  color: #ffffff;
+  transition: 0.4s;
+}
+.sign:hover {
+  // color: #ffffff;
+  width: 101px;
+  height: 37px;
+  // flex-shrink: 0;
+  // border-radius: 10px;
+  scale: (1.1);
+  background: #000;
+}
+// .navbarElement {
+//   margin-top: -10px;
+//   button {
+//     cursor: pointer;
+
+//     color: #000;
+
+//     font-size: 20px;
+//     font-style: normal;
+//     font-weight: 400;
+//     line-height: normal;
+//     transition: 0.6s;
+//   }
+//   button:hover {
+//     transform: scale(1.1);
+//     color: #ffffff;
+//     background: #000;
+//   }
+
+//   .login {
+//     color: #ffffff;
+//     width: 101px;
+//     height: 37px;
+//     flex-shrink: 0;
+//     border-radius: 10px;
+//     background: #000;
+//   }
+//   .login:hover {
+//     background: #ffffff;
+//     color: rgba(251, 133, 0, 0.83);
+//   }
+//   list-style: none;
+// }
 .profile-picture {
   // margin-left: 30px;
   width: 50px;
@@ -220,6 +227,10 @@
     font-size: 20px;
     font-weight: 300;
     color: #000000;
+    transition: 0.4s;
+  }
+  li:hover {
+    transform: scale(1.1);
   }
 }
 .NavProfile {
@@ -248,7 +259,7 @@
   height: 100%;
 
   background: rgba(0, 0, 0, 0.5); /* Grayish with low opacity */
-  z-index: 9; /* Below navbarElements but above page content */
+  z-index: 10; /* Below navbarElements but above page content */
   display: none; /* Hidden by default, controlled by ham state */
 
   &.active {
@@ -257,6 +268,12 @@
 }
 
 @media (max-width: 1199.98px) {
+  .Navlogo {
+    width: 150px;
+  }
+  .NavbarContain {
+    max-height: 50px;
+  }
   .navbarElements {
     li {
       font-size: 14px;
@@ -264,10 +281,10 @@
     button {
       font-size: 1rem;
     }
-    .sign {
-      width: 60px;
-      height: 30px;
-    }
+  }
+  .sign {
+    width: 100px;
+    height: 30px;
   }
   .navbarElement {
     button {
@@ -293,10 +310,14 @@
   }
 }
 .ham {
+  background-color: transparent;
   display: none;
 }
 
 @media (max-width: 768px) {
+  .signCont {
+    margin-right: -20px;
+  }
   .Navlogo {
     width: 150px;
     // height: 150px;
@@ -304,18 +325,18 @@
   .ham {
     display: block;
     position: absolute;
-    top: 30%;
+    top: 27%;
     right: 3%;
     font-size: 1.7rem;
   }
 
   .navbarElements {
     background-color: #ffffff;
-    height: 200px;
+    height: auto;
     width: 100%;
     display: none;
     position: absolute;
-    top: 70px;
+    top: 48px;
     right: 0;
     // background: #444;
     // padding: 1rem;
@@ -356,13 +377,20 @@
 }
 
 @media (max-width: 500px) {
+  .NavbarContain {
+    min-height: 0;
+  }
+
   .Navlogo {
+    margin-left: -30px;
     width: 130px;
+    height: 50px;
   }
   .navbarElement {
     button {
       font-size: 10px;
     }
+
     .sign {
       width: 40px;
       height: 25px;
