@@ -108,7 +108,7 @@ body {
   background-color: transparent !important;
   color: #343a40;
   font-size: 40px;
-  font-weight: 200;
+  font-weight: 300;
   line-height: 1.2;
   display: inline;
   text-align: left;
@@ -120,6 +120,7 @@ body {
   display: inline;
 }
 .TypewriterLine2 {
+  margin-top: 5px;
   // background-color: transparent;
   width: auto;
   text-align: left;
@@ -133,6 +134,7 @@ body {
 }
 
 .NavSearchBar {
+  // border: 1px solid pink;
   // margin-top: 20px;
   position: relative;
   // width: 100%;
@@ -151,7 +153,8 @@ body {
     cursor: pointer;
   }
   input {
-    border: 1.5px solid rgb(110, 110, 110);
+    border: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     width: 100%;
     height: 60px;
     border-radius: 10px;
@@ -297,7 +300,7 @@ body {
 }
 @media (max-width: 617px) {
   .HomeContent {
-    top: 17%;
+    margin-top: -160px;
   }
   .HomeP {
     // font-size: 40px;
@@ -317,6 +320,10 @@ body {
       width: 20px;
       height: 20px;
     }
+    input {
+      border: none;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
   }
   .HomeP2 {
     height: 80px;
@@ -325,15 +332,23 @@ body {
     right: 0;
   }
   .HomeButton {
+    height: 40px;
+    // padding: 0px;
     display: inline-block;
     // bottom: 30%;
     // right: 0;
     min-width: 100vw;
-    bottom: 23%;
+    // bottom: 303%;
     // left: 10%;
     // right: 10%;
     // display: none;
     // right: 10%;
+  }
+  .searchResultContainer {
+  }
+  .searchbruh p {
+    padding: 10px 15px;
+    font-size: 12px;
   }
 }
 @media (max-width: 407px) {
@@ -347,14 +362,12 @@ body {
   }
 }
 @media (max-width: 454px) {
-  .HomeContent {
-  }
   .TypewriterLine {
     font-size: 18px;
     display: inline;
   }
   .NavSearchBar {
-    width: 100%;
+    width: 85%;
   }
 }
 @media (max-width: 373px) {
