@@ -98,14 +98,19 @@ export default function Home() {
           </p>
           <div className="HomeP2">
             <div className="TypewriterLine">
-              <Typewriter
-                words={["Designs that speak louder than words"]}
-                // words={["This project is on development stage..."]}
-                loop={1}
-                typeSpeed={30}
-                deleteSpeed={0}
-                delaySpeed={1000}
-              />
+              <div
+                className="transperent"
+                style={{backgroundColor: "transparent"}}
+              >
+                <Typewriter
+                  words={["Designs that speak louder than words"]}
+                  // words={["This project is on development stage..."]}
+                  loop={1}
+                  typeSpeed={30}
+                  deleteSpeed={0}
+                  delaySpeed={1000}
+                />
+              </div>
             </div>
 
             {showLine && (
