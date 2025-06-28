@@ -329,15 +329,18 @@ body {
     height: 80px;
   }
   .homebuttonContainer {
-    right: 0;
+    position: static;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   .HomeButton {
     height: 40px;
     // padding: 0px;
-    display: inline-block;
+
     // bottom: 30%;
     // right: 0;
-    min-width: 100vw;
+    min-width: 80%;
     // bottom: 303%;
     // left: 10%;
     // right: 10%;
