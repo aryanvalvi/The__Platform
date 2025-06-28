@@ -418,7 +418,7 @@ body {
   //   }
   // }
 }
-@media (max-height: 700px) {
+@media screen and (min-height: 700px) and (max-width: 1200px) {
   .homebuttonContainer {
     bottom: 1;
   }
