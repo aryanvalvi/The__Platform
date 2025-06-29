@@ -130,7 +130,7 @@ body {
 }
 
 .highlighter {
-  color: #e07b30;
+  color: #fa7c2e;
 }
 
 .NavSearchBar {
@@ -250,7 +250,7 @@ body {
 }
 
 .HomeButton:hover {
-  background: #e07b30;
+  background: #fa7c2e;
   transform: scale(1.1);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -418,7 +418,7 @@ body {
   //   }
   // }
 }
-@media screen and (min-height: 700px) and (max-width: 1200px) {
+@media screen and (max-height: 700px) and (min-width: 1200px) {
   .homebuttonContainer {
     bottom: 1;
   }
@@ -427,7 +427,7 @@ body {
     height: 40px;
   }
   .HomeP {
-    font-size: 40px;
+    font-size: 50px;
     letter-spacing: 12px;
   }
   .TypewriterLine {
@@ -449,10 +449,11 @@ body {
     height: 80px;
   }
   .HomeButton {
+    border: 1px solid white;
     display: inline-block;
     // bottom: 30%;
     // right: 0;
-    max-width: 80%;
+    width: 100%;
     bottom: 23%;
     left: 10%;
     right: 10%;
