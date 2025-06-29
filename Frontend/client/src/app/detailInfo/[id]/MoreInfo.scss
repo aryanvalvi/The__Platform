@@ -31,6 +31,8 @@
   border: none !important; /* Ensure no border is added on focus */
 }
 .leftSideDetails {
+  max-width: 100%;
+  overflow: hidden;
   span:focus {
     outline: none;
   }
