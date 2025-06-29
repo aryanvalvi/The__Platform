@@ -656,15 +656,18 @@ body.active-modal {
   .leftSideDetails {
     // gap: calc(100% - 79%);
     span {
+      .LeftSideDetails-Icon {
+        &:hover {
+          transform: none;
+        }
+      }
+    }
+    span {
       font-size: 20px;
 
       p {
         font-size: 0.5rem;
       }
-    }
-    &:active .LeftSideDetails-Icon {
-      transform: none;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     }
   }
   .detail-icon-flex {
