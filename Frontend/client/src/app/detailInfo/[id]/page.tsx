@@ -74,41 +74,44 @@ const page = () => {
           <h1>Bro</h1>
         </>
       ) : (
-        <div className="MoreInfoDad">
-          {/* <button onClick={CheckStatus}>click</button> */}
-          <div className="MoreInfoContainer">
-            <div className="TopInfo">
-              <div className="TopInfo1">
-                <img
-                  className="profile2"
-                  src={data.creator?.userImage}
-                  alt="img"
-                />
-                <div className="TopInfo3">
-                  <p>{data.title}</p>
-                  <span className="TopInfo3-span">
-                    <p>by {data.creator?.username}</p>
+        <>
+          {openPopup && (
+            <Popup
+              setopenPopup={setopenPopup}
+              data={data}
+              post={userid}
+            ></Popup>
+          )}
 
-                    <button onClick={() => HandleInter("follow")}>
-                      {follow ? <>Following</> : <>follow</>}
-                    </button>
-                  </span>
+          <div className="testing">hello</div>
+          <div className="MoreInfoDad">
+            {/* <button onClick={CheckStatus}>click</button> */}
+            <div className="MoreInfoContainer">
+              <div className="TopInfo">
+                <div className="TopInfo1">
+                  <img
+                    className="profile2"
+                    src={data.creator?.userImage}
+                    alt="img"
+                  />
+                  <div className="TopInfo3">
+                    <p>{data.title}</p>
+                    <span className="TopInfo3-span">
+                      <p>by {data.creator?.username}</p>
+
+                      <button onClick={() => HandleInter("follow")}>
+                        {follow ? <>Following</> : <>follow</>}
+                      </button>
+                    </span>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            {openPopup && (
-              <Popup
-                setopenPopup={setopenPopup}
-                data={data}
-                post={userid}
-              ></Popup>
-            )}
-            <div className="bigImageContainer">
-              <img className="bigImage" src={data.images} alt="" />
+              <div className="bigImageContainer">
+                <img className="bigImage" src={data.images} alt="" />
 
-              <div className="leftSideDetails">
-                {/* <div className="detail-icon-flex">
+                <div className="leftSideDetails">
+                  {/* <div className="detail-icon-flex">
                   <span className="iconContainer">
                     <AiFillLike
                       // onClick={() => HandleInter("like")}
@@ -118,40 +121,40 @@ const page = () => {
                   </span>
                   <p>like</p>
                 </div> */}
-                <span onClick={() => setLike(prev => !prev)}>
-                  <span className="LeftSideDetails-Icon">
-                    <AiFillLike className={` ${likee ? "like" : "like2"}`} />
+                  <span onClick={() => setLike(prev => !prev)}>
+                    <span className="LeftSideDetails-Icon">
+                      <AiFillLike className={` ${likee ? "like" : "like2"}`} />
+                    </span>
+                    <p>Contact</p>
                   </span>
-                  <p>Contact</p>
-                </span>
-                <span onClick={() => setopenPopup(!openPopup)}>
-                  <span className="LeftSideDetails-Icon">
-                    <PiContactlessPaymentFill className="LeftSideDetails-Icon-Inside" />
+                  <span onClick={() => setopenPopup(!openPopup)}>
+                    <span className="LeftSideDetails-Icon">
+                      <PiContactlessPaymentFill className="LeftSideDetails-Icon-Inside" />
+                    </span>
+                    <p>Contact</p>
                   </span>
-                  <p>Contact</p>
-                </span>
-                <span>
-                  <span className="LeftSideDetails-Icon">
-                    <IoChatbubblesOutline className="LeftSideDetails-Icon-Inside" />
+                  <span>
+                    <span className="LeftSideDetails-Icon">
+                      <IoChatbubblesOutline className="LeftSideDetails-Icon-Inside" />
+                    </span>
+                    <p>Comments</p>
                   </span>
-                  <p>Comments</p>
-                </span>
-                <span>
-                  <span className="LeftSideDetails-Icon">
-                    <IoMdShareAlt className="LeftSideDetails-Icon-Inside" />
+                  <span>
+                    <span className="LeftSideDetails-Icon">
+                      <IoMdShareAlt className="LeftSideDetails-Icon-Inside" />
+                    </span>
+                    <p>Share</p>
                   </span>
-                  <p>Share</p>
-                </span>
-                <span onClick={() => setSave(prev => !prev)}>
-                  <span className="LeftSideDetails-Icon">
-                    <BsBookmarksFill
-                      className={`${savee ? "saved" : "saved2"}  `}
-                    />
+                  <span onClick={() => setSave(prev => !prev)}>
+                    <span className="LeftSideDetails-Icon">
+                      <BsBookmarksFill
+                        className={`${savee ? "saved" : "saved2"}  `}
+                      />
+                    </span>
+                    <p>Share</p>
                   </span>
-                  <p>Share</p>
-                </span>
 
-                {/* <div className="detail-icon-flex">
+                  {/* <div className="detail-icon-flex">
                   <span className="iconContainer">
                     <BsBookmarksFill
                       // onClick={() => HandleInter("save")}
@@ -161,18 +164,19 @@ const page = () => {
                   </span>
                   <p>save</p>
                 </div> */}
+                </div>
+              </div>
+
+              <p className="desMore">{data.description}</p>
+            </div>
+            <div className="More">
+              <p>More by {data.username}</p>
+              <div className="swiper">
+                {/* Swiper component code goes here */}
               </div>
             </div>
-
-            <p className="desMore">{data.description}</p>
           </div>
-          <div className="More">
-            <p>More by {data.username}</p>
-            <div className="swiper">
-              {/* Swiper component code goes here */}
-            </div>
-          </div>
-        </div>
+        </>
       )}
     </>
   )
