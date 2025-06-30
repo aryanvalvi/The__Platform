@@ -39,7 +39,10 @@ const initialState: initialState = {
 }
 
 interface moreDetailInitialState {
-  homeContent: homecontent[]
+  homeContent: {
+    mainDesign: homecontent | null
+    moreDesign: homecontent[]
+  }
 }
 const moreDetailInitialState: moreDetailInitialState = {
   homeContent: [],

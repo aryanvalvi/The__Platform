@@ -1,34 +1,85 @@
 .AdminDashboard {
   margin-top: 90px;
 }
+
 .AdminUL {
   font-size: 1.2rem;
   display: flex;
   align-items: center;
   justify-content: center;
+
   li {
     cursor: pointer;
     margin-right: 20px;
     list-style: none;
   }
 }
+
 .ProfileImgg {
-  width: 100%;
-  height: 100%;
-  object-fit: contain; /* Ensures the image covers the area without distortion */
-  border-radius: 10px;
-  transition: transform 0.3s ease; /* Optional smooth transition for hover */
-  // transition: transform 0.3s ease, box-shadow 0.3s ease;
+  min-height: 200px;
+  max-width: 350px;
+  object-fit: cover;
+  border-radius: 1px;
+
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+.ProfileImgg:hover {
+  transform: translateY(-5px); /* Slight lift effect on hover */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
+}
+
 .PublishDesigns {
   width: 100%;
   padding: 20px;
-  // display: block;
   min-height: 400px;
 }
 
-.swiperr {
+.swiperContainerr {
+  position: relative;
+  min-height: 800px;
+  padding: 0 15px; // Optional padding for container
+}
+
+.swiperWrapper {
+  position: relative;
   width: 70%;
+  margin: 0 auto; // Centers the wrapper
+  min-height: 800px;
+
+  button {
+    background-color: transparent;
+    border: none;
+    position: absolute;
+    top: 32%;
+    transform: translateY(-50%);
+    z-index: 10;
+    cursor: pointer;
+    color: #000;
+    // background-color: none;
+    // border: 1px solid white;
+    transition: color 0.3s ease;
+
+    &:hover {
+      color: #fb9a44; // Hover effect for visibility
+    }
+  }
+
+  .check {
+    background-color: transparent;
+    border: 1px solid white;
+  }
+  .swiper-button-prev {
+    background-color: transparent;
+    left: -25px; // Adjusted to bring closer to the left edge of Swiper
+  }
+
+  .swiper-button-next {
+    right: -25px; // Adjusted to bring closer to the right edge of Swiper
+  }
+}
+
+.swiperr {
+  width: 100%; // Relative to .swiperWrapper
   height: 500px;
 }
 
@@ -40,23 +91,98 @@
   justify-content: center;
   align-items: center;
   margin: 0;
-  // height: calc((100% - 30px) / 2) !important;
 }
-.swiperContainerr {
-  position: relative;
-  min-height: 500px;
-  button {
-    background: transparent;
-    border: none;
+.swiperr .swiper-pagination {
+  position: absolute;
+  bottom: -2px;
+}
+
+// Responsive adjustments
+
+@media (max-width: 1550px) {
+  .ProfileImgg {
+    height: 200px;
+    width: 300px;
+  }
+  .swiper {
+    height: 450px;
+  }
+  .swiperWrapper {
+    button {
+      top: 28%;
+    }
+  }
+}
+@media (max-width: 1350px) {
+  .ProfileImgg {
+    height: 170px;
+    width: 280px;
+  }
+  .swiperWrapper {
+    button {
+      top: 28%;
+    }
+  }
+}
+@media (max-width: 1242px) {
+  .ProfileImgg {
+    height: 250px;
+    width: 350px;
+  }
+  .swiper {
+    height: 380px;
+  }
+  .swiperWrapper {
+    button {
+      top: 23%;
+    }
+  }
+}
+@media (max-width: 945px) {
+  .ProfileImgg {
+    height: 250px;
+    width: 320px;
   }
 }
 
-.customButton {
-  position: absolute;
-  top: 50%;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  transform: translateY(-50%);
-  z-index: 10;
+@media (max-width: 1024px) {
+  .swiperWrapper {
+    width: 80%;
+  }
+
+  .swiperWrapper .swiper-button-prev {
+    left: -20px;
+  }
+
+  .swiperWrapper .swiper-button-next {
+    right: -20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .swiperWrapper {
+    width: 90%;
+  }
+
+  .swiperWrapper .swiper-button-prev {
+    left: -15px;
+  }
+
+  .swiperWrapper .swiper-button-next {
+    right: -15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .swiperr {
+    slidesperview: 1; // Adjust slides per view for small screens
+  }
+
+  .swiperWrapper .swiper-button-prev {
+    left: -10px;
+  }
+
+  .swiperWrapper .swiper-button-next {
+    right: -10px;
+  }
 }

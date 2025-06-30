@@ -20,6 +20,7 @@ const Profile = () => {
   const Data = useAppSelector(state => state.UserProfileSliceReducer)
   const user = Data.Admin
   const DataDesign = Data.data
+  console.log("fron user", DataDesign)
   console.log(id)
   const Test = () => {}
   // const homecontext = useContext(Homecontext);

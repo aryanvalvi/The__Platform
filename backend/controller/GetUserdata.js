@@ -43,16 +43,28 @@ const getUserPersonal = async (req, res) => {
 
 const GetMoreData = async (req, res) => {
   const {id} = req.body
-  console.log(id)
+  console.log("GetMoreData", id)
   try {
-    const user = await DesignUpload.findById(id).populate("creator")
+    // const user = await DesignUpload.findById(id).populate("creator")
+    const initialDesign = await DesignUpload.findById(id).populate("creator")
 
-    if (user) {
-      res.status(200).json(user)
-    } else {
-      res.status(404).json(null)
-      console.log("User is not there")
+    if (!initialDesign) {
+      console.log("No design found with that ID")
+      return res.status(404).json({message: "Design not found"})
     }
+
+    const creatorId = initialDesign.creator._id
+    const userMoreImages = await DesignUpload.find({
+      creator: creatorId,
+      _id: {$ne: id}, // $ne means "not equal", so it gets all posts EXCEPT the current one.
+    })
+
+    // const UserMoreImage = await DesignUpload.find({creator: id})
+
+    res.status(200).json({
+      mainDesign: initialDesign,
+      moreDesigns: userMoreImages,
+    })
   } catch (error) {
     res.status(404).json(null)
     console.log("User is not there")
