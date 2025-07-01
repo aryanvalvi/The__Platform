@@ -1,32 +1,35 @@
-"use client"
-
 import React, {useEffect, useRef} from "react"
+import {createRoot} from "react-dom/client"
 import {Swiper, SwiperSlide} from "swiper/react"
+import {Grid, Pagination, Navigation} from "swiper/modules"
+import {FaArrowLeft, FaArrowRight} from "react-icons/fa"
 import "swiper/css"
 import "swiper/css/grid"
 import "swiper/css/pagination"
-import {Grid, Pagination, Navigation} from "swiper/modules"
-import {FaArrowLeft, FaArrowRight} from "react-icons/fa"
 import "./dashboard.scss"
 
 const Dashboard = ({data}) => {
+  "use client"
   if (!data || data.length === 0) {
-    return <>No Images bro</>
+    return <div className="no-images">No Images bro</div>
   }
 
   console.log("data from dashboard", data)
   const sliderRef = useRef(null)
 
+  // Determine rows based on data length
+  const getRows = dataLength => (dataLength >= 6 ? 2 : 1)
+
   return (
     <div className="swiperContainerr">
       <div className="swiperWrapper">
         <button className="swiper-button-prev">
-          <FaArrowLeft className="check" size={30} />
+          <FaArrowLeft className="check" />
         </button>
         <Swiper
           slidesPerView={3}
-          grid={{rows: 2}}
-          spaceBetween={10}
+          grid={{rows: getRows(data.length), fill: "row"}}
+          spaceBetween={16}
           pagination={{clickable: true}}
           navigation={{
             nextEl: ".swiper-button-next",
@@ -36,20 +39,25 @@ const Dashboard = ({data}) => {
           className="swiperr"
           ref={sliderRef}
           breakpoints={{
-            // 1024: {
-            //   slidesPerView: 3,
-            // },
-            1242: {
-              slidesPerView: 3,
-              grid: {rows: 2},
-            },
-            600: {
-              slidesPerView: 2,
-              grid: {rows: 1},
-            },
             0: {
               slidesPerView: 1,
               grid: {rows: 1},
+              spaceBetween: 8,
+            },
+            640: {
+              slidesPerView: 2,
+              grid: {rows: 1},
+              spaceBetween: 12,
+            },
+            1024: {
+              slidesPerView: 3,
+              grid: {rows: getRows(data.length)},
+              spaceBetween: 16,
+            },
+            1280: {
+              slidesPerView: 3,
+              grid: {rows: getRows(data.length)},
+              spaceBetween: 20,
             },
           }}
         >
@@ -64,11 +72,10 @@ const Dashboard = ({data}) => {
           ))}
         </Swiper>
         <button className="swiper-button-next">
-          <FaArrowRight className="check" size={30} />
+          <FaArrowRight className="check" />
         </button>
       </div>
     </div>
   )
 }
-
 export default Dashboard
