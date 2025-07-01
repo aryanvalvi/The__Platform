@@ -11,7 +11,7 @@
   align-items: center;
   // justify-content: center;
   position: relative;
-  min-height: 100vh;
+  // min-height: 100vh;
 }
 .overlaybro {
   background: rgba(49, 49, 49, 0.3);
@@ -662,6 +662,44 @@ body.active-modal {
     transform: scale(1);
   }
 }
+.More {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 40px;
+  margin-bottom: 40px;
+  p {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: rgb(255, 255, 255);
+    background-color: #000;
+    width: 60%;
+    font-size: 1.4rem;
+    font-weight: 500;
+  }
+}
+.More {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 40px;
+  margin-bottom: 40px;
+  p {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: rgb(255, 255, 255);
+    background-color: #000;
+    width: 60%;
+    font-size: 1.4rem;
+    font-weight: 500;
+  }
+}
 
 @media (max-width: 1200px) {
   .MoreInfoContainer {
@@ -677,7 +715,16 @@ body.active-modal {
       min-height: 200px;
     }
   }
+
+  .More {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    p {
+      font-size: 1rem;
+    }
+  }
 }
+
 @media (max-width: 1100px) {
   .MoreInfoContainer {
     .bigImage {
@@ -769,6 +816,13 @@ body.active-modal {
   }
 }
 @media (max-width: 600px) {
+  .More {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    p {
+      font-size: 0.9rem;
+    }
+  }
   .connect {
     img {
       width: 2rem;
@@ -867,22 +921,3 @@ body.active-modal {
 //     }
 //   }
 // }
-.More {
-  width: 100%;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 40px;
-  margin-bottom: 40px;
-  p {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: rgb(255, 255, 255);
-    background-color: #000;
-    width: 60%;
-    font-size: 1.4rem;
-    font-weight: 500;
-  }
-}

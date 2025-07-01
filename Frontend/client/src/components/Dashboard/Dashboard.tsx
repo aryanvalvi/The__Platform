@@ -43,7 +43,7 @@ const Dashboard = ({data}) => {
               slidesPerView: 3,
               grid: {rows: 2},
             },
-            864: {
+            600: {
               slidesPerView: 2,
               grid: {rows: 1},
             },

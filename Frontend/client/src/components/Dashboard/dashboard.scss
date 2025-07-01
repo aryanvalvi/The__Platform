@@ -36,7 +36,7 @@
 
 .swiperContainerr {
   position: relative;
-  min-height: 800px;
+  min-height: 600px;
   padding: 0 15px; // Optional padding for container
 }
 
@@ -44,13 +44,13 @@
   position: relative;
   width: 70%;
   margin: 0 auto; // Centers the wrapper
-  min-height: 800px;
+  min-height: 600px;
 
   button {
     background-color: transparent;
     border: none;
     position: absolute;
-    top: 32%;
+    top: 40%;
     transform: translateY(-50%);
     z-index: 10;
     cursor: pointer;
@@ -109,7 +109,7 @@
   }
   .swiperWrapper {
     button {
-      top: 28%;
+      top: 38%;
     }
   }
 }
@@ -120,7 +120,7 @@
   }
   .swiperWrapper {
     button {
-      top: 28%;
+      top: 38%;
     }
   }
 }
@@ -134,8 +134,30 @@
   }
   .swiperWrapper {
     button {
-      top: 23%;
+      top: 32%;
     }
+  }
+  .swiperContainerr {
+    max-height: 500px;
+  }
+}
+@media (max-width: 862px) {
+  .swiperWrapper {
+    max-width: 600px;
+  }
+  .ProfileImgg {
+    max-height: 200px;
+    max-width: 260px;
+  }
+}
+@media (max-width: 600px) {
+  .ProfileImgg {
+    max-height: 250px;
+    max-width: 350px;
+    object-fit: contain;
+  }
+  .swiperWrapper {
+    // max-height: 400px !important;
   }
 }
 @media (max-width: 945px) {
