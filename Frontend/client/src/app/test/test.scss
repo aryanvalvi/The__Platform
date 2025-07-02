@@ -110,7 +110,7 @@
   // max-height: 450px;
   // min-height: 500px;
   // height: 600px;
-  width: 60%;
+  width: 100%;
   flex: 2;
   position: relative;
   display: flex;
@@ -249,6 +249,7 @@
   justify-content: center;
   align-items: center;
   height: 100%;
+  background-color: #f7f7f7;
 }
 
 .upload-icon-container {
@@ -266,6 +267,8 @@
 }
 
 .upload-icon-wrapper {
+  max-height: 130px;
+  // background-color: #ff0000;
   cursor: pointer;
 }
 
@@ -273,7 +276,7 @@
   font-size: 40px;
   color: #666;
   // margin-bottom: 10px;
-  margin-top: 60px;
+  margin-top: 20px;
 }
 
 .info p {
@@ -654,6 +657,9 @@
 
 //bruh s24 Ultra
 @media (max-width: 480px) {
+  .upload-icon-container {
+    padding: 0;
+  }
   .content-wrapper-after {
     display: flex;
     flex-direction: column;
@@ -721,6 +727,9 @@
   }
 
   .info p {
+    font-size: 10px;
+  }
+  .info p:first-child {
     font-size: 12px;
   }
 
