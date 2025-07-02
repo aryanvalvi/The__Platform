@@ -382,7 +382,7 @@ const ImageUpload = () => {
                   <div className="placeholder-image">
                     <img
                       className="create-main-img"
-                      src="./image/Your Design2.jpg"
+                      src="./client_images/Your Design2.jpg"
                       alt=""
                     />
                   </div>
