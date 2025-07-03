@@ -11,6 +11,7 @@ const {
   UserInteraction,
   Check,
   Dashboard,
+  getUserProfile,
   SendProposal,
 } = require("../controller/UserInteraction")
 const {
@@ -22,10 +23,11 @@ const {
   GetUserDesign,
 } = require("../controller/GetUserdata")
 const {
-  GetImage,
-  UserPostImage,
-  UserVideo,
-  Both,
+  UserPostMedia,
+  // GetImage,
+  // UserPostImage,
+  // UserVideo,
+  // Both,
 } = require("../controller/UserUpload")
 const {Cloud} = require("../controller/Cloud/CloudNary")
 const MainData = require("../controller/MainData")
@@ -113,10 +115,10 @@ router.get("/myproject", async (req, res) => {
 
 //file upload
 
-router.post("/xyz", UserPostImage)
-router.post("/UserVideoUpload", UserVideo)
-router.post("/both", Both)
-router.post("/z", GetImage)
+router.post("/xyz", UserPostMedia)
+// router.post("/UserVideoUpload", UserVideo)
+// router.post("/both", Both)
+// router.post("/z", GetImage)
 
 //Get user Data
 router.get("/Getdata", GetData)
@@ -128,6 +130,7 @@ router.post("/getuserdesign", GetUserDesign)
 router.post("/userInteraction", UserInteraction)
 router.post("/Check", Check)
 router.post("/dashboard", Dashboard)
+router.get("/getprofile", getUserProfile)
 router.post("/sendproposal", SendProposal)
 
 //Upload User Data

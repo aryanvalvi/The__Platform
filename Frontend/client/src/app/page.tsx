@@ -103,8 +103,8 @@ export default function Home() {
                 style={{backgroundColor: "transparent"}}
               >
                 <Typewriter
-                  words={["Designs that speak louder than words"]}
-                  // words={["This project is on development stage..."]}
+                  // words={["Designs that speak louder than words"]}
+                  words={["This project is on development stage..."]}
                   loop={1}
                   typeSpeed={30}
                   deleteSpeed={0}

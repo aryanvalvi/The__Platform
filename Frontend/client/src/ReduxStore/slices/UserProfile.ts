@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit"
-interface admin {
+interface user {
   followers: string[]
   following: string[]
   googleID: string
@@ -15,13 +15,12 @@ interface admin {
 
 interface InitialState {
   data: any[]
-  Admin: admin
-
-  IdMatched: Boolean
+  Admin: boolean
+  user: user
 }
 const initialState: InitialState = {
   data: [],
-  Admin: {
+  user: {
     followers: [],
     following: [],
     googleID: "",
@@ -35,15 +34,15 @@ const initialState: InitialState = {
     _id: "",
   },
 
-  IdMatched: false,
+  Admin: false,
 }
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5001"
 export const UserProfileSliceFunction = createAsyncThunk(
   "userprofile",
   async id => {
-    const res = await fetch(`${baseUrl}/auth/dashboard`, {
-      method: "POST",
+    const res = await fetch(`${baseUrl}/auth/getprofile`, {
+      method: "GET",
       credentials: "include",
       headers: {
         "Content-Type": "application/json",
@@ -57,6 +56,23 @@ export const UserProfileSliceFunction = createAsyncThunk(
   }
 )
 
+export const UserDashBoardFunction = createAsyncThunk(
+  "userDashboard",
+  async id => {
+    const res = await fetch(`${baseUrl}/auth/dashboard`, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({id}),
+    })
+    const data = await res.json()
+    console.log("from userprofile slice ", data)
+    return data
+  }
+)
+
 export const UserProfileSlice = createSlice({
   name: "userProfile",
   initialState,
@@ -66,6 +82,11 @@ export const UserProfileSlice = createSlice({
       ;(state.Admin = action.payload.Admin),
         (state.IdMatched = action.payload.IdMatched),
         (state.data = action.payload.data)
+    })
+    builder.addCase(UserDashBoardFunction.fulfilled, (state, action) => {
+      ;(state.Admin = action.payload.isOwner),
+        (state.data = action.payload.design),
+        (state.user = action.payload.user)
     })
   },
 })

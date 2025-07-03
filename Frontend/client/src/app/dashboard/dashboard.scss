@@ -1,0 +1,15 @@
+.dashboardContainer {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+}
+.dashboard-left {
+  background-color: aqua;
+  height: 100%;
+  width: 20%;
+}
+.dashboard-right {
+  width: 100%;
+  background-color: aquamarine;
+  height: 100%;
+}

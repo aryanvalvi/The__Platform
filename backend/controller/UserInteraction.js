@@ -1,5 +1,6 @@
 const User = require("../models/UserSchema")
 const DesignUpload = require("../models/DesignSchema")
+const {UserData} = require("../models/user-model")
 const UserInteraction = async (req, res) => {
   const {action, post} = req.body
   const userId = req.user._id
@@ -137,28 +138,86 @@ const SendProposal = async (req, res) => {
   }
 }
 
+// const Dashboard = async (req, res) => {
+//   const {id} = req.body
+//   const id2 = req.user._id
+//   console.log("from body", id, "from google", id2)
+
+//   try {
+//     const IsUserAdmin = await User.findById(id)
+//     console.log("king", IsUserAdmin)
+//     const IdMatcher = id2.toString() === IsUserAdmin._id.toString()
+//     console.log(IdMatcher)
+
+//     // if (IdMatcher) {
+//     const response = await DesignUpload.find({creator: id})
+//     // }
+
+//     if (!response) {
+//       console.log("No Post")
+//       res.json({data: false})
+//     }
+//     console.log("response from Dashboard backend", response.length)
+//     res.json({data: response, IdMatched: IdMatcher, Admin: IsUserAdmin})
+//     // console.log("Here is res", response);
+//   } catch (error) {
+//     res.json({data: false})
+//   }
+// }
+
 const Dashboard = async (req, res) => {
-  const {id} = req.body
-  const id2 = req.user._id
-  console.log("from body", id, "from google", id2)
-
+  console.log("dashboard called")
   try {
-    const IsUserAdmin = await User.findById(id)
-    console.log("king", IsUserAdmin)
-    const IdMatcher = id2.toString() === IsUserAdmin._id.toString()
-    console.log(IdMatcher)
+    const loggedInUserId = req.user._id
+    const userDesign = await DesignUpload.find({creator: loggedInUserId})
+    const user = await User.findById(loggedInUserId)
 
-    const response = await DesignUpload.find({creator: id})
-    if (!response) {
-      console.log("No Post")
-      res.json({data: false})
+    if (!user) {
+      return res.status(404).json({message: "User not found"})
     }
-    console.log("response from Dashboard backend", response.length)
-    res.json({data: response, IdMatched: IdMatcher, Admin: IsUserAdmin})
-    // console.log("Here is res", response);
+
+    res.json({
+      design: userDesign,
+      user: user,
+      isOwner: true,
+    })
   } catch (error) {
-    res.json({data: false})
+    console.log("error fetching dashobord", error)
+
+    res.status(500).json({message: "server error"})
   }
 }
 
-module.exports = {UserInteraction, Check, Dashboard, SendProposal}
+const getUserProfile = async (req, res) => {
+  try {
+    const profileId = req.params.userId
+    const profileUser = await User.findById(profileId)
+
+    if (!profileUser) {
+      return res.status(404).json({message: "Profile not found"})
+    }
+    const userDesign = await DesignUpload.find({creator: profileId})
+    let isOwner = false
+    if (req.user) {
+      const viewerId = req.user._id.toString()
+      isOwner = viewerId === profileId
+    }
+
+    res.json({
+      user: profileId,
+      design: userDesign,
+      isOwner: isOwner,
+    })
+  } catch (error) {
+    console.log("error fetching dashobord", error)
+    res.status(500).json({message: "server error"})
+  }
+}
+
+module.exports = {
+  UserInteraction,
+  Check,
+  Dashboard,
+  SendProposal,
+  getUserProfile,
+}

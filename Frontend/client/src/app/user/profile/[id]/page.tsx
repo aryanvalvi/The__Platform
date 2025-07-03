@@ -11,13 +11,17 @@ import "./profile.scss"
 import Popup from "@/components/Popup"
 import {useDispatch} from "react-redux"
 import {useAppSelector} from "@/ReduxStore/hook/CustomHook"
-import {UserProfileSliceFunction} from "@/ReduxStore/slices/UserProfile"
+import {
+  UserDashBoardFunction,
+  UserProfileSliceFunction,
+} from "@/ReduxStore/slices/UserProfile"
 import {useParams} from "next/navigation"
 import Dashboard from "@/components/Dashboard/Dashboard"
 const Profile = () => {
   const dispatch = useDispatch()
   const {id} = useParams()
   const Data = useAppSelector(state => state.UserProfileSliceReducer)
+  console.log("from frontend dashboard", Data)
   const user = Data.Admin
   const DataDesign = Data.data
   console.log("fron user", DataDesign)
@@ -66,7 +70,7 @@ const Profile = () => {
   //   window.scrollTo(0, 0);
   // }, []);
   useEffect(() => {
-    dispatch(UserProfileSliceFunction(id))
+    dispatch(UserDashBoardFunction(id))
   }, [])
 
   const DashboardClick = item => {

@@ -250,14 +250,34 @@
     align-items: center;
     justify-content: center;
     position: relative;
+    max-width: 80%;
     .bigImage {
-      max-width: 80%;
+      // border: 1px solid black;
+
+      max-width: 100%;
       height: auto;
       margin-top: 20px;
       border-radius: 8px;
     }
   }
-
+  .shadowForMedia {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .mainImage {
+    max-width: 1200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 20px;
+  }
   .desMore {
     width: 80%;
     max-width: 800px;

@@ -109,7 +109,45 @@ const page = () => {
             </div>
 
             <div className="bigImageContainer">
-              <img className="bigImage" src={mainDesign?.images} alt="" />
+              <div className="mainImage">
+                {mainDesign?.images ? (
+                  <div className="shadowForMedia">
+                    <img className="bigImage" src={mainDesign?.images} alt="" />
+                  </div>
+                ) : (
+                  <div className="shadowForMedia">
+                    <video
+                      autoPlay
+                      loop
+                      muted
+                      className="bigImage"
+                      src={mainDesign?.video}
+                    ></video>
+                  </div>
+                )}
+                <div className="sideImages">
+                  {mainDesign?.sideImages.map(e => {
+                    const isVideo =
+                      e.endsWith(".mp4") ||
+                      e.endsWith("webm") ||
+                      e.endsWith("ogg")
+
+                    if (isVideo) {
+                      return (
+                        <div className="shadowForMedia">
+                          <video className="" src={e}></video>
+                        </div>
+                      )
+                    } else {
+                      return (
+                        <div className="shadowForMedia">
+                          <img className="bigImage" src={e} alt="" />
+                        </div>
+                      )
+                    }
+                  })}
+                </div>
+              </div>
 
               <div className="leftSideDetails">
                 {/* <div className="detail-icon-flex">

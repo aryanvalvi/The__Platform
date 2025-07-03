@@ -84,7 +84,9 @@ const ImageUpload = () => {
   const [selectedTag, setSelectedTags] = useState([])
   const [showSearchOption, setShowSearchOption] = useState(false)
   const [link, setLink] = useState()
+  console.log(link)
   const [linkset, SetLinkSet] = useState([])
+  console.log(linkset)
   const [l, setL] = useState()
   const [edit, setEdit] = useState(false)
   console.log("selected tags", selectedTag)
@@ -94,6 +96,7 @@ const ImageUpload = () => {
   console.log(arryImage)
   console.log(linkset)
 
+  const success = useAppSelector(state => state.postPostReducer.success)
   const nextFunc = () => {
     if (!Title.trim()) {
       // alert("bruhh")
@@ -134,7 +137,10 @@ const ImageUpload = () => {
   }
   const TagSelectorFucntion = e => {
     setShowSearchOption(false)
-    setSelectedTags(prev => [...prev, e])
+    if (!tags.includes(e)) {
+      setTags(prev => [...prev, e])
+    }
+
     console.log(e)
   }
   const editFunction = action => {
@@ -200,7 +206,11 @@ const ImageUpload = () => {
 
     console.log(file)
     setUrl(URL.createObjectURL(selectedFile))
-    const img = URL.createObjectURL(selectedFile)
+    const img = {
+      url: URL.createObjectURL(selectedFile),
+      type: selectedFile.type,
+    }
+
     console.log("are bkl gandu sale,", img)
     setArryImage(prev => [...prev, img])
   }
@@ -217,12 +227,16 @@ const ImageUpload = () => {
     )
     const filesArray = selectMultiple.map(file => file)
     console.log("files array", filesArray)
-    const urls = selectMultiple.map(file => URL.createObjectURL(file))
+    const urls = selectMultiple.map(file => ({
+      url: URL.createObjectURL(file),
+      type: file.type,
+    }))
     setArryImage(prev => [...prev, ...urls])
     console.log(urls)
     setToggle1(true)
-    // setMultiImgFile(filesArray)
-    // setMulti(urls)
+    setMultiImgFile(filesArray)
+
+    setMulti(urls.map(item => item.url))
   }
   const handleUpload = async e => {
     e.preventDefault()
@@ -231,10 +245,16 @@ const ImageUpload = () => {
     multiImgFile.forEach(file => {
       formData.append(`side_images[]`, file)
     })
-    const DesTitle = {Des, Title}
-    formData.append("description", JSON.stringify(DesTitle))
-    formData.append("side_images", multi)
-    formData.append("tags", JSON.stringify(tags)) // Send tags as JSON string
+    const formUserInput = {
+      Des,
+      Title,
+      tags,
+      dropdownValue,
+      dropdownValue2,
+      linkset,
+    }
+    formData.append("userFormInput", JSON.stringify(formUserInput))
+
     console.log("FormData Entries:")
     for (let pair of formData.entries()) {
       console.log(pair[0], pair[1])
@@ -312,6 +332,7 @@ const ImageUpload = () => {
           }
         >
           <div className="create-flex">
+            {/* <FiEdit></FiEdit> */}
             {edit && (
               <div className="overlay">
                 <div className="inOverlay">
@@ -344,39 +365,47 @@ const ImageUpload = () => {
             </label>
             <Swiper
               modules={[Navigation, Pagination, Scrollbar, A11y]}
-              // spaceBetween={50}
-              // slidesPerView={1}
-              // navigation
-              // pagination={{clickable: true}}
-              // scrollbar={{draggable: true}}
-              // onSwiper={swiper => console.log(swiper)}
-              // onSlideChange={() => console.log("slide change")}
               navigation={{
                 nextEl: ".custom-swiper-button-next",
                 prevEl: ".custom-swiper-button-prev",
               }}
-              // navigation={true}
               slidesPerView={1.2}
               spaceBetween={20}
               centeredSlides={true}
               className="swiper"
             >
               {arryImage.length > 0 ? (
-                arryImage.map((e, index) => (
-                  <SwiperSlide key={index} className="swiper-slide">
-                    <img
-                      className="create-main-img"
-                      src={e}
-                      alt="Uploaded content"
-                    />
-                    <FiEdit
-                      onClick={() => {
-                        setIndex(index), setEdit(true)
-                      }}
-                      className="edit"
-                    ></FiEdit>
-                  </SwiperSlide>
-                ))
+                arryImage.map((e, index) => {
+                  const isVideo = e.type && e.type.startsWith("video/")
+                  console.log("isVideo:", isVideo)
+                  return (
+                    <SwiperSlide key={index} className="swiper-slide">
+                      {isVideo ? (
+                        <video
+                          className="create-main-img"
+                          src={e.url}
+                          autoPlay
+                          muted
+                          loop
+                        />
+                      ) : (
+                        <img
+                          className="create-main-img"
+                          src={e.url}
+                          alt="Uploaded content"
+                        />
+                      )}
+
+                      <FiEdit
+                        onClick={() => {
+                          setIndex(index)
+                          setEdit(true)
+                        }}
+                        className="edit"
+                      />
+                    </SwiperSlide>
+                  )
+                })
               ) : (
                 <SwiperSlide className="swiper-slide">
                   <div className="placeholder-image">
@@ -389,7 +418,7 @@ const ImageUpload = () => {
                 </SwiperSlide>
               )}
 
-              {/* {toggle1 && ( */}
+              {/* Navigation arrows */}
               <>
                 <div className="custom-swiper-button-prev">
                   <FaArrowLeft
@@ -402,7 +431,6 @@ const ImageUpload = () => {
                   />
                 </div>
               </>
-              {/* )} */}
             </Swiper>
           </div>
           <div
@@ -455,6 +483,7 @@ const ImageUpload = () => {
                         name="image"
                         multiple
                         type="file"
+                        accept="image/*,video/*"
                         className="file-input"
                         onChange={MultipleFileChange}
                       />
@@ -631,12 +660,13 @@ const ImageUpload = () => {
                         <FaCircleArrowLeft />
                         <p>Back</p>
                       </button>
-                      <button
-                        onClick={() => setNext(false)}
-                        className="publish-btn"
-                      >
-                        Publish
-                      </button>
+                      {!success ? (
+                        <button onClick={handleUpload} className="publish-btn">
+                          Publish
+                        </button>
+                      ) : (
+                        <h1>Published</h1>
+                      )}
                     </div>
                   </div>
                 )}
