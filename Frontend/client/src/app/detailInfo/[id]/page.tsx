@@ -76,13 +76,13 @@ const page = () => {
     // </>
     <>
       <>
-        {/* {openPopup && (
+        {openPopup && (
           <Popup
             setopenPopup={setopenPopup}
             mainDesign={mainDesign}
             post={userid}
           ></Popup>
-        )} */}
+        )}
 
         <div className="testing">hello</div>
         <div className="MoreInfoDad">

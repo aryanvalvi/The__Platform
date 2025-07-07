@@ -86,7 +86,7 @@ const Navbar = () => {
                     className="NavProfile"
                   >
                     <div className="pname">
-                      <Link href={`/user/profile/${user._id}`}>
+                      <Link href={`/dashboard/profile/${user._id}`}>
                         <img
                           className="profile-picture"
                           src={user.userImage || "/image/fallback.png"}

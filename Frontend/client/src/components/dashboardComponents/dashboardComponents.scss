@@ -1,0 +1,376 @@
+/* Reset default margins and padding */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Container for the cards */
+.flex {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px; /* Increased spacing between cards for a cleaner look */
+  justify-content: center; /* Centered layout (you can change to flex-start if needed) */
+  padding: 20px; /* Add padding around the container */
+  max-width: 1900px;
+  margin: 0 auto;
+}
+
+/* Individual card container */
+.gand {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 280px;
+  max-width: 380px; /* Match the max-width of the image */
+  background-color: #ffffff; /* White background for the card */
+  // border-radius: 15 dew point 15px; /* Slightly larger radius for a softer look */
+  box-shadow: 0 4px12px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover effect for the card */
+.gand:hover {
+  transform: translateY(-5px); /* Slight lift effect on hover */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
+}
+
+/* Image or video container */
+.imageContent {
+  width: 100%;
+  aspect-ratio: 4/3;
+  // height: 250px; /* Fixed height for consistency */
+  // border-radius: 15px 15px 0 0; /* Rounded corners on top only */
+  overflow: hidden; /* Hide overflow for zoom effect */
+}
+
+/* Image or video styling */
+.mgand {
+  // border-radius: 10px;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensure the image/video fills the container */
+  transition: transform 0.3s ease; /* Smooth zoom effect */
+}
+
+/* Zoom effect on hover */
+// .imageContent:hover .mgand {
+//   transform: scale(1.1); /* Slight zoom on hover */
+// }
+
+.edit-gand {
+  position: absolute;
+  font-size: 2rem;
+  color: black;
+  // width: 40px;
+  // height: 30px;
+  background-color: #ffffff;
+
+  // top: 0%;
+}
+
+/* Title styling */
+.ImageTitle {
+  padding: 10px 15px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #333; /* Darker text for better contrast */
+  background-color: rgba(
+    255,
+    255,
+    255,
+    0.9
+  ); /* Semi-transparent white background */
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  transition: background-color 0.3s ease;
+}
+
+/* Hover effect for the title */
+.gand:hover .ImageTitle {
+  background-color: rgba(255, 255, 255, 1); /* Fully opaque on hover */
+}
+
+/* Profile, username, and heart section */
+.ImgAndHeart {
+  // margin-top: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 15px 15px 0px;
+  // background-color: #f8f9fa; /* Light gray background */
+  // border-radius: 0 0 15px 15px; /* Rounded corners on bottom */
+}
+
+/* Profile image */
+.profile {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2px solid #fff; /* White border for contrast */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  transition: transform 0.3s ease;
+}
+
+/* Hover effect for profile image */
+.profile:hover {
+  transform: scale(1.1); /* Slight zoom on hover */
+}
+
+/* Username styling */
+.overlayText {
+  font-size: 16px;
+  font-weight: 500;
+  color: #555; /* Medium gray for readability */
+  flex-grow: 1; /* Take up remaining space */
+  margin-left: 10px; /* Space between profile and username */
+}
+
+/* Like count and heart icon */
+.ImgAndHeart span {
+  font-size: 16px;
+  color: #777; /* Lighter gray for the count */
+  margin-right: 5px; /* Space between count and heart */
+}
+
+/* Heart icon styling */
+.ImgAndHeart svg {
+  font-size: 20px;
+  color: #ccc; /* Gray by default */
+  cursor: pointer;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+/* Hover effect for heart */
+.ImgAndHeart svg:hover {
+  color: #e63946; /* Red on hover */
+  transform: scale(1.2); /* Slight zoom on hover */
+}
+
+/* Explore button container */
+.exploreButton {
+  margin: 40px 0;
+  display: flex;
+  justify-content: center;
+}
+
+/* Button styling */
+.exploreButton button {
+  padding: 12px 30px;
+  background-color: #343a40; /* Dark gray background */
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 18px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+/* Hover effect for button */
+.exploreButton button:hover {
+  background-color: #495057; /* Slightly lighter gray on hover */
+  transform: scale(1.05); /* Slight zoom on hover */
+}
+
+/* Loader styling */
+.Loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.loader {
+  width: 40px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 6px solid;
+  border-color: #343a40 transparent; /* Dark gray spinner */
+  animation: l1 1s infinite;
+}
+
+@keyframes l1 {
+  to {
+    transform: rotate(0.5turn);
+  }
+}
+
+/* Skeleton loader container */
+.SkeletonContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* Skeleton item */
+.skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 400px 100%;
+  animation: skeleton-loading 1.2s infinite ease-in-out;
+  border-radius: 15px;
+  width: 100%;
+  max-width: 380px;
+  height: 310px; /* Match card height (250px image + 60px footer) */
+  border: 1px solid #eee;
+}
+
+/* Skeleton loading animation */
+@keyframes skeleton-loading {
+  0% {
+    background-position: -200px 0;
+  }
+  100% {
+    background-position: 200px 0;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 1220px) {
+  .gand,
+  .skeleton {
+    max-width: calc(100% / 3 - 20px);
+  }
+}
+
+@media (max-width: 1000px) {
+  .gand,
+  .skeleton {
+    max-width: calc(100% / 2 - 20px);
+  }
+  .flex {
+    // width: 1200px;
+  }
+  .gand {
+    // width: 500px;
+    // flex: 1 1 200px;
+    // flex-grow: 1;
+    // flex-shrink: 1;
+    // flex-basis: 400px;
+  }
+}
+@media (max-width: 768px) {
+  .gand,
+  .skeleton {
+    max-width: calc(100% - 20px);
+  }
+  .overlayText {
+    font-size: 14px;
+  }
+  .ImgAndHeart span {
+    font-size: 14px;
+  }
+  .ImgAndHeart svg {
+    font-size: 18px;
+  }
+}
+@media (max-width: 480px) {
+  .gand,
+  .skeleton {
+    min-width: 240px; /* Slightly smaller minimum width */
+  }
+  .imageContent {
+    aspect-ratio: 4 / 3; /* Maintain aspect ratio */
+  }
+}
+// @media (max-width: 829px) {
+//   .gand {
+//     max-width: 300px;
+//     // width: auto;
+//   }
+//   .imageContent {
+//     // width: auto;
+//     height: 300px;
+//   }
+//   .flex {
+//     gap: 15px;
+//   }
+// }
+// @media (max-width: 768px) {
+//   .gand {
+//     max-width: 100%;
+//   }
+//   .imageContent {
+//     height: 300px;
+//   }
+
+//   .overlayText {
+//     font-size: 14px;
+//   }
+
+//   .ImgAndHeart span {
+//     font-size: 14px;
+//   }
+
+//   .ImgAndHeart svg {
+//     font-size: 18px;
+//   }
+
+//   .skeleton {
+//     min-height: 260px;
+//   }
+// }
+
+// popup
+.modal,
+.overlay {
+  background: rgba(49, 49, 49, 0.3);
+  width: 100vw;
+  height: 100vh;
+  transform: translate(-50%, -50%);
+  position: fixed;
+  top: 50%;
+  left: 50%;
+
+  z-index: 10;
+}
+.modal-content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 10;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px 30px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+
+  input,
+  textarea,
+  select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+  }
+
+  .popup-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+
+    button {
+      padding: 8px 14px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 500;
+
+      &:first-child {
+        background-color: #ff6600;
+        color: white;
+      }
+
+      &:last-child {
+        background-color: #eee;
+      }
+    }
+  }
+}
