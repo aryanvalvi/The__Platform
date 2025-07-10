@@ -407,6 +407,11 @@
   }
 }
 .modal-content-right {
+  span {
+    label {
+      font-weight: 600;
+    }
+  }
   width: 70%;
   display: flex;
   flex-direction: column;
@@ -586,5 +591,66 @@
   }
   .modal-content-left {
     max-width: calc(100% - 10%);
+  }
+}
+@media (max-width: 800px) {
+  .modal-content {
+    input,
+    textarea,
+    select {
+      padding: 5px;
+      font-size: 0.8rem;
+    }
+
+    padding: 10px 10px;
+    height: 80%;
+    h2 {
+      display: none;
+      margin: 0;
+      margin-bottom: 10px;
+    }
+  }
+  .modal-content-left {
+    .imageContentt {
+      margin: 0;
+    }
+  }
+  .left-right-container {
+    gap: 20px;
+  }
+  .modal-content-right {
+    gap: 5px;
+    span {
+      label {
+        font-size: 0.8rem;
+      }
+    }
+  }
+  .toggle-switch {
+    width: 25px;
+    height: 14px;
+  }
+  .toggle-circle {
+    width: 10px;
+    height: 10px;
+  }
+  .toggle-label {
+    font-weight: 700;
+    font-size: 0.8rem;
+  }
+  .search-tag {
+    font-size: 0.8rem;
+  }
+  .select-options {
+    font-size: 0.8rem;
+  }
+  .modal-content {
+    .popup-actions {
+      margin-top: 40px;
+      button {
+        padding: 4px 8px;
+        font-size: 0.8rem;
+      }
+    }
   }
 }
