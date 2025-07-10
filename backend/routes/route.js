@@ -24,6 +24,7 @@ const {
 } = require("../controller/GetUserdata")
 const {
   UserPostMedia,
+  UserPostUpdateMedia,
   // GetImage,
   // UserPostImage,
   // UserVideo,
@@ -116,6 +117,7 @@ router.get("/myproject", async (req, res) => {
 //file upload
 
 router.post("/xyz", UserPostMedia)
+router.put("/update/:id", UserPostUpdateMedia)
 // router.post("/UserVideoUpload", UserVideo)
 // router.post("/both", Both)
 // router.post("/z", GetImage)

@@ -81,7 +81,7 @@ const page = () => {
           <div className="right-down">
             <p className="right-down-p">My posts</p>
 
-            <Myposts data={Data?.data}></Myposts>
+            <Myposts data={Data?.data} id={id}></Myposts>
           </div>
         </div>
       </div>

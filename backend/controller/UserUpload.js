@@ -529,6 +529,7 @@ const UserPostMedia = async (req, res) => {
       //   mainVideoUrl = result.secure_url
       //   console.log("Main video uploaded:", mainVideoUrl)
       // }
+
       if (req.files.video && req.files.video.length > 0) {
         const videoFile = req.files.video[0]
         const result = await cloudinary.uploader.upload(videoFile.path, {
@@ -592,4 +593,293 @@ const UserPostMedia = async (req, res) => {
   })
 }
 
-module.exports = {UserPostMedia}
+// **New function for updating existing posts**
+const UserPostUpdateMedia = async (req, res) => {
+  upload(req, res, async err => {
+    let mainImageFile = req.files.image && req.files.image[0]
+    let mainVideoFile = req.files.video && req.files.video[0]
+    let newSideFiles = req.files["side_images[]"]
+    if (err) {
+      console.error("File upload error during update:", err)
+      // More detailed error for Multer specific issues
+      if (err instanceof multer.MulterError) {
+        return res
+          .status(400)
+          .json({error: "Multer error during update", details: err.message})
+      }
+      return res
+        .status(400)
+        .json({error: "File upload failed during update", details: err.message})
+    }
+
+    const postId = req.params.id // Expecting ID from URL like /update/:id
+    if (!postId) {
+      console.log("No Post ID provided for update (from req.params.id).")
+      return res.status(400).json({error: "No post ID provided in URL."})
+    }
+
+    try {
+      const designToUpdate = await DesignUpload.findById(postId)
+      if (!designToUpdate) {
+        console.log(`Design with ID ${postId} not found.`)
+        return res.status(404).json({success: false, msg: "Post not found"})
+      }
+
+      // Optional: Check if the current user is the creator of the post
+      // Ensure req.user._id is populated by your authentication middleware
+      if (
+        req.user &&
+        designToUpdate.creator.toString() !== req.user._id.toString()
+      ) {
+        console.log("Unauthorized attempt to update post by different user.")
+        return res
+          .status(403)
+          .json({success: false, msg: "Unauthorized to update this post"})
+      }
+
+      const userFormInput = JSON.parse(req.body.userFormInput || "{}")
+      const {
+        Des,
+        Title,
+        tags,
+        dropdownValue, // Category
+        dropdownValue2, // Tools
+        linkset, // External Links
+        visibility,
+      } = userFormInput
+
+      // Initialize update fields with existing data
+      let newMainImageUrl =
+        designToUpdate.images && designToUpdate.images.length > 0
+          ? designToUpdate.images[0] // Safely get the first image URL if it exists
+          : null
+      let newMainVideoUrl = designToUpdate.video || null
+      let newSideImageUrls = designToUpdate.sideImages
+        ? [...designToUpdate.sideImages]
+        : [] // Clone array to modify
+
+      // Destructure files for easier access
+
+      // --- Handle new main image/video upload ---
+      if (mainImageFile) {
+        // Delete old main media (image or video) if a new image is provided
+        if (newMainImageUrl && typeof newMainImageUrl === "string") {
+          try {
+            // Extract public ID including folder_name
+            const urlParts = newMainImageUrl.split("/")
+            const uploadIndex = urlParts.indexOf("upload")
+            if (uploadIndex !== -1 && urlParts.length > uploadIndex + 2) {
+              const publicIdWithFolder = urlParts
+                .slice(uploadIndex + 2)
+                .join("/")
+                .split(".")[0]
+              await cloudinary.uploader.destroy(publicIdWithFolder)
+              console.log(
+                `Old main image ${publicIdWithFolder} deleted from Cloudinary.`
+              )
+            } else {
+              console.warn(
+                "Could not extract public ID from old main image URL for deletion:",
+                newMainImageUrl
+              )
+            }
+          } catch (deleteError) {
+            console.error(
+              "Error deleting old main image from Cloudinary:",
+              deleteError
+            )
+          }
+        } else if (newMainVideoUrl && typeof newMainVideoUrl === "string") {
+          try {
+            // Extract public ID including folder_name
+            const urlParts = newMainVideoUrl.split("/")
+            const uploadIndex = urlParts.indexOf("upload")
+            if (uploadIndex !== -1 && urlParts.length > uploadIndex + 2) {
+              const publicIdWithFolder = urlParts
+                .slice(uploadIndex + 2)
+                .join("/")
+                .split(".")[0]
+              await cloudinary.uploader.destroy(publicIdWithFolder, {
+                resource_type: "video",
+              })
+              console.log(
+                `Old main video ${publicIdWithFolder} deleted from Cloudinary.`
+              )
+            } else {
+              console.warn(
+                "Could not extract public ID from old main video URL for deletion:",
+                newMainVideoUrl
+              )
+            }
+          } catch (deleteError) {
+            console.error(
+              "Error deleting old main video from Cloudinary:",
+              deleteError
+            )
+          }
+        }
+        // Upload new image
+        const result = await cloudinary.uploader.upload(mainImageFile.path, {
+          folder: "folder_name",
+          resource_type: mainImageFile.mimetype.startsWith("video/")
+            ? "video"
+            : "image",
+          quality: "auto:eco",
+        })
+        if (mainImageFile.mimetype.startsWith("image/")) {
+          newMainImageUrl = result.secure_url
+          newMainVideoUrl = null // Clear video URL if image is uploaded
+        } else {
+          // It's a video treated as 'image' field for main
+          newMainVideoUrl = result.secure_url
+          newMainImageUrl = null // Clear image URL if video is uploaded
+        }
+        console.log("New main media uploaded during update:", result.secure_url)
+      } else if (mainVideoFile) {
+        // Separate explicit video field upload (if your frontend uses it separately)
+        // Delete old main media (image or video) if a new video is provided
+        if (newMainImageUrl && typeof newMainImageUrl === "string") {
+          try {
+            const urlParts = newMainImageUrl.split("/")
+            const uploadIndex = urlParts.indexOf("upload")
+            if (uploadIndex !== -1 && urlParts.length > uploadIndex + 2) {
+              const publicIdWithFolder = urlParts
+                .slice(uploadIndex + 2)
+                .join("/")
+                .split(".")[0]
+              await cloudinary.uploader.destroy(publicIdWithFolder)
+              console.log(
+                `Old main image ${publicIdWithFolder} deleted from Cloudinary (due to new video upload).`
+              )
+            } else {
+              console.warn(
+                "Could not extract public ID from old main image URL for deletion (due to new video):",
+                newMainImageUrl
+              )
+            }
+          } catch (deleteError) {
+            console.error(
+              "Error deleting old main image (due to new video) from Cloudinary:",
+              deleteError
+            )
+          }
+        } else if (newMainVideoUrl && typeof newMainVideoUrl === "string") {
+          try {
+            const urlParts = newMainVideoUrl.split("/")
+            const uploadIndex = urlParts.indexOf("upload")
+            if (uploadIndex !== -1 && urlParts.length > uploadIndex + 2) {
+              const publicIdWithFolder = urlParts
+                .slice(uploadIndex + 2)
+                .join("/")
+                .split(".")[0]
+              await cloudinary.uploader.destroy(publicIdWithFolder, {
+                resource_type: "video",
+              })
+              console.log(
+                `Old main video ${publicIdWithFolder} deleted from Cloudinary.`
+              )
+            } else {
+              console.warn(
+                "Could not extract public ID from old main video URL for deletion:",
+                newMainVideoUrl
+              )
+            }
+          } catch (deleteError) {
+            console.error(
+              "Error deleting old main video from Cloudinary:",
+              deleteError
+            )
+          }
+        }
+        // Upload new video
+        const result = await cloudinary.uploader.upload(mainVideoFile.path, {
+          folder: "folder_name",
+          resource_type: "video",
+          quality: "auto:eco",
+        })
+        newMainVideoUrl = result.secure_url
+        newMainImageUrl = null // Clear image URL if video is uploaded
+        console.log("New main video uploaded during update:", newMainVideoUrl)
+      }
+
+      // --- Handle side images update ---
+      // IMPORTANT: This logic only appends new side images.
+      // If you want to allow:
+      // 1. Replacing ALL side images: You'd need to delete existing `designToUpdate.sideImages` from Cloudinary first, then `newSideImageUrls = []` before iterating `newSideFiles`.
+      // 2. Selective replacement/deletion: Requires more complex frontend logic (e.g., sending IDs of images to delete, or a new array structure).
+      if (newSideFiles && newSideFiles.length > 0) {
+        const uploadedNewSideImages = []
+        for (const sideFile of newSideFiles) {
+          const result = await cloudinary.uploader.upload(sideFile.path, {
+            folder: "folder_name/side_media", // Consider a subfolder for side media
+            resource_type: sideFile.mimetype.startsWith("video/")
+              ? "video"
+              : "image",
+            quality: "auto:eco",
+          })
+          uploadedNewSideImages.push(result.secure_url)
+          console.log(
+            "New side media uploaded during update:",
+            result.secure_url
+          )
+        }
+        newSideImageUrls = [...newSideImageUrls, ...uploadedNewSideImages] // Append new side images
+      }
+      // Consider adding logic here if the frontend wants to explicitly *remove* all side images
+      // e.g., if the userFormInput included a flag like `clearSideImages: true`
+
+      // --- Update the DesignUpload document in MongoDB ---
+      const updateFields = {
+        title: Title || designToUpdate.title,
+        description: Des || designToUpdate.description,
+        // The `images` field stores an array. We are now storing the main image as the first element of this array.
+        images: newMainImageUrl ? [newMainImageUrl] : [], // Ensure it's an array if not null
+        video: newMainVideoUrl, // Store video URL separately
+        sideImages: newSideImageUrls, // Array of side image/video URLs
+        tags: tags || designToUpdate.tags,
+        category: dropdownValue || designToUpdate.category, // Assuming 'category' is stored in dropdownValue
+        tools: dropdownValue2 || designToUpdate.tools, // Assuming 'tools' is stored in dropdownValue2
+        externalLinks: linkset || designToUpdate.externalLinks,
+        visibility: visibility || designToUpdate.visibility, // Use the new visibility
+      }
+
+      const updatedDesign = await DesignUpload.findByIdAndUpdate(
+        postId,
+        updateFields,
+        {new: true, runValidators: true} // `new: true` returns the updated document, `runValidators: true` runs schema validators
+      )
+
+      console.log("Media updated in DB:", updatedDesign)
+      return res.status(200).json({success: true, data: updatedDesign})
+    } catch (error) {
+      console.error("Error during post update process:", error)
+      return res.status(500).json({
+        success: false,
+        error: "Update failed",
+        details: error.message,
+      })
+    } finally {
+      // --- Clean up uploaded files from local storage ---
+      // Make sure 'fs' is imported: `const fs = require('fs');`
+      if (mainImageFile) {
+        fs.unlink(mainImageFile.path, err =>
+          err ? console.error("Error deleting temp main image:", err) : null
+        )
+      }
+      if (mainVideoFile) {
+        fs.unlink(mainVideoFile.path, err =>
+          err ? console.error("Error deleting temp main video:", err) : null
+        )
+      }
+      if (newSideFiles && newSideFiles.length > 0) {
+        newSideFiles.forEach(file =>
+          fs.unlink(file.path, err =>
+            err ? console.error("Error deleting temp side file:", err) : null
+          )
+        )
+      }
+    }
+  })
+}
+
+module.exports = {UserPostMedia, UserPostUpdateMedia}

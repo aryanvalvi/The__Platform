@@ -5,7 +5,7 @@ import "./dashboardComponents.scss"
 import {BiSolidEdit} from "react-icons/bi"
 import MypostsPopup from "./MypostsPopup"
 
-const Myposts = ({data}) => {
+const Myposts = ({data, id}) => {
   const [popupClicked, setpopupClicked] = useState(false)
   const [post, setPost] = useState()
   console.log(popupClicked)
@@ -13,9 +13,9 @@ const Myposts = ({data}) => {
   return (
     <div className="flex">
       {popupClicked && (
-        <MypostsPopup data={post} setpopupClicked={setpopupClicked} />
+        <MypostsPopup data={post} id={id} setpopupClicked={setpopupClicked} />
       )}
-      {data.map(f => (
+      {data?.map(f => (
         <div
           key={f._id}
           onClick={() => {

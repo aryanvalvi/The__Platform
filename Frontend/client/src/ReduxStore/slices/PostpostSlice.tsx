@@ -8,6 +8,7 @@ interface postPost {
   type: String
   Title: String
   success: Boolean
+  postUpdateSuccess: Boolean
 }
 
 const initialState: postPost = {
@@ -18,7 +19,9 @@ const initialState: postPost = {
   type: "div1",
   Title: "",
   success: false,
+  postUpdateSuccess: false,
 }
+
 const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5001"
 export const postPostFunction = createAsyncThunk(
   "postPost",
@@ -36,73 +39,97 @@ export const postPostFunction = createAsyncThunk(
     return data
   }
 )
-export const postPostFunction2 = createAsyncThunk(
-  "postVideo",
-  async ({formData}) => {
-    const res = await fetch(`${baseUrl}/auth/UserVideoUpload`, {
-      method: "POST",
+export const postUpdateFunction = createAsyncThunk(
+  "postupdate",
+  async ({postId, formData}) => {
+    const res = await fetch(`${baseUrl}/auth/update/${postId}`, {
+      method: "PUT",
       credentials: "include",
       body: formData,
-      // headers:{
-      //   "Content-Type":"application/json"
-      // }
     })
     const data = await res.json()
-    console.log("videoPost", data)
+    console.log("from slice postupdate", data)
     return data
   }
 )
-export const postPostFunction3 = createAsyncThunk(
-  "postBoth",
-  async ({formData}) => {
-    const res = await fetch(`${baseUrl}/auth/both`, {
-      method: "POST",
-      credentials: "include",
-      body: formData,
-      // headers:{
-      //   "Content-Type":"application/json"
-      // }
-    })
-    const data = await res.json()
-    console.log("videoPost", data)
-    return data
-  }
-)
+
+// export const postPostFunction2 = createAsyncThunk(
+//   "postVideo",
+//   async ({formData}) => {
+//     const res = await fetch(`${baseUrl}/auth/UserVideoUpload`, {
+//       method: "POST",
+//       credentials: "include",
+//       body: formData,
+//       // headers:{
+//       //   "Content-Type":"application/json"
+//       // }
+//     })
+//     const data = await res.json()
+//     console.log("videoPost", data)
+//     return data
+//   }
+// )
+// export const postPostFunction3 = createAsyncThunk(
+//   "postBoth",
+//   async ({formData}) => {
+//     const res = await fetch(`${baseUrl}/auth/both`, {
+//       method: "POST",
+//       credentials: "include",
+//       body: formData,
+//       // headers:{
+//       //   "Content-Type":"application/json"
+//       // }
+//     })
+//     const data = await res.json()
+//     console.log("videoPost", data)
+//     return data
+//   }
+// )
 
 export const postPost = createSlice({
   name: "postPost",
   initialState,
   reducers: {
-    setFile: (state, action) => {
-      state.file = action.payload
-    },
-    setVideoFile: (state, action) => {
-      state.videoFile = action.payload
-    },
-    setbuttonClick: (state, action) => {
-      ;(state.buttonclick = action.payload.buttonclick),
-        (state.type = action.payload.type)
-    },
-    setDescription: (state, action) => {
-      state.description = action.payload
-    },
-    setTitle: (state, action) => {
-      state.Title = action.payload
+    // setFile: (state, action) => {
+    //   state.file = action.payload
+    // },
+    // setVideoFile: (state, action) => {
+    //   state.videoFile = action.payload
+    // },
+    // setbuttonClick: (state, action) => {
+    //   ;(state.buttonclick = action.payload.buttonclick),
+    //     (state.type = action.payload.type)
+    // },
+    // setDescription: (state, action) => {
+    //   state.description = action.payload
+    // },
+    // setTitle: (state, action) => {
+    //   state.Title = action.payload
+    // },
+    resetPostUpdateSuccess: state => {
+      state.postUpdateSuccess = false
     },
   },
   extraReducers: builder => {
     builder.addCase(postPostFunction.fulfilled, (state, action) => {
       state.success = action.payload.success
     })
-    builder.addCase(postPostFunction2.fulfilled, (state, action) => {
-      state.success = action.payload.success
+    builder.addCase(postUpdateFunction.fulfilled, (state, action) => {
+      if (action.payload.success) {
+        state.postUpdateSuccess = true
+      }
     })
-    builder.addCase(postPostFunction3.fulfilled, (state, action) => {
-      state.success = action.payload.success
-    })
+    // builder.addCase(postPostFunction2.fulfilled, (state, action) => {
+    //   state.success = action.payload.success
+    // })
+    // builder.addCase(postPostFunction3.fulfilled, (state, action) => {
+    //   state.success = action.payload.success
+    // })
   },
 })
 
-export const {setFile, setbuttonClick, setDescription, setTitle, setVideoFile} =
-  postPost.actions
+// export const {setFile, setbuttonClick, setDescription, setTitle, setVideoFile} =
+//   postPost.actions
+export const {resetPostUpdateSuccess} = postPost.actions
+
 export const postPostReducer = postPost.reducer
