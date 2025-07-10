@@ -142,3 +142,72 @@
   justify-content: center;
   flex-direction: column;
 }
+
+@media (max-width: 800px) {
+  .dashboardContainer {
+    display: flex;
+    flex-direction: column;
+  }
+  .dashboard-left {
+    width: 100%;
+    height: auto;
+    position: static;
+    border: none;
+    display: flex;
+    align-items: center;
+    .dashboard-center {
+      margin-top: 5%;
+      flex-direction: row;
+    }
+    .dashboard-left-profile-container {
+      ul {
+        gap: 20px;
+      }
+    }
+    .dashboard-center {
+      li {
+        &.active::before {
+          left: 0;
+          bottom: 0;
+          top: 27px;
+          width: 100%;
+          height: 3px;
+        }
+      }
+    }
+  }
+  .dashboard-right {
+    margin-left: 0;
+
+    .right-top {
+      p {
+        font-size: 1.5rem;
+      }
+      button {
+        padding: 4px 10px;
+        font-size: 11px;
+      }
+    }
+  }
+  .right-down {
+    .right-down-p {
+      font-size: 1.3rem;
+    }
+  }
+}
+
+@media (max-width: 500px) {
+  .dashboard-left {
+    .dashboard-center {
+      gap: 40px;
+      align-items: center;
+      justify-content: center;
+      li {
+        margin-left: 0;
+        p {
+          font-size: 0.8rem;
+        }
+      }
+    }
+  }
+}

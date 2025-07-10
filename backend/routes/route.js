@@ -7,6 +7,7 @@ const path = require("path")
 const {UserData} = require("../models/user-model")
 const {getdata} = require("../controller/Getdata")
 const search = require("../controller/Search")
+require("dotenv").config()
 const {
   UserInteraction,
   Check,
@@ -52,10 +53,10 @@ router.get(
   }),
   (req, res) => {
     // console.log(req.user);
-    res.redirect("http://localhost:3000")
+    res.redirect(process.env.FRONTEND_URL)
+    console.log(process.env.GOOGLE_CLIENT_ID)
   }
 )
-
 //auth getuserdata;
 router.get("/getuserdata", (req, res) => {
   if (req.user) {
