@@ -17,14 +17,17 @@ const Navbar = () => {
   console.log("Ham state:", ham) // Debug log
 
   const HandleLogin = () => {
-    window.location.href = "http://localhost:5001/auth/google"
+    window.location.href = `http://${process.env.NEXT_PUBLIC_API_URL}/auth/google`
   }
 
   const handleLogout = async () => {
-    const res = await fetch("http://localhost:5001/auth/logout", {
-      method: "GET",
-      credentials: "include",
-    })
+    const res = await fetch(
+      `http://${process.env.NEXT_PUBLIC_API_URL}/auth/logout`,
+      {
+        method: "GET",
+        credentials: "include",
+      }
+    )
     const data = await res.json()
     console.log("Logout", data)
     dispatch(logoutUser())
