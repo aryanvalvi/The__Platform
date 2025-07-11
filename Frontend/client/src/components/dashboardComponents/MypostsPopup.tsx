@@ -35,6 +35,7 @@ const MypostsPopup = ({setpopupClicked, data, id}) => {
   const [inputTag, setInputTag] = useState("")
   const [filterData, setFilterData] = useState([])
   const [tags, setTags] = useState([])
+  const [mobileStep, setMobileStep] = useState(1)
   const returnDataFromUpdate = useAppSelector(
     state => state.postPostReducer.postUpdateSuccess
   )
@@ -169,7 +170,9 @@ const MypostsPopup = ({setpopupClicked, data, id}) => {
             </label>
           </div>
           <div className="modal-content-right">
-            <span>
+            <span
+              className={mobileStep === 1 ? "input-visible" : "input-hidden"}
+            >
               <label>Title</label>
               <input
                 type="text"
@@ -179,7 +182,9 @@ const MypostsPopup = ({setpopupClicked, data, id}) => {
               />
             </span>
 
-            <span>
+            <span
+              className={mobileStep === 1 ? "input-visible" : "input-hidden"}
+            >
               <label>Description</label>
               <textarea
                 name="description"
@@ -189,7 +194,9 @@ const MypostsPopup = ({setpopupClicked, data, id}) => {
               />
             </span>
 
-            <span>
+            <span
+              className={mobileStep === 2 ? "input-visible" : "input-hidden"}
+            >
               <div className="toolsLabel-Togglecont">
                 <label className="input-label">Tags:</label>
                 <div className="toggle-container">
@@ -247,7 +254,9 @@ const MypostsPopup = ({setpopupClicked, data, id}) => {
               )}
             </span>
 
-            <span>
+            <span
+              className={mobileStep === 2 ? "input-visible" : "input-hidden"}
+            >
               <div className="tools">
                 <div className="toolsLabel-Togglecont">
                   <label className="input-label">Tools:</label>
@@ -294,7 +303,9 @@ const MypostsPopup = ({setpopupClicked, data, id}) => {
               </div>
             </span>
 
-            <span>
+            <span
+              className={mobileStep === 2 ? "input-visible" : "input-hidden"}
+            >
               <label>Visibility</label>
               <select
                 name="visibility"
@@ -328,8 +339,18 @@ const MypostsPopup = ({setpopupClicked, data, id}) => {
         <input type="text" name="collaborators" placeholder="email1, email2" /> */}
 
         <div className="popup-actions">
-          <button onClick={handleSave}>Save Changes</button>
+          {mobileStep === 1 && (
+            <button onClick={() => setMobileStep(2)}>Next</button>
+          )}
+          {mobileStep === 2 && (
+            <button onClick={() => setMobileStep(1)}>back</button>
+          )}
           <button onClick={() => setpopupClicked(false)}>Cancel</button>
+          {mobileStep === 2 && (
+            <button className="saveButton" onClick={handleSave}>
+              Save Changes
+            </button>
+          )}
         </div>
       </div>
     </div>
