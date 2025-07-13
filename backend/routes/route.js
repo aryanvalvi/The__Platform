@@ -7,6 +7,9 @@ const path = require("path")
 const {UserData} = require("../models/user-model")
 const {getdata} = require("../controller/Getdata")
 const search = require("../controller/Search")
+const {
+  newConversation,
+} = require("../controller/ConverSationAndMessage/conversation/conversation")
 require("dotenv").config()
 const {
   UserInteraction,
@@ -139,6 +142,10 @@ router.post("/sendproposal", SendProposal)
 //Upload User Data
 
 // router.post("/userUpload", uploadUser);
+
+//Chat System Routes
+
+router.post("/dashboard/chat", newConversation)
 
 router.get("/f", (req, res) => {
   console.log(req.user.id)

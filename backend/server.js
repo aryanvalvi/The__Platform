@@ -1,5 +1,7 @@
 const express = require("express")
 const app = express()
+const http = require("http")
+const server = http.createServer(app)
 const cors = require("cors")
 const path = require("path")
 const passportSetup = require("./config/passport-setup")
@@ -12,6 +14,21 @@ const session = require("express-session")
 const {checkConnection} = require("./elasticSearch/elastic")
 const retrive = require("./modification/modify")
 require("dotenv").config()
+
+//Socket io setup first do http.createServer(app) and then listen on server
+const {Server} = require("socket.io")
+const io = new Server(server, {
+  cors: "http://localhost:3000",
+  methods: ["GET", "POST", "PUT", "DELETE"],
+})
+io.on("connection", socket => {
+  console.log(`User connected with id ${socket.id}`)
+
+  socket.on("disconnect", () => {
+    console.log("user discoonected", socket.id)
+  })
+})
+
 const client = require("./elasticSearchSync/sync")
 // Middleware setup
 app.use(express.json())
@@ -99,6 +116,6 @@ mongoose
   })
 // checkConnection()
 // retrive()
-app.listen(process.env.PORT || 5001, () => {
+server.listen(process.env.PORT || 5001, () => {
   console.log("Server is running on port 5001")
 })
