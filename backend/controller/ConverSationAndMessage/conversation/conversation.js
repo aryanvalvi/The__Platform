@@ -3,7 +3,9 @@ const Conversation = require("../../../models/Conversation")
 
 //New Conversation
 const newConversation = async (req, res) => {
-  const {senderId, receiverId} = req.body
+  const {receiverId} = req.body
+  const senderId = req.user._id
+  console.log("bkl", receiverId, senderId)
   try {
     const senderObjectId = new mongoose.Types.ObjectId(senderId)
     const receiveObjectId = new mongoose.Types.ObjectId(receiverId)
@@ -26,6 +28,21 @@ const newConversation = async (req, res) => {
   }
 }
 
-//get Conversation
+// get Conversation
 
-module.exports = {newConversation}
+const getConversations = async (req, res) => {
+  const adminId = req.user._id
+  console.log("adminId", adminId)
+  try {
+    const Conversations = await Conversation.find({
+      members: {$in: [adminId]},
+    }).populate("members", "_id username userImage ")
+    // }).populate("members")
+
+    res.status(200).json({Conversations, adminId})
+  } catch (error) {
+    res.status(500).json(error)
+  }
+}
+
+module.exports = {newConversation, getConversations}

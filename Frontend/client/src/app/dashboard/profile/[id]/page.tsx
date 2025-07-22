@@ -14,6 +14,9 @@ import {UserDashBoardFunction} from "@/ReduxStore/slices/UserProfile"
 import {useDispatch} from "react-redux"
 import {useParams} from "next/navigation"
 import {useAppSelector} from "@/ReduxStore/hook/CustomHook"
+import Chat from "@/components/dashboardComponents/Chat"
+import Saved from "@/components/dashboardComponents/Saved"
+
 const page = () => {
   const [activeTab, setActiveTab] = useState("My posts")
   const Data = useAppSelector(state => state.UserProfileSliceReducer)
@@ -80,8 +83,11 @@ const page = () => {
           </div>
           <div className="right-down">
             <p className="right-down-p">My posts</p>
-
-            <Myposts data={Data?.data} id={id}></Myposts>
+            {activeTab === "My posts" && (
+              <Myposts data={Data?.data} id={id}></Myposts>
+            )}
+            {activeTab === "inbox" && <Chat></Chat>}
+            {activeTab === "saved" && <Saved></Saved>}
           </div>
         </div>
       </div>

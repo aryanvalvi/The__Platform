@@ -361,15 +361,6 @@
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-
-  .loader {
-    width: 40px;
-    aspect-ratio: 1;
-    border-radius: 50%;
-    border: 8px solid;
-    border-color: #514b82 transparent;
-    animation: l20-1 0.8s infinite linear alternate, l20-2 1.6s infinite linear;
-  }
 }
 
 // @keyframes l20-1 {
@@ -490,6 +481,29 @@ body.active-modal {
   background: rgba(49, 49, 49, 0.3);
 }
 
+.loader {
+  width: 48px;
+  height: 48px;
+  border: 5px solid #e0e0e0;
+  border-top-color: #fb9a44;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: auto;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.connectt {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .tik {
+    font-size: 3rem;
+  }
+}
 .modal-content {
   z-index: 10;
   position: absolute;
@@ -814,6 +828,24 @@ body.active-modal {
       height: 40px;
     }
   }
+  .loader {
+    width: 28px;
+    height: 28px;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  .connectt {
+    .tik {
+      font-size: 2rem;
+    }
+    p {
+      font-size: 0.8rem;
+    }
+  }
 }
 
 @media (max-width: 800px) {
@@ -927,6 +959,15 @@ body.active-modal {
       // font-size: 18px;
       width: 25px;
       height: 25px;
+    }
+  }
+
+  .connectt {
+    .tik {
+      font-size: 1rem;
+    }
+    p {
+      font-size: 0.5rem;
     }
   }
 }

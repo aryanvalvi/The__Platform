@@ -4,10 +4,13 @@ import React, {use, useEffect, useState} from "react"
 import {LuIndianRupee} from "react-icons/lu"
 import {RxCross2} from "react-icons/rx"
 import {MdCheckCircle} from "react-icons/md"
-const Popup = ({setopenPopup, data, post}) => {
+import {sendMessage} from "@/ReduxStore/slices/MessageSlice"
+const Popup = ({setopenPopup, data, post, conversationid}) => {
   console.log("popup got params", post)
+  console.log("conversation id", conversationid)
   const [popup, Setpop] = useState(true)
   const [message, setMessage] = useState("")
+  console.log(message)
   const [budget, setBudget] = useState(0)
   const [loading, setLoading] = useState(false)
   const [sendToggle, setSendToggle] = useState(false)
@@ -21,17 +24,16 @@ const Popup = ({setopenPopup, data, post}) => {
   const SendMessage = () => {
     setLoading(true)
     setSendToggle(true)
-
-    dispatch(SendproposalFunction({message, post, budget}))
+    dispatch(sendMessage({conversationid, message}))
+    // dispatch(SendproposalFunction({message, post, budget}))
   }
+  const send = useAppSelector(state => state.MessageReducer.send)
   useEffect(() => {
-    if (dataa && dataa.success) {
+    if (send === true) {
       setLoading(false)
       // setSendToggle(false)
-    } else if (!dataa.success) {
-      setLoading(true)
     }
-  }, [dataa])
+  }, [send])
   return (
     <div>
       {popup && (
@@ -40,12 +42,15 @@ const Popup = ({setopenPopup, data, post}) => {
           {sendToggle ? (
             <div className="modal-content">
               {loading ? (
-                <div className="loader"></div>
+                <div className="connectt">
+                  <div className="loader"></div>
+                </div>
               ) : (
                 <div className="connectt">
                   <div className="tik">
                     <MdCheckCircle
-                      size={50}
+                      className="tik"
+                      // size={50}
                       style={{
                         backgroundColor: "white",
                         borderRadius: "50%",
@@ -53,7 +58,7 @@ const Popup = ({setopenPopup, data, post}) => {
                       color="green"
                     />
                   </div>
-                  Message Send
+                  <p>Message Send</p>
                 </div>
               )}
             </div>
@@ -85,6 +90,7 @@ const Popup = ({setopenPopup, data, post}) => {
                 <button className="btn5" onClick={SendMessage} className="btn4">
                   Send Message
                 </button>
+                {/* <div className="loader"></div> */}
               </div>
 
               <span className="close-modal" onClick={toggleModal}>

@@ -9,7 +9,14 @@ const {getdata} = require("../controller/Getdata")
 const search = require("../controller/Search")
 const {
   newConversation,
+  getConversations,
 } = require("../controller/ConverSationAndMessage/conversation/conversation")
+const {
+  sendMessage,
+  getMessages,
+  getLatestMessage,
+  deleteAllMessages,
+} = require("../controller/ConverSationAndMessage/message/messages")
 require("dotenv").config()
 const {
   UserInteraction,
@@ -145,7 +152,12 @@ router.post("/sendproposal", SendProposal)
 
 //Chat System Routes
 
-router.post("/dashboard/chat", newConversation)
+router.post("/conversationid", newConversation)
+router.get("/dashboard/chat/conversations", getConversations)
+router.post("/chat/newMessage", sendMessage)
+router.get("/dashboard/chat/:conversationId", getMessages)
+router.post("/dashboard/chat/latest", getLatestMessage)
+router.delete("/delete", deleteAllMessages)
 
 router.get("/f", (req, res) => {
   console.log(req.user.id)

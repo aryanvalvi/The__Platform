@@ -20,12 +20,16 @@ const Dashboard = ({data}) => {
   // Determine rows based on data length
   const getRows = dataLength => (dataLength >= 6 ? 2 : 1)
 
+  const showArrows = data.length > 6
+
   return (
     <div className="swiperContainerr">
       <div className="swiperWrapper">
-        <button className="swiper-button-prev">
-          <FaArrowLeft className="check" />
-        </button>
+        {showArrows && (
+          <button className="swiper-button-prev">
+            <FaArrowLeft className="check" />
+          </button>
+        )}
         <Swiper
           slidesPerView={3}
           grid={{rows: getRows(data.length), fill: "row"}}
@@ -71,9 +75,11 @@ const Dashboard = ({data}) => {
             </SwiperSlide>
           ))}
         </Swiper>
-        <button className="swiper-button-next">
-          <FaArrowRight className="check" />
-        </button>
+        {showArrows && (
+          <button className="swiper-button-next">
+            <FaArrowRight className="check" />
+          </button>
+        )}
       </div>
     </div>
   )

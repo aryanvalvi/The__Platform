@@ -22,6 +22,7 @@ import {IoBookmarksOutline} from "react-icons/io5"
 import {BsBookmarksFill} from "react-icons/bs"
 import {AiFillLike} from "react-icons/ai"
 import Dashboard from "@/components/Dashboard/Dashboard"
+import {getConversationId} from "@/ReduxStore/slices/MessageSlice"
 
 const page = () => {
   const {id} = useParams()
@@ -61,6 +62,17 @@ const page = () => {
     dispatch(userPostInteractionFunction({action, post: id}))
     setInteractionChanged(prev => !prev)
   }
+
+  //function for sending message
+  const conversation = useAppSelector(
+    state => state.MessageReducer.ConversationId
+  )
+  console.log("conversation id", conversation)
+  const contactFunction = () => {
+    setopenPopup(!openPopup)
+    dispatch(getConversationId(mainDesign?.creator?._id))
+  }
+
   useEffect(() => {
     if (id) {
       fetchData()
@@ -81,6 +93,7 @@ const page = () => {
             setopenPopup={setopenPopup}
             mainDesign={mainDesign}
             post={userid}
+            conversationid={conversation}
           ></Popup>
         )}
 
@@ -166,7 +179,7 @@ const page = () => {
                   </span>
                   <p>Contact</p>
                 </span>
-                <span onClick={() => setopenPopup(!openPopup)}>
+                <span onClick={contactFunction}>
                   <span className="LeftSideDetails-Icon">
                     <PiContactlessPaymentFill className="LeftSideDetails-Icon-Inside" />
                   </span>
@@ -211,6 +224,7 @@ const page = () => {
         </div>
         <div className="swipermore">
           <div className="More">
+            <div className="ganduloader"></div>
             <p>More by {mainDesign?.creator?.username}</p>
           </div>
           <Dashboard data={moreDesigns}></Dashboard>
