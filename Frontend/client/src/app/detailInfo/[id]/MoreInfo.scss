@@ -214,24 +214,24 @@
   }
 }
 .saved {
-  color: #ccc;
+  color: #fc9a44; // Updated to #fc9a44 for active like icon
   font-size: 24px;
   transition: all 0.3s ease;
 }
 
 .saved2 {
-  font-size: 24px;
-  color: #fc9a44; // Updated to #fc9a44 for active like icon
-  transition: all 0.3s ease;
-}
-.like {
   color: #ccc;
   font-size: 24px;
   transition: all 0.3s ease;
 }
-.like2 {
-  font-size: 24px;
+.like {
   color: #fc9a44; // Updated to #fc9a44 for active like icon
+  font-size: 24px;
+  transition: all 0.3s ease;
+}
+.like2 {
+  color: #ccc;
+  font-size: 24px;
   transition: all 0.3s ease;
 }
 

@@ -314,6 +314,68 @@
 // }
 
 // popup
+.modal2 {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(0, 0, 0, 0.4); // semi-transparent background
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000; // make sure it's above other content
+}
+
+.modal-content2 {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 10px;
+  min-width: 300px;
+  text-align: center;
+}
+
+.PopupconfirmCenter {
+  width: 100%;
+  padding: 30px;
+  font-size: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  // font-weight: bold;
+}
+
+.popupbuttonContainer {
+  p {
+    font-size: 1.2rem;
+  }
+  display: flex;
+  button {
+    padding: 10px 20px;
+    margin: 10px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+  }
+}
+.PopupconfirmCenter button:first-of-type {
+  background-color: #ff0000; // Red-ish for "unsave"
+  color: white;
+}
+
+.PopupconfirmCenter button:first-of-type:hover {
+  background-color: #b15454;
+}
+
+.PopupconfirmCenter button:last-of-type {
+  background-color: #e0e0e0; // Gray for "cancel"
+  color: black;
+}
+
+.PopupconfirmCenter button:last-of-type:hover {
+  background-color: #c2c2c2;
+}
 .modal,
 .overlay {
   background: rgba(49, 49, 49, 0.3);
@@ -384,6 +446,11 @@
       }
     }
   }
+}
+.PopupconfirmCenter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .left-right-container {
   display: flex;

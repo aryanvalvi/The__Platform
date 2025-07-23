@@ -19,26 +19,21 @@ const Chat = () => {
     selectedUserId: "",
     conversationId: "",
   })
-  console.log(selectedUser)
   const [messages, setMessages] = useState([])
-  const [messagePending, setMessagePending] = useState(false)
-
-  const dispatch = useDispatch()
-  console.log(selectedUser)
   const data = useAppSelector(state => state.MessageReducer.conversattions)
-  console.log("all conversayions", data)
   const admin = useAppSelector(state => state.MessageReducer.adminId)
   const latestMessages = useAppSelector(
     state => state.MessageReducer.latestConversation
   )
+  const dispatch = useDispatch()
   const gotMessage = useAppSelector(state => state.MessageReducer.gotMessage)
-  const conversationId = useAppSelector(
-    state => state.MessageReducer.ConversationId
-  )
+  // const conversationId = useAppSelector(
+  //   state => state.MessageReducer.ConversationId
+  // )
   const sendOk = useAppSelector(state => state.MessageReducer.send)
   console.log(gotMessage)
-  console.log("conversation id is", conversationId)
-  console.log("sendok", sendOk)
+  // console.log("conversation id is", conversationId)
+  // console.log("sendok", sendOk)
 
   const filterData = data.map(e => {
     const otherUser = e.members.find(member => member._id !== admin)
@@ -48,7 +43,6 @@ const Chat = () => {
 
   const selectUserFunction = e => {
     dispatch(getMessage(e.conversationId))
-    // dispatch(getConversationId(selectedUser.selectedUserId))
     console.log(e)
     console.log(e.conversationId)
     setSelectedUser({
@@ -58,20 +52,6 @@ const Chat = () => {
       conversationId: e.conversationId,
     })
   }
-
-  useEffect(() => {
-    dispatch(getMessage(selectedUser.conversationId))
-  }, [sendOk])
-
-  // const messageSendFuntion = () => {
-  //   console.log(messages)
-  //   if (!conversationId) {
-  //     setMessagePending(true)
-  //     dispatch(getConversationId(selectedUser.selectedUserId))
-  //   } else {
-  //     sendMessageNow()
-  //   }
-  // }
   const sendMessageNow = () => {
     dispatch(resetSend())
     dispatch(
@@ -80,24 +60,13 @@ const Chat = () => {
         message: messages,
       })
     )
-    // dispatch(getMessage(selectedUser.conversationId))
     setMessages("")
   }
-  // useEffect(() => {
-  //   if (setMessagePending && conversationId) {
-  //     sendMessageNow()
-  //   }
-  // }, [conversationId])
 
-  // useEffect(() => {
-  //   setMessages(gotMessage)
-  // }, [gotMessage])
+  useEffect(() => {
+    dispatch(getMessage(selectedUser.conversationId))
+  }, [sendOk])
 
-  // useEffect(() => {
-  //   if (sendOk === true) {
-  //     dispatch(getMessage(selectedUser.conversationId))
-  //   }
-  // }, [sendOk])
   useEffect(() => {
     dispatch(getConversation())
   }, [])
@@ -173,7 +142,7 @@ const Chat = () => {
               >
                 <div className="message-info">
                   <img src={msg.sender.userImage} alt={msg.sender.username} />
-                  <span>{msg.sender.username}</span>
+                  {/* <span>{msg.sender.username}</span> */}
                 </div>
                 <div className="message-text">{msg.text}</div>
               </div>

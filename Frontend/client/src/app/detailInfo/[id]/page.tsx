@@ -23,9 +23,14 @@ import {BsBookmarksFill} from "react-icons/bs"
 import {AiFillLike} from "react-icons/ai"
 import Dashboard from "@/components/Dashboard/Dashboard"
 import {getConversationId} from "@/ReduxStore/slices/MessageSlice"
+import {
+  CheckUserInteraction,
+  sendUserInteraction,
+} from "@/ReduxStore/slices/userInteractionSlice"
 
 const page = () => {
   const {id} = useParams()
+
   // const [follow, setfollow] = useState(false);
   const [savee, setSave] = useState(false)
   const [likee, setLike] = useState(false)
@@ -42,32 +47,59 @@ const page = () => {
   const moreDesign = moreDesigns
 
   console.log("moredetail ", mainDesign, moreDesigns)
-  const {follow, save, like} = useAppSelector(
-    state => state.checkerReducer.check
-  )
-  const data3 = useAppSelector(state => state.userPostInteractionReducer.check)
-  console.log("userpostInteraction", data3)
-  console.log("checker", like)
+  // const {follow, save, like} = useAppSelector(
+  //   state => state.checkerReducer.check
+  // )
+  // const data3 = useAppSelector(state => state.userPostInteractionReducer.check)
+  // console.log("userpostInteraction", data3)
+  // console.log("checker", like)
 
   const fetchData = async () => {
     const result = await dispatch(fetchMoreDetail(id))
-    dispatch(checkerFunction(id))
+    // dispatch(checkerFunction(id))
   }
+  //  sendUserInteraction
+
+  const handleFollow = () => {
+    dispatch(sendUserInteraction({actionType: "follow", postId: id}))
+  }
+
+  const handleLike = () => {
+    dispatch(sendUserInteraction({actionType: "like", postId: id}))
+  }
+
+  const handleSave = () => {
+    dispatch(sendUserInteraction({actionType: "save", postId: id}))
+  }
+  const {followed, like, save} = useAppSelector(
+    state => state.userInteractionReducer.interaction || {}
+  )
+
+  const interaction = useAppSelector(
+    state => state.userInteractionReducer.interaction || {}
+  )
+  console.log(interaction)
+  console.log(followed, like, save)
   const CheckStatus = () => {}
-  const HandleInter = action => {
-    console.log(action)
+  // const HandleInter = action => {
+  //   console.log(action)
 
-    console.log("action and creator id", action, mainDesign.creator._id)
+  //   console.log("action and creator id", action, mainDesign.creator._id)
 
-    dispatch(userPostInteractionFunction({action, post: id}))
-    setInteractionChanged(prev => !prev)
-  }
+  //   dispatch(userPostInteractionFunction({action, post: id}))
+  //   setInteractionChanged(prev => !prev)
+  // }
 
   //function for sending message
+
+  useEffect(() => {
+    dispatch(CheckUserInteraction(id))
+  }, [])
   const conversation = useAppSelector(
     state => state.MessageReducer.ConversationId
   )
   console.log("conversation id", conversation)
+
   const contactFunction = () => {
     setopenPopup(!openPopup)
     dispatch(getConversationId(mainDesign?.creator?._id))
@@ -78,11 +110,11 @@ const page = () => {
       fetchData()
     }
   }, [id, interactionChanged])
-  useEffect(() => {
-    if (mainDesign?.creator?._id) {
-      setuserId(mainDesign.creator._id)
-    }
-  }, [mainDesign])
+  // useEffect(() => {
+  //   if (mainDesign?.creator?._id) {
+  //     setuserId(mainDesign.creator._id)
+  //   }
+  // }, [mainDesign])
   return (
     // <>
     // </>
@@ -97,7 +129,12 @@ const page = () => {
           ></Popup>
         )}
 
-        <div className="testing">hello</div>
+        <div className="testing">
+          <button onClick={handleFollow}>follow</button> <br />
+          <button onClick={handleLike}>like</button>
+          <br />
+          <button onClick={handleSave}>save</button>
+        </div>
         <div className="MoreInfoDad">
           {/* <button onClick={CheckStatus}>click</button> */}
           <div className="MoreInfoContainer">
@@ -113,8 +150,8 @@ const page = () => {
                   <span className="TopInfo3-span">
                     <p>by {mainDesign?.creator?.username}</p>
 
-                    <button onClick={() => HandleInter("follow")}>
-                      {follow ? <>Following</> : <>follow</>}
+                    <button onClick={handleFollow}>
+                      {followed ? <>Following</> : <>follow</>}
                     </button>
                   </span>
                 </div>
@@ -173,9 +210,9 @@ const page = () => {
                   </span>
                   <p>like</p>
                 </div> */}
-                <span onClick={() => setLike(prev => !prev)}>
+                <span onClick={handleLike}>
                   <span className="LeftSideDetails-Icon">
-                    <AiFillLike className={` ${likee ? "like" : "like2"}`} />
+                    <AiFillLike className={` ${like ? "like" : "like2"}`} />
                   </span>
                   <p>Contact</p>
                 </span>
@@ -197,10 +234,10 @@ const page = () => {
                   </span>
                   <p>Share</p>
                 </span>
-                <span onClick={() => setSave(prev => !prev)}>
+                <span onClick={handleSave}>
                   <span className="LeftSideDetails-Icon">
                     <BsBookmarksFill
-                      className={`${savee ? "saved" : "saved2"}  `}
+                      className={`${save ? "saved" : "saved2"}  `}
                     />
                   </span>
                   <p>Share</p>

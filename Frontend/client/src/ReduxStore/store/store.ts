@@ -10,9 +10,11 @@ import {checkerReducer} from "../slices/homeContentSlice"
 import {postPostReducer} from "../slices/PostpostSlice"
 import {UserProfileSliceReducer} from "../slices/UserProfile"
 import {MessageReducer} from "../slices/MessageSlice"
+import {userInteractionReducer} from "../slices/userInteractionSlice"
 
 export const store = configureStore({
   reducer: {
+    userInteractionReducer,
     UserDataFetchReducer,
     homeContentReducer,
     moreDetailReducer,

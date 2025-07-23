@@ -24,6 +24,7 @@ const {
   Dashboard,
   getUserProfile,
   SendProposal,
+  HandleSavedDesigns,
 } = require("../controller/UserInteraction")
 const {
   testApi,
@@ -141,11 +142,11 @@ router.get("/test", testApi)
 router.post("/delete", DeleteAll)
 router.post("/getuserdesign", GetUserDesign)
 router.post("/userInteraction", UserInteraction)
-router.post("/Check", Check)
+router.get("/Check/:postId", Check)
 router.post("/dashboard", Dashboard)
 router.get("/getprofile", getUserProfile)
 router.post("/sendproposal", SendProposal)
-
+router.post("/savedDesigns", HandleSavedDesigns)
 //Upload User Data
 
 // router.post("/userUpload", uploadUser);

@@ -32,21 +32,21 @@ const page = () => {
       <div className="dashboard-left">
         <div className="dashboard-left-profile-container">
           <span className="client-image">
-            <img src="/client_images/bg1 (1).jpg" alt="" />
+            <img src={Data.user.userImage} alt={Data.user.userImage} />
 
-            <p>Aryan Valvi</p>
+            <p>{Data.user.username}</p>
           </span>
           <ul>
             <li>
-              <span>100</span>
+              <span>{Data.user.followers.length}</span>
               <p>Followers</p>
             </li>
             <li>
-              <span>10</span>
+              <span>{Data.totalDesign}</span>
               <p>posts</p>
             </li>
             <li>
-              <span>1000</span>
+              <span>{Data.user.likedDesigns.length}</span>
               <p>Likes</p>
             </li>
           </ul>
@@ -87,7 +87,9 @@ const page = () => {
               <Myposts data={Data?.data} id={id}></Myposts>
             )}
             {activeTab === "inbox" && <Chat></Chat>}
-            {activeTab === "saved" && <Saved></Saved>}
+            {activeTab === "saved" && (
+              <Saved data={Data?.user.savedDesigns} id={id}></Saved>
+            )}
           </div>
         </div>
       </div>

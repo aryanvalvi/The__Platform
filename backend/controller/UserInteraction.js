@@ -1,115 +1,197 @@
 const User = require("../models/UserSchema")
 const DesignUpload = require("../models/DesignSchema")
 const {UserData} = require("../models/user-model")
+
+// const UserInteraction = async (req, res) => {
+//   const {action, post} = req.body
+//   const userId = req.user._id
+//   console.log("postId", post)
+//   const design = await DesignUpload.findById(post)
+//   console.log("design", design)
+//   switch (action) {
+//     case "follow":
+//       console.log(action, post, userId)
+
+//       const admin = await User.findById(post)
+//       const isFollowing = admin.followers.includes(userId)
+//       if (isFollowing) {
+//         //unfollow
+
+//         await User.findByIdAndUpdate(post, {
+//           $pull: {followers: userId},
+//         })
+//         await User.findOneAndUpdate(userId, {
+//           $pull: {
+//             following: post,
+//           },
+//         })
+//         res.json({follow: false})
+//       } else {
+//         //follow
+
+//         await User.findOneAndUpdate(post, {
+//           $addToSet: {
+//             followers: userId,
+//           },
+//         })
+//         await User.findByIdAndUpdate(userId, {
+//           $addToSet: {following: post},
+//         })
+
+//         res.json({follow: true})
+//       }
+
+//       break
+
+//     case "like":
+//       console.log(action, post, userId)
+
+//       console.log("postId", post)
+//       if (design.likes.includes(userId)) {
+//         design.likes = design.likes.filter(
+//           id => id.toString() !== userId.toString()
+//         )
+//         await design.save()
+//         return res.status(200).json({like: false})
+//       } else {
+//         design.likes.push(userId)
+//         await design.save()
+//         return res.status(200).json({like: true})
+//       }
+//       break
+//     case "save":
+//       console.log("saveeeee", action, post, userId)
+//       const user = await User.findById(userId)
+//       const isSaved = user.savedDesigns.includes(post)
+
+//       if (isSaved) {
+//         // Unsave
+//         await User.findByIdAndUpdate(userId, {
+//           $pull: {savedDesigns: post},
+//         })
+//         res.json({save: false})
+//       } else {
+//         // Save
+//         await User.findByIdAndUpdate(userId, {
+//           $addToSet: {savedDesigns: post},
+//         })
+//         res.json({save: true})
+//       }
+//       break
+//   }
+// }
+
 const UserInteraction = async (req, res) => {
-  const {action, post} = req.body
-  const userId = req.user._id
-  console.log("postId", post)
-  const design = await DesignUpload.findById(post)
-  console.log("design", design)
-  switch (action) {
-    case "follow":
-      console.log(action, post, userId)
+  const {actionType, postId} = req.body
+  // const adminId = req.user._id
+  const adminId = req.user._id
 
-      const admin = await User.findById(post)
-      const isFollowing = admin.followers.includes(userId)
-      if (isFollowing) {
-        //unfollow
+  try {
+    // first we are getting the information about the post and who posted that post
+    const creatorOfPost = await DesignUpload.findById(postId).populate(
+      "creator"
+    )
+    const creator = await User.findById(creatorOfPost.creator._id)
+    const Admin = await User.findById(adminId)
+    switch (actionType) {
+      case "follow":
+        const isFollowing = creator.followers.includes(adminId)
 
-        await User.findByIdAndUpdate(post, {
-          $pull: {followers: userId},
+        if (isFollowing) {
+          creator.followers = creator.followers.filter(
+            id => id.toString() !== adminId.toString()
+          )
+          Admin.following = Admin.following.filter(
+            id => id.toString() !== creator._id.toString()
+          )
+        } else {
+          creator.followers.push(adminId)
+          Admin.following.push(creator._id)
+        }
+        await creator.save()
+        await Admin.save()
+        res.status(200).json({
+          // creator,
+          // Admin,
+          Message: isFollowing ? "Unfollowed" : "Followed",
+          followed: !isFollowing,
         })
-        await User.findOneAndUpdate(userId, {
-          $pull: {
-            following: post,
-          },
-        })
-        res.json({follow: false})
-      } else {
-        //follow
+        break
 
-        await User.findOneAndUpdate(post, {
-          $addToSet: {
-            followers: userId,
-          },
-        })
-        await User.findByIdAndUpdate(userId, {
-          $addToSet: {following: post},
-        })
+      case "like":
+        const design = await DesignUpload.findById(postId)
 
-        res.json({follow: true})
-      }
+        if (!design) {
+          return res.status(404).json({message: "Design not found"})
+        }
 
-      break
+        const alreadyLiked = design.likes.includes(adminId)
 
-    case "like":
-      console.log(action, post, userId)
+        if (alreadyLiked) {
+          // Unlike
+          design.likes = design.likes.filter(
+            id => id.toString() !== adminId.toString()
+          )
+          await design.save()
+          return res.status(200).json({
+            message: "Unliked",
+            // likes: design.likes,
+            like: false,
+          })
+        } else {
+          // Like
+          design.likes.push(adminId)
+          await design.save()
+          return res.status(200).json({
+            message: "Liked",
+            //  likes: design.likes,
+            like: true,
+          })
+        }
 
-      console.log("postId", post)
-      if (design.likes.includes(userId)) {
-        design.likes = design.likes.filter(
-          id => id.toString() !== userId.toString()
-        )
-        await design.save()
-        return res.status(200).json({like: false})
-      } else {
-        design.likes.push(userId)
-        await design.save()
-        return res.status(200).json({like: true})
-      }
-      break
-    case "save":
-      console.log("saveeeee", action, post, userId)
-      const user = await User.findById(userId)
-      const isSaved = user.savedDesigns.includes(post)
+        break
 
-      if (isSaved) {
-        // Unsave
-        await User.findByIdAndUpdate(userId, {
-          $pull: {savedDesigns: post},
-        })
-        res.json({save: false})
-      } else {
-        // Save
-        await User.findByIdAndUpdate(userId, {
-          $addToSet: {savedDesigns: post},
-        })
-        res.json({save: true})
-      }
-      break
+      case "save":
+        const alreadySaved = Admin.savedDesigns.includes(postId)
+        if (alreadySaved) {
+          Admin.savedDesigns = Admin.savedDesigns.filter(
+            id => id.toString() !== postId.toString()
+          )
+          await Admin.save()
+          res.status(200).json({message: "Post Unsaved", save: false})
+        } else {
+          Admin.savedDesigns.push(postId)
+          await Admin.save()
+          res.status(200).json({message: "Post saved", save: true})
+        }
+    }
+  } catch (error) {
+    res.status(500).json(error)
   }
 }
 
 const Check = async (req, res) => {
-  if (req.user) {
-    const {receiver} = req.body
-    const userId = req.user._id
+  const {postId} = req.params
+  const adminId = req.user?._id
 
-    console.log("check", receiver, userId)
-    // checking following
-    try {
-      const user1 = await User.findById(userId)
-      const user2 = await DesignUpload.findById(receiver)
-      console.log("here is my post", user2)
+  try {
+    const post = await DesignUpload.findById(postId).populate("creator")
+    if (!post) return res.status(404).json({message: "Post not found"})
 
-      const checker1 = user1.following.some(
-        userId => userId.toString() === receiver
-      )
-      const SaveChecker = user1.savedDesigns.some(
-        id => id.toString() === receiver
-      )
-      const LikeChecker = user2.likes.includes(userId)
-      console.log("here2", checker1, SaveChecker, LikeChecker)
-      res.json({
-        follow: checker1,
-        save: SaveChecker,
-        like: LikeChecker,
-      })
+    const creator = await User.findById(post.creator._id)
+    const Admin = await User.findById(adminId)
 
-      // console.log("here is the creator id", follow, save, like);
-    } catch (error) {
-      console.log("error in follow save like")
-    }
+    const hasLiked = post.likes.includes(adminId)
+    const isFollowing = creator.followers.includes(adminId)
+    const isSaved = Admin.savedDesigns.includes(postId)
+
+    return res.status(200).json({
+      like: hasLiked,
+      followed: isFollowing,
+      save: isSaved,
+    })
+  } catch (err) {
+    return res.status(500).json({message: "Server error", error: err})
   }
 }
 
@@ -180,12 +262,65 @@ const Dashboard = async (req, res) => {
       design: userDesign,
       user: user,
       isOwner: true,
+      totalDesign: userDesign.length,
     })
   } catch (error) {
     console.log("error fetching dashobord", error)
 
     res.status(500).json({message: "server error"})
   }
+}
+
+const HandleSavedDesigns = async (req, res) => {
+  const userid = req.user._id
+  const Admin = await User.findById(userid)
+  const {actionType, postId} = req.body
+
+  try {
+    if (actionType === "fetch") {
+      const DesignsIds = Admin.savedDesigns
+      const designs = await DesignUpload.find({_id: {$in: DesignsIds}})
+      res.status(200).json(designs)
+    }
+    if (actionType == "edit") {
+      Admin.savedDesigns = Admin.savedDesigns.filter(
+        id => id.toString() !== postId.toString()
+      )
+      await Admin.save()
+
+      const updatedDesigns = await DesignUpload.find({
+        _id: {$in: Admin.savedDesigns},
+      })
+      res.status(200).json(updatedDesigns)
+    }
+  } catch (error) {
+    res.status(500).json(error)
+  }
+
+  // const userId = req.user._id
+  // const {action, editDesignId} = req.body
+  // const user = await User.findById(userId)
+
+  // try {
+  //   if (action === "fetch") {
+  //     const savedDesigns = await DesignUpload.find({
+  //       _id: {$in: user.savedDesigns},
+  //     })
+  //     res.status(200).json(savedDesigns)
+  //   }
+  //   if (action === "edit") {
+  //     user.savedDesigns = user.savedDesigns.filter(
+  //       id => id.toString() == editDesignId.toString()
+  //     )
+  //     await user.save()
+  //     const updatedDesingid = await User.findById(userId).populate(
+  //       "savedDesigns"
+  //     )
+  //     res.status(200).json({updatedDesingid, bro: "ho gaya"})
+  //   }
+  // } catch (error) {
+  //   res.status(500).json(error)
+  // }
 }
 
 const getUserProfile = async (req, res) => {
@@ -220,4 +355,5 @@ module.exports = {
   Dashboard,
   SendProposal,
   getUserProfile,
+  HandleSavedDesigns,
 }

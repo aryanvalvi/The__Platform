@@ -100,6 +100,7 @@
   align-items: center;
   padding-left: 10px;
   padding-right: 10px;
+  flex-shrink: 0;
 }
 .leftRightChartTop {
   display: flex;
@@ -137,22 +138,113 @@
 .view-profile-btn:active {
   background-color: #d35400;
 }
+.rightMiddleChatPart {
+  flex-grow: 1;
+  padding: 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column; // Messages stack vertically
+  gap: 15px; // Space between messages
 
-.message {
-  margin: 10px;
-  padding: 10px;
-  border-radius: 10px;
-  max-width: 60%;
+  .message {
+    display: flex;
+    align-items: flex-end; // Align avatar to the bottom of the message bubble
+    max-width: 70%; // Control message bubble width
+    margin-bottom: 10px; // Space between message groups
+
+    .message-info {
+      display: flex;
+      flex-direction: column;
+      align-items: center; // Center avatar and potential name
+      margin: 0 10px; // Space around avatar
+
+      img {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 1px solid #eee;
+      }
+    }
+
+    .message-text {
+      padding: 12px 18px;
+      border-radius: 20px; // More rounded corners
+      font-size: 0.95em;
+      word-wrap: break-word; // Ensure long words break
+      max-width: 100%; // Ensure text fits within the bubble
+    }
+  }
+
+  .message.admin {
+    align-self: flex-end; // Align admin messages to the right
+    flex-direction: row-reverse; // Reverse order of avatar and text for admin
+
+    .message-info {
+      margin-left: 10px; // Space from the bubble
+      margin-right: 0;
+    }
+
+    .message-text {
+      background-color: #efbc97; // Green for admin messages
+      color: #333;
+    }
+  }
+
+  .message.other {
+    align-self: flex-start; // Align other messages to the left
+    flex-direction: row; // Default order of avatar and text for others
+
+    .message-info {
+      margin-right: 10px; // Space from the bubble
+      margin-left: 0;
+    }
+
+    .message-text {
+      background-color: #e4e6eb; // Light grey for other messages
+      color: #333;
+    }
+  }
 }
 
-.message.admin {
-  background-color: #daf1ff;
-  align-self: flex-end;
-  text-align: right;
-}
+.LastChatPart {
+  width: 56%;
+  position: fixed;
+  bottom: 0;
+  flex-shrink: 0;
+  display: flex;
+  padding: 15px 20px;
+  border-top: 1px solid #e0e0e0;
+  background-color: #f8f9fa;
 
-.message.other {
-  background-color: #f0f0f0;
-  align-self: flex-start;
-  text-align: left;
+  input {
+    flex-grow: 1;
+    padding: 10px 15px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    font-size: 1em;
+    margin-right: 10px;
+    outline: none;
+    &:focus {
+      border-color: #f96c00;
+    }
+  }
+
+  button {
+    background-color: #000000;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.2s ease-in-out;
+    &:hover {
+      background-color: #f8842c;
+    }
+    &:disabled {
+      background-color: #fad7bc;
+      cursor: not-allowed;
+    }
+  }
 }
