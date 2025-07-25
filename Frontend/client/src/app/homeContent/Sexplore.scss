@@ -307,58 +307,290 @@
 // Main flex container with Dribbble-style masonry layout
 
 // Main flex container with Dribbble-style masonry layout
+// .flex {
+//   display: flex;
+//   flex-wrap: wrap;
+//   gap: 24px;
+//   padding: 32px 24px;
+//   max-width: 1400px;
+//   margin: 0 auto;
+//   justify-content: flex-start;
+
+//   @media (max-width: 1024px) {
+//     gap: 20px;
+//     padding: 24px 20px;
+//   }
+
+//   @media (max-width: 640px) {
+//     gap: 20px;
+//     padding: 16px 12px;
+//   }
+// }
+
+// .gand {
+//   background: white;
+//   border-radius: 16px;
+//   overflow: hidden;
+//   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+//   transition: transform 0.3s ease-out; // Simplified transitions
+//   position: relative;
+//   cursor: pointer;
+//   width: calc(33.33% - 16px);
+//   will-change: transform, box-shadow; // Hint browser for hardware acceleration
+
+//   &:hover {
+//     transform: translateY(-8px);
+//     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+//   }
+
+//   @media (max-width: 1024px) {
+//     width: calc(50% - 10px);
+//   }
+
+//   @media (max-width: 640px) {
+//     width: 100%;
+//     &:hover {
+//       transform: translateY(-4px);
+//     }
+//   }
+// }
+
+// .imageContent {
+//   position: relative;
+//   overflow: hidden;
+//   aspect-ratio: 16/10;
+//   background: #f8f9fa;
+//   border-radius: 12px 12px 0 0;
+
+//   a {
+//     display: block;
+//     width: 100%;
+//     height: 100%;
+//   }
+
+//   .mgand {
+//     width: 100%;
+//     height: 100%;
+//     object-fit: cover;
+//     transition: transform 0.3s ease-out; // Simplified transition
+//     display: block;
+//     will-change: transform; // Hardware acceleration hint
+//   }
+// }
+
+// .hover-strip {
+//   position: absolute;
+//   bottom: 0;
+//   left: 0;
+//   right: 0;
+//   background: white;
+//   padding: 10px 20px;
+//   display: flex;
+//   align-items: center;
+//   gap: 12px;
+//   opacity: 0;
+//   transform: translateY(100%);
+//   transition: opacity 0.2s ease-out, transform 0.2s ease-out; // Separate transitions for better control
+//   will-change: opacity, transform; // Hardware acceleration hint
+
+//   .profile {
+//     width: 32px;
+//     height: 32px;
+//     border-radius: 50%;
+//     object-fit: cover;
+//     border: 2px solid #ccc;
+//   }
+
+//   .overlayText {
+//     color: #333;
+//     font-size: 14px;
+//     font-weight: 600;
+//     margin: 0;
+//     flex: 1;
+//     white-space: nowrap;
+//     overflow: hidden;
+//     text-overflow: ellipsis;
+//   }
+
+//   .like-count {
+//     color: #333;
+//     font-size: 13px;
+//     font-weight: 500;
+//     margin-right: 8px;
+//   }
+
+//   .like-button {
+//     color: #979797;
+//     font-size: 16px;
+//     cursor: pointer;
+//     transition: color 0.2s ease-out; // Smooth color transition
+
+//     &:hover {
+//       color: #e63946;
+//     }
+//   }
+// }
+
+// .gand:hover .hover-strip {
+//   opacity: 1;
+//   transform: translateY(0);
+// }
+
+// .loading {
+//   width: 100%;
+//   height: 2px;
+//   margin: 40px 0;
+//   visibility: hidden;
+
+//   &::after {
+//     content: "";
+//     display: block;
+//     width: 100%;
+//     height: 100%;
+//     background: linear-gradient(90deg, transparent, #007bff, transparent);
+//     animation: loading 1.5s ease-out infinite; // Smoother animation
+//   }
+// }
+
+// .exploreButton {
+//   display: flex;
+//   justify-content: center;
+//   padding: 40px 20px;
+
+//   button {
+//     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+//     color: white;
+//     border: none;
+//     padding: 16px 32px;
+//     border-radius: 50px;
+//     font-size: 16px;
+//     font-weight: 600;
+//     cursor: pointer;
+//     transition: transform 0.2s ease-out, box-shadow 0.2s ease-out; // Simplified transitions
+//     box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+
+//     &:hover {
+//       transform: translateY(-2px);
+//       box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+//     }
+
+//     &:active {
+//       transform: translateY(0);
+//     }
+//   }
+// }
+
+// @keyframes loading {
+//   0% {
+//     transform: translateX(-100%);
+//   }
+//   100% {
+//     transform: translateX(100%);
+//   }
+// }
+
+// @media (prefers-color-scheme: dark) {
+//   .gand {
+//     background: #1a1a1a;
+//     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+//   }
+
+//   .imageContent {
+//     background: #2a2a2a;
+//   }
+// }
+
+// @media (prefers-reduced-motion: reduce) {
+//   .gand,
+//   .mgand,
+//   .hover-strip,
+//   .exploreButton button {
+//     transition: none;
+//     animation: none;
+//   }
+
+//   .gand:hover,
+//   .exploreButton button:hover {
+//     transform: none;
+//   }
+// }
+/* Reset default margins and padding */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Container for the cards */
 .flex {
   display: flex;
   flex-wrap: wrap;
-  gap: 24px;
-  padding: 32px 24px;
+  gap: 24px; /* Increased spacing from the second design */
+  padding: 32px 24px; /* Padding from the second design */
   max-width: 1400px;
   margin: 0 auto;
-  justify-content: flex-start;
+  justify-content: flex-start; /* From the second design */
 
-  @media (max-width: 1024px) {
+  @media (max-width: 1220px) {
     gap: 20px;
-    padding: 24px 20px;
+    padding: 20px;
   }
 
-  @media (max-width: 640px) {
+  @media (max-width: 1000px) {
     gap: 20px;
-    padding: 16px 12px;
+    padding: 20px;
+  }
+
+  @media (max-width: 768px) {
+    gap: 20px;
+    padding: 20px;
+  }
+
+  @media (max-width: 480px) {
+    gap: 15px;
+    padding: 20px;
   }
 }
 
+/* Individual card container */
 .gand {
   background: white;
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  transition: transform 0.3s ease-out; // Simplified transitions
+  transition: transform 0.3s ease-out;
   position: relative;
   cursor: pointer;
-  width: calc(33.33% - 16px);
-  will-change: transform, box-shadow; // Hint browser for hardware acceleration
+  width: calc(33.33% - 16px); /* Default 3-column layout */
+  will-change: transform, box-shadow;
 
   &:hover {
     transform: translateY(-8px);
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
   }
 
-  @media (max-width: 1024px) {
-    width: calc(50% - 10px);
+  @media (max-width: 1220px) {
+    width: calc(100% / 3 - 20px); /* 3 columns */
   }
 
-  @media (max-width: 640px) {
-    width: 100%;
-    &:hover {
-      transform: translateY(-4px);
-    }
+  @media (max-width: 1000px) {
+    width: calc(100% / 2 - 20px); /* 2 columns */
   }
+
+  @media (max-width: 768px) {
+    width: calc(100% - 20px); /* 1 column */
+  }
+
+  // @media (max-width: 480px) {
+  //   width: 240px; /* Minimum width from commented design */
+  // }
 }
 
+/* Image or video container */
 .imageContent {
   position: relative;
   overflow: hidden;
-  aspect-ratio: 16/10;
+  aspect-ratio: 16/10; /* From the second design */
   background: #f8f9fa;
   border-radius: 12px 12px 0 0;
 
@@ -372,12 +604,13 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.3s ease-out; // Simplified transition
+    transition: transform 0.3s ease-out;
     display: block;
-    will-change: transform; // Hardware acceleration hint
+    will-change: transform;
   }
 }
 
+/* Hover strip with user info */
 .hover-strip {
   position: absolute;
   bottom: 0;
@@ -390,8 +623,8 @@
   gap: 12px;
   opacity: 0;
   transform: translateY(100%);
-  transition: opacity 0.2s ease-out, transform 0.2s ease-out; // Separate transitions for better control
-  will-change: opacity, transform; // Hardware acceleration hint
+  transition: opacity 0.2s ease-out, transform 0.2s ease-out;
+  will-change: opacity, transform;
 
   .profile {
     width: 32px;
@@ -410,6 +643,10 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+
+    @media (max-width: 768px) {
+      font-size: 14px; /* Adjusted from commented design */
+    }
   }
 
   .like-count {
@@ -423,10 +660,14 @@
     color: #979797;
     font-size: 16px;
     cursor: pointer;
-    transition: color 0.2s ease-out; // Smooth color transition
+    transition: color 0.2s ease-out;
 
     &:hover {
       color: #e63946;
+    }
+
+    @media (max-width: 768px) {
+      font-size: 18px; /* Adjusted from commented design */
     }
   }
 }
@@ -436,6 +677,7 @@
   transform: translateY(0);
 }
 
+/* Loading indicator */
 .loading {
   width: 100%;
   height: 2px;
@@ -448,10 +690,11 @@
     width: 100%;
     height: 100%;
     background: linear-gradient(90deg, transparent, #007bff, transparent);
-    animation: loading 1.5s ease-out infinite; // Smoother animation
+    animation: loading 1.5s ease-out infinite;
   }
 }
 
+/* Explore button container */
 .exploreButton {
   display: flex;
   justify-content: center;
@@ -466,7 +709,7 @@
     font-size: 16px;
     font-weight: 600;
     cursor: pointer;
-    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out; // Simplified transitions
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
     box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
 
     &:hover {
@@ -480,37 +723,40 @@
   }
 }
 
-@keyframes loading {
-  0% {
-    transform: translateX(-100%);
-  }
-  100% {
-    transform: translateX(100%);
-  }
-}
+/* Loading animation */
+// @keyframes loading {
+//   0% {
+//     transform: translateX(-100%);
+//   }
+//   100% {
+//     transform: translateX(100%);
+//   }
+// }
 
-@media (prefers-color-scheme: dark) {
-  .gand {
-    background: #1a1a1a;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-  }
+// /* Dark mode support */
+// @media (prefers-color-scheme: dark) {
+//   .gand {
+//     background: #1a1a1a;
+//     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+//   }
 
-  .imageContent {
-    background: #2a2a2a;
-  }
-}
+//   .imageContent {
+//     background: #2a2a2a;
+//   }
+// }
 
-@media (prefers-reduced-motion: reduce) {
-  .gand,
-  .mgand,
-  .hover-strip,
-  .exploreButton button {
-    transition: none;
-    animation: none;
-  }
+// /* Reduced motion for accessibility */
+// @media (prefers-reduced-motion: reduce) {
+//   .gand,
+//   .mgand,
+//   .hover-strip,
+//   .exploreButton button {
+//     transition: none;
+//     animation: none;
+//   }
 
-  .gand:hover,
-  .exploreButton button:hover {
-    transform: none;
-  }
-}
+//   .gand:hover,
+//   .exploreButton button:hover {
+//     transform: none;
+//   }
+// }
