@@ -93,7 +93,7 @@ const page = () => {
   //function for sending message
 
   useEffect(() => {
-    dispatch(CheckUserInteraction(id))
+    dispatch(CheckUserInteraction({postid: id, actionType: "fromDetail"}))
   }, [])
   const conversation = useAppSelector(
     state => state.MessageReducer.ConversationId
@@ -129,12 +129,12 @@ const page = () => {
           ></Popup>
         )}
 
-        <div className="testing">
+        {/* <div className="testing">
           <button onClick={handleFollow}>follow</button> <br />
           <button onClick={handleLike}>like</button>
           <br />
           <button onClick={handleSave}>save</button>
-        </div>
+        </div> */}
         <div className="MoreInfoDad">
           {/* <button onClick={CheckStatus}>click</button> */}
           <div className="MoreInfoContainer">

@@ -166,31 +166,87 @@ const UserInteraction = async (req, res) => {
         }
     }
   } catch (error) {
+    console.log(error)
+    res.status(500).json(error)
+  }
+}
+const UserInteraction2 = async (req, res) => {
+  const {actionType, id} = req.body
+  console.log(actionType, id)
+  const adminId = req.user._id
+  try {
+    const Admin = await User.findById(adminId)
+    const otherUser = await User.findById(id)
+    switch (actionType) {
+      case "followFromOther":
+        console.log("followFromOther called")
+        const isFollowing2 = otherUser.followers.includes(adminId)
+
+        if (isFollowing2) {
+          otherUser.followers = otherUser.followers.filter(
+            id => id.toString() !== adminId.toString()
+          )
+          Admin.following = Admin.following.filter(
+            id => id.toString() !== otherUser._id.toString()
+          )
+        } else {
+          otherUser.followers.push(adminId)
+          Admin.following.push(otherUser._id)
+        }
+        await otherUser.save()
+        await Admin.save()
+        res.status(200).json({
+          followed: !isFollowing2,
+        })
+
+        break
+    }
+  } catch (error) {
+    console.log(error)
     res.status(500).json(error)
   }
 }
 
 const Check = async (req, res) => {
   const {postId} = req.params
+
   const adminId = req.user?._id
-
+  const {actionType} = req.body
   try {
-    const post = await DesignUpload.findById(postId).populate("creator")
-    if (!post) return res.status(404).json({message: "Post not found"})
+    if (actionType === "fromOther") {
+      console.log("fromOther called")
+      const Admin = await User.findById(adminId)
+      const creator = await User.findById(postId)
+      // const hasLiked = post.likes.includes(adminId)
+      const isFollowing = creator.followers.includes(adminId)
+      const isSaved = Admin.savedDesigns.includes(postId)
 
-    const creator = await User.findById(post.creator._id)
-    const Admin = await User.findById(adminId)
+      return res.status(200).json({
+        // like: hasLiked,
+        followed: isFollowing,
+        save: isSaved,
+      })
+    }
+    if (actionType === "fromDetail") {
+      console.log("fromDetail called")
+      const post = await DesignUpload.findById(postId).populate("creator")
+      if (!post) return res.status(404).json({message: "Post not found"})
 
-    const hasLiked = post.likes.includes(adminId)
-    const isFollowing = creator.followers.includes(adminId)
-    const isSaved = Admin.savedDesigns.includes(postId)
+      const creator = await User.findById(post.creator._id)
+      const Admin = await User.findById(adminId)
 
-    return res.status(200).json({
-      like: hasLiked,
-      followed: isFollowing,
-      save: isSaved,
-    })
+      const hasLiked = post.likes.includes(adminId)
+      const isFollowing = creator.followers.includes(adminId)
+      const isSaved = Admin.savedDesigns.includes(postId)
+
+      return res.status(200).json({
+        like: hasLiked,
+        followed: isFollowing,
+        save: isSaved,
+      })
+    }
   } catch (err) {
+    console.log(err)
     return res.status(500).json({message: "Server error", error: err})
   }
 }
@@ -246,6 +302,27 @@ const SendProposal = async (req, res) => {
 //     res.json({data: false})
 //   }
 // }
+
+const OtherProfile = async (req, res) => {
+  const {id} = req.params
+  console.log("helelo", id)
+  try {
+    const userDesign = await DesignUpload.find({creator: id})
+    const user = await User.findById(id)
+
+    if (!user) {
+      return res.status(404).json({message: "User not found"})
+    }
+    res.json({
+      design: userDesign,
+      user: user,
+      totalDesign: userDesign.length,
+    })
+  } catch (error) {
+    res.status(500).json({message: "server error"})
+    console.log(error)
+  }
+}
 
 const Dashboard = async (req, res) => {
   console.log("dashboard called")
@@ -356,4 +433,6 @@ module.exports = {
   SendProposal,
   getUserProfile,
   HandleSavedDesigns,
+  OtherProfile,
+  UserInteraction2,
 }

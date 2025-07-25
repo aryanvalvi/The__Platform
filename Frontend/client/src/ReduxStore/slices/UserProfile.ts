@@ -19,6 +19,7 @@ interface InitialState {
   user: user
   totalDesign: number
   savedDesigns: any[]
+  OtherProfile: {}
 }
 const initialState: InitialState = {
   data: [],
@@ -39,6 +40,11 @@ const initialState: InitialState = {
   Admin: false,
 
   savedDesigns: [],
+  OtherProfile: {
+    design: [],
+    user: {},
+    totalDesign: 0,
+  },
 }
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5001"
@@ -76,6 +82,18 @@ export const UserDashBoardFunction = createAsyncThunk(
     return data
   }
 )
+export const OtherProfile = createAsyncThunk("otherDashboard", async id => {
+  const res = await fetch(`${baseUrl}/auth/profile/${id}`, {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+  const data = await res.json()
+  console.log("from userprofile slice ", data)
+  return data
+})
 
 export const UserSavedDesigns = createAsyncThunk(
   "USER_SAVED_DESIGNS",
@@ -114,6 +132,9 @@ export const UserProfileSlice = createSlice({
     })
     builder.addCase(UserSavedDesigns.fulfilled, (state, action) => {
       state.savedDesigns = action.payload
+    })
+    builder.addCase(OtherProfile.fulfilled, (state, action) => {
+      state.OtherProfile = action.payload
     })
   },
 })

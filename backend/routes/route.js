@@ -25,6 +25,8 @@ const {
   getUserProfile,
   SendProposal,
   HandleSavedDesigns,
+  OtherProfile,
+  UserInteraction2,
 } = require("../controller/UserInteraction")
 const {
   testApi,
@@ -142,8 +144,10 @@ router.get("/test", testApi)
 router.post("/delete", DeleteAll)
 router.post("/getuserdesign", GetUserDesign)
 router.post("/userInteraction", UserInteraction)
-router.get("/Check/:postId", Check)
+router.post("/userInteraction2", UserInteraction2)
+router.post("/Check/:postId", Check)
 router.post("/dashboard", Dashboard)
+router.post("/profile/:id", OtherProfile)
 router.get("/getprofile", getUserProfile)
 router.post("/sendproposal", SendProposal)
 router.post("/savedDesigns", HandleSavedDesigns)

@@ -5,6 +5,7 @@ import {LuIndianRupee} from "react-icons/lu"
 import {RxCross2} from "react-icons/rx"
 import {MdCheckCircle} from "react-icons/md"
 import {sendMessage} from "@/ReduxStore/slices/MessageSlice"
+import "../app/detailInfo/[id]/Moreinfo.scss"
 const Popup = ({setopenPopup, data, post, conversationid}) => {
   console.log("popup got params", post)
   console.log("conversation id", conversationid)

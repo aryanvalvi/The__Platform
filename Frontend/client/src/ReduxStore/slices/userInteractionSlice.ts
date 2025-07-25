@@ -24,16 +24,34 @@ export const sendUserInteraction = createAsyncThunk(
     return data
   }
 )
-
-export const CheckUserInteraction = createAsyncThunk(
-  "CHECKER_INTERSACTION",
-  async postid => {
-    const res = await fetch(`${baseUrl}/auth/Check/${postid}`, {
-      method: "GET",
+export const sendUserInteraction2 = createAsyncThunk(
+  "sendUserinteraction",
+  async ({actionType, id}) => {
+    const res = await fetch(`${baseUrl}/auth/userInteraction2`, {
+      method: "POST",
       credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
+      body: JSON.stringify({actionType, id}),
+    })
+    const data = await res.json()
+    console.log(data)
+    return data
+  }
+)
+
+export const CheckUserInteraction = createAsyncThunk(
+  "CHECKER_INTERSACTION",
+  async ({postid, actionType}) => {
+    console.log(postid, actionType)
+    const res = await fetch(`${baseUrl}/auth/Check/${postid}`, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({actionType}),
     })
     const data = await res.json()
     console.log(data)
