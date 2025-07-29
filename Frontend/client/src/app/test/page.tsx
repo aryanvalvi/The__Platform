@@ -1,8 +1,6 @@
 "use client"
 import {useAppDispatch, useAppSelector} from "@/ReduxStore/hook/CustomHook"
 import React, {useEffect, useRef, useState} from "react"
-import {RiFolderVideoFill} from "react-icons/ri"
-import {IoMdImage} from "react-icons/io"
 import {FaCloudUploadAlt} from "react-icons/fa"
 import {Swiper, SwiperSlide} from "swiper/react"
 import {Navigation, Pagination, Scrollbar, A11y, Autoplay} from "swiper/modules"
@@ -26,13 +24,12 @@ import {
   FaMedium,
   FaDeviantart,
   FaCodepen,
+  FaLink,
 } from "react-icons/fa"
 import {FaCircleArrowLeft} from "react-icons/fa6"
 import {FiEdit} from "react-icons/fi"
-import {AiOutlineDelete} from "react-icons/ai"
 import {AiOutlineEdit} from "react-icons/ai"
 import {RxCrossCircled} from "react-icons/rx"
-
 import "swiper/css/navigation"
 import "swiper/css/pagination"
 import "swiper/css/scrollbar"
@@ -42,7 +39,6 @@ import {dribbbleTags} from "../../utils/tags/tags"
 import {RiArrowDropDownLine} from "react-icons/ri"
 import "./test.scss"
 import {FaArrowLeft, FaArrowRight} from "react-icons/fa"
-import {HiArrowSmallRight} from "react-icons/hi2"
 import {
   postPostFunction,
   setDescription,
@@ -53,7 +49,14 @@ import {isArray} from "lodash"
 import {AiOutlinePlusCircle} from "react-icons/ai"
 import {search} from "@/utils/search/search"
 import getSocialMedia from "../../utils/hooks/getSocialMedia"
+import {useRouter} from "next/navigation"
+import ProtectedRoutes from "@/components/protectedRoutes/ProtectedRoutes"
+
+//types
+type FileChangeEvent = React.ChangeEvent<HTMLInputElement>
 const ImageUpload = () => {
+  const router = useRouter()
+  const overlayRef = useRef<HTMLDivElement>(null)
   const iconMap = {
     FaDribbble: FaDribbble,
     FaBehance: FaBehance,
@@ -69,154 +72,70 @@ const ImageUpload = () => {
     FaMedium: FaMedium,
     FaDeviantart: FaDeviantart,
     FaCodepen: FaCodepen,
+    FaLink: FaLink,
   }
-  console.log(getSocialMedia("www.dribbble.com"))
+  //all state
   const wrapperRef = useRef()
-  const [dropdown, setDropdown] = useState(false)
-  const [dropdownValue, setDropDownValue] = useState("category")
-  const [dropdown2, setDropdown2] = useState(false)
-  const [dropdownValue2, setDropDownValue2] = useState("Tool")
-  const [upload, setUpload] = useState(true)
-  const [upload2, setUpload2] = useState(false)
-  const [arryImage, setArryImage] = useState([])
-  const [next, setNext] = useState(false)
-  const [filterData, setFilterData] = useState([])
-  const [selectedTag, setSelectedTags] = useState([])
-  const [showSearchOption, setShowSearchOption] = useState(false)
-  const [link, setLink] = useState()
-  console.log(link)
-  const [linkset, SetLinkSet] = useState([])
-  console.log(linkset)
-  const [l, setL] = useState()
-  const [edit, setEdit] = useState(false)
-  console.log("selected tags", selectedTag)
-  const [toggle1, setToggle1] = useState(false)
-  console.log("NEXT", next)
-  // const [s]
-  console.log(arryImage)
-  console.log(linkset)
-
-  const success = useAppSelector(state => state.postPostReducer.success)
-  const nextFunc = () => {
-    if (!Title.trim()) {
-      // alert("bruhh")
-    }
-    if (!Des.trim()) {
-    }
-    // if (tags.length === 0) {
-    //   // setNext(false)
-    // } else {
-    else setNext(true)
-    // }
-  }
-  const addLink = () => {
-    console.log(getSocialMedia(`${link}`))
-    const bruh = getSocialMedia(`${link}`)
-    console.log(bruh)
-    const realIcon = iconMap[bruh]
-    SetLinkSet(prev => [...prev, {Icon: realIcon, link: link}])
-    setLink("")
-  }
-
-  const OptionClearTag = e => {
-    const clear = selectedTag.filter(data => data !== e)
-    console.log(clear)
-    setSelectedTags(clear)
-  }
-  const onInputChange = e => {
-    setShowSearchOption(true)
-    setInputTag(e)
-    if (e.trim() === "") {
-      setFilterData([])
-    } else {
-      const filterData = search
-        .filter(text => text.toLowerCase().includes(e.toLowerCase()))
-        .slice(0, 5)
-      setFilterData(filterData)
-    }
-  }
-  const TagSelectorFucntion = e => {
-    setShowSearchOption(false)
-    if (!tags.includes(e)) {
-      setTags(prev => [...prev, e])
-    }
-
-    console.log(e)
-  }
-  const editFunction = action => {
-    console.log(arryImage)
-    if (action === "delete") {
-      console.log(index, "delete")
-      setArryImage(prev => prev.filter((_, i) => i !== index))
-      setEdit(false)
-    } else if (action === "change") {
-      // setArryImage(prev => prev.filter((_, i) => i !== index))
-      const fileInput = document.getElementById("file-input3")
-      fileInput?.click()
-
-      setEdit(false)
-
-      console.log("change")
-    }
-  }
-
-  const editChangeFileFunction = e => {
-    const selectedFile = e.target.files[0]
-    const img = URL.createObjectURL(selectedFile)
-    setArryImage(prev => {
-      const Updated = [...prev]
-      Updated[index] = img
-      return Updated
-    })
-  }
+  const [dropdown, setDropdown] = useState<boolean>(false)
+  const [dropdownValue, setDropDownValue] = useState<string>("category")
+  const [dropdown2, setDropdown2] = useState<boolean>(false)
+  const [dropdownValue2, setDropDownValue2] = useState<string>("Tool")
+  const [upload, setUpload] = useState<boolean>(true)
+  const [upload2, setUpload2] = useState<boolean>(false)
+  const [arryImage, setArryImage] = useState<any[]>([])
+  console.log(arryImage.length)
+  const [next, setNext] = useState<boolean>(false)
+  const [filterData, setFilterData] = useState<any[]>([])
+  const [selectedTag, setSelectedTags] = useState<any[]>([])
+  const [showSearchOption, setShowSearchOption] = useState<boolean>(false)
+  const [link, setLink] = useState<string | undefined>(undefined)
+  const [showCategory, setShowCategory] = useState<boolean>(true)
+  const [showTools, setShowTools] = useState<boolean>(true)
+  const [linkset, SetLinkSet] = useState<any[]>([])
+  const [edit, setEdit] = useState<boolean>(false)
+  const [index, setIndex] = useState<number | undefined>(undefined)
+  const [file, setFile] = useState<File | null>(null)
+  const [multi, setMulti] = useState<any[]>([])
+  const [multiImgFile, setMultiImgFile] = useState<File[]>([])
+  const [url, setUrl] = useState<string>("")
+  const [inputTag, setInputTag] = useState<string>("")
+  const [tags, setTags] = useState<string[]>([])
+  const [isToggled, setIsToggled] = useState<boolean>(false)
+  const [publish, setPublish] = useState<boolean>(false)
+  const [sux, setSux] = useState(false)
+  const [error, setError] = useState(false)
   const dispatch = useAppDispatch()
+
+  //Reducer slice state
+  const success = useAppSelector(state => state.postPostReducer.success)
+  const status = useAppSelector(state => state.postPostReducer.status)
   const Data = useAppSelector(state => state.postPostReducer)
+  const {user} = useAppSelector(state => state.UserDataFetchReducer.userData)
   const Des = Data.description
   const Title = Data.Title
-  console.log(Des, Title)
-  const [index, setIndex] = useState()
-  const [select, setSelect] = useState(false)
-  const [visible, setVisible] = useState(false)
-  const [visible2, setVisible2] = useState(false)
-  const [visible3, setVisible3] = useState(false)
-  const [visible4, setVisible4] = useState(false)
-  const [file, setFile] = useState(null)
-  const [multi, setMulti] = useState([])
-  const [multiImgFile, setMultiImgFile] = useState([])
-  const [url, setUrl] = useState("")
-  const [inputTag, setInputTag] = useState("") // For the tag input value
-  const [tags, setTags] = useState([]) // Array of selected tags
-  const [filtertag, setFilterTag] = useState([])
-  console.log(tags)
-  console.log(multi)
 
-  const HandleDiscriptionChange = e => {
-    dispatch(setDescription(e.target.value))
-  }
-  const HandleTitleChange = e => {
-    dispatch(setTitle(e.target.value))
-  }
-  const handleFileChange = e => {
-    console.log("are lavde ke bal")
-    console.log("bruhhhhh", e.target.files)
+  //file Image Chnages Function
+
+  //main logic for file change and uplode
+  const handleFileChange = (e: FileChangeEvent) => {
     setUpload(false)
     setUpload2(true)
-    setFile(e.target.files[0])
-    const selectedFile = e.target.files[0]
+    setFile(e.target.files?.[0] || null)
+    const selectedFile = e.target.files?.[0] || null
 
-    console.log(file)
-    setUrl(URL.createObjectURL(selectedFile))
-    const img = {
-      url: URL.createObjectURL(selectedFile),
-      type: selectedFile.type,
+    if (selectedFile) {
+      setUrl(URL.createObjectURL(selectedFile))
+      const img = {
+        url: URL.createObjectURL(selectedFile),
+        type: selectedFile.type,
+      }
+      setArryImage(prev => [...prev, img])
     }
-
-    console.log("are bkl gandu sale,", img)
-    setArryImage(prev => [...prev, img])
   }
-  const MultipleFileChange = e => {
-    console.log("open gannum styles", e.target.files)
-    const selectMultiple = Array.from(e.target.files)
+  const MultipleFileChange = (e: FileChangeEvent) => {
+    const filelist = e.target.files
+    if (!filelist) return
+    const selectMultiple = Array.from(filelist)
     if (selectMultiple.length > 4) {
       alert("max side images size is 4")
       return
@@ -226,20 +145,26 @@ const ImageUpload = () => {
       selectMultiple.map(bruh => bruh)
     )
     const filesArray = selectMultiple.map(file => file)
-    console.log("files array", filesArray)
+
     const urls = selectMultiple.map(file => ({
       url: URL.createObjectURL(file),
       type: file.type,
     }))
     setArryImage(prev => [...prev, ...urls])
     console.log(urls)
-    setToggle1(true)
+    // setToggle1(true)
     setMultiImgFile(filesArray)
 
     setMulti(urls.map(item => item.url))
   }
-  const handleUpload = async e => {
+  const handleUpload = async (e: FileChangeEvent) => {
+    setPublish(true)
+    setSux(true)
     e.preventDefault()
+    if (!file) {
+      alert("Main image is required")
+      return
+    }
     const formData = new FormData()
     formData.append("image", file)
     multiImgFile.forEach(file => {
@@ -255,62 +180,137 @@ const ImageUpload = () => {
     }
     formData.append("userFormInput", JSON.stringify(formUserInput))
 
-    console.log("FormData Entries:")
-    for (let pair of formData.entries()) {
-      console.log(pair[0], pair[1])
-    }
+    // console.log("FormData Entries:")
+    // for (let pair of formData.entries()) {
+    //   console.log(pair[0], pair[1])
+    // }
     dispatch(postPostFunction({formData}))
   }
 
+  //File things changes
+
+  const addLink = () => {
+    const bruh = getSocialMedia(`${link}`)
+    console.log("getSocialMedia output for", link, ":", bruh)
+    const realIcon = iconMap[bruh] || iconMap.FaLink
+    console.log("Selected icon:", realIcon ? realIcon.name : "undefined")
+    SetLinkSet(prev => [...prev, {Icon: realIcon, link: link}])
+    setLink("")
+  }
+  const handleToggle = (type: "category" | "tools") => {
+    if (type === "category") {
+      setShowCategory(!showCategory)
+      setDropDownValue("")
+      setIsToggled(prev => !prev)
+    } else {
+      setShowTools(!showTools)
+      setDropDownValue2("")
+      setIsToggled(prev => !prev)
+    }
+  }
+  const nextFunc = () => {
+    if (!Title.trim()) {
+    }
+    if (!Des.trim()) {
+    } else setNext(true)
+  }
+  const OptionClearTag = (e: FileChangeEvent) => {
+    const clear = selectedTag.filter(data => data !== e)
+    console.log(clear)
+    setSelectedTags(clear)
+  }
+  const onInputChange = (value: string) => {
+    setShowSearchOption(true)
+    setInputTag(value)
+    if (value.trim() === "") {
+      setFilterData([])
+    } else {
+      const filterData = search
+        .filter(text => text.toLowerCase().includes(value.toLowerCase()))
+        .slice(0, 5)
+      setFilterData(filterData)
+    }
+  }
+  const TagSelectorFucntion = (e: string) => {
+    setShowSearchOption(false)
+    if (!tags.includes(e)) {
+      setTags(prev => [...prev, e])
+    }
+  }
+  const editFunction = (action: "delete" | "change") => {
+    console.log(arryImage)
+    if (action === "delete") {
+      console.log(index, "delete")
+      setArryImage(prev => prev.filter((_, i) => i !== index))
+      setEdit(false)
+    } else if (action === "change") {
+      const fileInput = document.getElementById("file-input3")
+      fileInput?.click()
+
+      setEdit(false)
+
+      console.log("change")
+    }
+  }
+  const editChangeFileFunction = (e: FileChangeEvent) => {
+    const selectedFile = e.target.files?.[0]
+    if (!selectedFile || index === undefined) return
+    const img = URL.createObjectURL(selectedFile)
+    setArryImage(prev => {
+      const Updated = [...prev]
+      Updated[index] = img
+      return Updated
+    })
+  }
+  const HandleDiscriptionChange = (e: FileChangeEvent) => {
+    dispatch(setDescription(e.target.value))
+  }
+  const HandleTitleChange = (e: FileChangeEvent) => {
+    dispatch(setTitle(e.target.value))
+  }
+  const removeTag = (tagToRemove: any) => {
+    setTags(tags.filter(tag => tag !== tagToRemove))
+  }
+
+  const okayFunction = () => {
+    setPublish(false)
+    if (!error) {
+      router.push(`dashboard/profile/${user._id}`)
+    }
+  }
+  console.log(status)
+
+  //All useEffect hooks
+  useEffect(() => {
+    if (status === "succeeded") {
+      setSux(false)
+    } else if (status === "failed") {
+      setSux(false)
+      setError(true)
+    }
+  }, [status])
   useEffect(() => {
     if (file) {
-      console.log(file)
-      setVisible(true)
-      const timeout = setTimeout(() => {
-        setVisible2(true)
-        setVisible4(true)
-      }, 1110)
-      setVisible3(true)
+      const timeout = setTimeout(() => {}, 1110)
+
       return () => clearTimeout(timeout)
     }
     if (multi) {
-      console.log(multi)
     }
     if (url) {
-      console.log(url)
     }
   }, [file, multi])
-
-  const TagChanged = e => {
-    const inputValue = e
-    setInputTag(inputValue) // Update the input value
-    if (inputValue) {
-      const result = dribbbleTags.filter(tag =>
-        tag.toLowerCase().startsWith(inputValue.toLowerCase())
-      )
-      setFilterTag(result)
-      console.log("filtered tags", result)
-    } else {
-      setFilterTag([])
-    }
-  }
-
-  const addTag = selectedTag => {
-    if (!tags.includes(selectedTag)) {
-      setTags([...tags, selectedTag]) // Add the selected tag to the array
-    }
-    setInputTag("") // Clear the input
-    setFilterTag([]) // Clear the suggestions
-  }
-
-  const removeTag = tagToRemove => {
-    setTags(tags.filter(tag => tag !== tagToRemove)) // Remove the tag
-  }
 
   useEffect(() => {
     const handleClickOutside = e => {
       if (wrapperRef.current && !wrapperRef.current.contains(e.target)) {
         setShowSearchOption(false)
+      }
+      if (
+        overlayRef.current &&
+        !overlayRef.current.contains(e.target as Node)
+      ) {
+        setEdit(false)
       }
     }
     document.addEventListener("mousedown", handleClickOutside)
@@ -318,13 +318,13 @@ const ImageUpload = () => {
       document.removeEventListener("mousedown", handleClickOutside)
     }
   }, [])
+
   return (
-    <>
+    <ProtectedRoutes>
       <div
         className={
           arryImage.length > 0 ? "create-container-after" : "create-container"
         }
-        // className="create-container"
       >
         <div
           className={
@@ -332,11 +332,53 @@ const ImageUpload = () => {
           }
         >
           <div className="create-flex">
-            {/* <FiEdit></FiEdit> */}
-            {edit && (
+            {publish && (
               <div className="overlay">
                 <div className="inOverlay">
-                  <RxCrossCircled className="crossCircle"></RxCrossCircled>
+                  {sux ? (
+                    <div className="loader"></div>
+                  ) : (
+                    <div className="TikContainer">
+                      <span>
+                        {!error ? (
+                          <svg className="checkmark" viewBox="0 0 52 52">
+                            <circle
+                              className="circle"
+                              cx="26"
+                              cy="26"
+                              r="25"
+                              fill="none"
+                            />
+                            <path
+                              className="check"
+                              fill="none"
+                              d="M14.1 27.2l7.1 7.2 16.7-16.8"
+                            />
+                          </svg>
+                        ) : (
+                          <></>
+                        )}
+                        {error ? (
+                          <h1>error while uploading</h1>
+                        ) : (
+                          <h1>Published</h1>
+                        )}
+                      </span>
+                      <button onClick={okayFunction} className="okay">
+                        Okay
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+            {edit && (
+              <div className="overlay">
+                <div className="inOverlay" ref={overlayRef}>
+                  <RxCrossCircled
+                    onClick={() => setEdit(false)}
+                    className="crossCircle"
+                  ></RxCrossCircled>
                   <AiOutlineEdit className="edit2"></AiOutlineEdit>
                   <p>Are you sure </p>
                   <p>you want to make changes to this image?</p>
@@ -347,14 +389,17 @@ const ImageUpload = () => {
                     >
                       Replace
                     </button>
-                    <button
-                      onClick={() => editFunction("delete")}
-                      className="delete"
-                    >
-                      delete
-                    </button>
+                    {arryImage.length > 1 ? (
+                      <button
+                        onClick={() => editFunction("delete")}
+                        className="delete"
+                      >
+                        delete
+                      </button>
+                    ) : (
+                      <></>
+                    )}
                   </div>
-                  {/* <AiOutlineDelete /> */}
                 </div>
               </div>
             )}
@@ -444,7 +489,9 @@ const ImageUpload = () => {
               <div className="left-add-content">
                 <div className="upload-icon-container">
                   <label htmlFor="file-input" className="upload-icon-wrapper">
-                    <FaCloudUploadAlt className="upload-icon" />
+                    <div>
+                      <FaCloudUploadAlt className="upload-icon" />
+                    </div>
                     <div className="info">
                       <p>Choose a file or drag and drop here!</p>
                       <p>
@@ -526,7 +573,9 @@ const ImageUpload = () => {
                       <label className="input-label">Tags:</label>
                       <div className="tags-wrapper">
                         <input
-                          onChange={e => onInputChange(e.target.value)}
+                          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                            onInputChange(e.target.value)
+                          }
                           value={inputTag}
                           type="text"
                           required
@@ -573,59 +622,97 @@ const ImageUpload = () => {
                   <div className="upload-container">
                     <div className="form2">
                       <div className="category">
-                        <label className="input-label">Category:</label>
-                        <div className="select">
-                          <div
-                            onClick={() => setDropdown(!dropdown)}
-                            className="search-tag"
-                          >
-                            {dropdownValue}
-                            <RiArrowDropDownLine className="drop-icon" />
-                          </div>
-                          {dropdown && (
-                            <div className="select-options">
-                              {hugeProjectTypes.map(e => (
-                                <div
-                                  onClick={() => {
-                                    setDropDownValue(e), setDropdown(false)
-                                  }}
-                                  className="search-tag"
-                                  key={e}
-                                >
-                                  {e}
-                                </div>
-                              ))}
+                        <div className="label-toggle">
+                          <label className="input-label">Category:</label>
+                          <div className="toggle-container">
+                            <div
+                              className={`toggle-switch ${
+                                !showCategory ? "active" : ""
+                              }`}
+                              onClick={() => handleToggle("category")}
+                            >
+                              <div className="toggle-circle"></div>
                             </div>
-                          )}
+                            <span className="toggle-label">
+                              {isToggled
+                                ? "Not to Mentioned"
+                                : "Not to Mentioned"}
+                            </span>
+                          </div>
                         </div>
+                        {showCategory && (
+                          <div className="select">
+                            <div
+                              onClick={() => setDropdown(!dropdown)}
+                              className="search-tag"
+                            >
+                              {dropdownValue}
+                              <RiArrowDropDownLine className="drop-icon" />
+                            </div>
+                            {dropdown && (
+                              <div className="select-options">
+                                {hugeProjectTypes.map(e => (
+                                  <div
+                                    onClick={() => {
+                                      setDropDownValue(e), setDropdown(false)
+                                    }}
+                                    className="search-tag"
+                                    key={e}
+                                  >
+                                    {e}
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        )}
                       </div>
 
                       <div className="tools">
-                        <label className="input-label">Tools:</label>
-                        <div className="select">
-                          <div
-                            onClick={() => setDropdown2(!dropdown2)}
-                            className="search-tag"
-                          >
-                            {dropdownValue2}
-                            <RiArrowDropDownLine className="drop-icon" />
-                          </div>
-                          {dropdown2 && (
-                            <div className="select-options">
-                              {hugeToolsList.map(e => (
-                                <div
-                                  onClick={() => {
-                                    setDropDownValue2(e), setDropdown2(false)
-                                  }}
-                                  className="search-tag"
-                                  key={e}
-                                >
-                                  {e}
-                                </div>
-                              ))}
+                        <div className="label-toggle">
+                          <label className="input-label">Tools:</label>
+                          <div className="toggle-container">
+                            <div
+                              className={`toggle-switch ${
+                                !showTools ? "active" : ""
+                              }`}
+                              onClick={() => handleToggle("tools")}
+                            >
+                              <div className="toggle-circle"></div>
                             </div>
-                          )}
+                            <span className="toggle-label">
+                              {isToggled
+                                ? "Not to Mentioned"
+                                : "Not to Mentioned"}
+                            </span>
+                          </div>
                         </div>
+                        {showTools && (
+                          <div className="select">
+                            <div
+                              onClick={() => setDropdown2(!dropdown2)}
+                              className="search-tag"
+                            >
+                              {dropdownValue2}
+                              <RiArrowDropDownLine className="drop-icon" />
+                            </div>
+                            {dropdown2 && (
+                              <div className="select-options">
+                                {hugeToolsList.map(e => (
+                                  <div
+                                    onClick={() => {
+                                      setDropDownValue2(e), setDropdown2(false)
+                                    }}
+                                    className="search-tag"
+                                    key={e}
+                                  >
+                                    {e}
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        )}
                       </div>
 
                       <div className="external-link-container">
@@ -674,34 +761,8 @@ const ImageUpload = () => {
             )}
           </div>
         </div>
-        {/* <div className="side-images-container">
-          {multi.length > 1 ? (
-            <>
-              {multi.map((img, index) => (
-                <div className="side-images" key={index}>
-                  <img src={img} className="side-imgs" alt="Side image" />
-                </div>
-              ))}
-            </>
-          ) : (
-            <></>
-          )}
-        </div> */}
       </div>
-      {/* <div className="sideImagesContainer">
-        {multi.length > 1 ? (
-          <>
-            {multi.map(img => (
-              <div className="sideImages">
-                <img src={img} className="sideimgs" alt="" />
-              </div>
-            ))}
-          </>
-        ) : (
-          <></>
-        )}
-      </div> */}
-    </>
+    </ProtectedRoutes>
   )
 }
 

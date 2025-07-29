@@ -67,12 +67,15 @@ const Navbar = () => {
               <Link href="/" className="Link">
                 <li className="home">home</li>
               </Link>
+              {/* {
+                user ?
+              } */}
               <Link href="/test" className="Link Explore">
                 <li>Publish</li>
               </Link>
-              <Link className="Link" href="/">
+              {/* <Link className="Link" href="/">
                 <li className="Learn">Learn</li>
-              </Link>
+              </Link> */}
 
               <li className="signCont">
                 {user === null || user === false ? (

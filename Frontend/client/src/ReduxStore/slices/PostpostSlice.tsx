@@ -1,5 +1,12 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit"
 
+interface postPostArgs {
+  formData: FormData
+}
+interface posptPostReturn {
+  success: Boolean
+}
+
 interface postPost {
   buttonclick: Number
   file: File | null
@@ -8,6 +15,7 @@ interface postPost {
   type: String
   Title: String
   success: Boolean
+  status: String
   postUpdateSuccess: Boolean
 }
 
@@ -20,10 +28,11 @@ const initialState: postPost = {
   Title: "",
   success: false,
   postUpdateSuccess: false,
+  status: "idle",
 }
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5001"
-export const postPostFunction = createAsyncThunk(
+export const postPostFunction = createAsyncThunk<posptPostReturn, postPostArgs>(
   "postPost",
   async ({formData}) => {
     const res = await fetch(`${baseUrl}/auth/xyz`, {
@@ -90,22 +99,22 @@ export const postPost = createSlice({
   name: "postPost",
   initialState,
   reducers: {
-    // setFile: (state, action) => {
-    //   state.file = action.payload
-    // },
-    // setVideoFile: (state, action) => {
-    //   state.videoFile = action.payload
-    // },
-    // setbuttonClick: (state, action) => {
-    //   ;(state.buttonclick = action.payload.buttonclick),
-    //     (state.type = action.payload.type)
-    // },
-    // setDescription: (state, action) => {
-    //   state.description = action.payload
-    // },
-    // setTitle: (state, action) => {
-    //   state.Title = action.payload
-    // },
+    setFile: (state, action) => {
+      state.file = action.payload
+    },
+    setVideoFile: (state, action) => {
+      state.videoFile = action.payload
+    },
+    setbuttonClick: (state, action) => {
+      ;(state.buttonclick = action.payload.buttonclick),
+        (state.type = action.payload.type)
+    },
+    setDescription: (state, action) => {
+      state.description = action.payload
+    },
+    setTitle: (state, action) => {
+      state.Title = action.payload
+    },
     resetPostUpdateSuccess: state => {
       state.postUpdateSuccess = false
     },
@@ -113,6 +122,7 @@ export const postPost = createSlice({
   extraReducers: builder => {
     builder.addCase(postPostFunction.fulfilled, (state, action) => {
       state.success = action.payload.success
+      state.status = action.payload.status
     })
     builder.addCase(postUpdateFunction.fulfilled, (state, action) => {
       if (action.payload.success) {
@@ -128,8 +138,8 @@ export const postPost = createSlice({
   },
 })
 
-// export const {setFile, setbuttonClick, setDescription, setTitle, setVideoFile} =
-//   postPost.actions
+export const {setFile, setbuttonClick, setDescription, setTitle, setVideoFile} =
+  postPost.actions
 export const {resetPostUpdateSuccess} = postPost.actions
 
 export const postPostReducer = postPost.reducer

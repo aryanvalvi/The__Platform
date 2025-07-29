@@ -24,7 +24,7 @@ export default function SearchResults() {
 
       try {
         const res = await fetch(
-          `http://localhost:5001/search?query=${encodeURIComponent(query)}`,
+          `http://localhost:5001/search?q=${encodeURIComponent(query)}`,
           {
             method: "GET",
             credentials: "include",
@@ -35,7 +35,7 @@ export default function SearchResults() {
         }
         const data = await res.json()
         console.log(data)
-        console.log(data.map(e => e.images?.[0]))
+        // console.log(data.map(e => e.images?.[0]))
         setResults(data)
         setLoading(false)
       } catch (err) {
@@ -54,7 +54,10 @@ export default function SearchResults() {
 
   return (
     <div>
-      <h1 className="resultsH1">Search Results for "{query}"</h1>
+      <h1 className="resultsH1">
+        Search Results for
+        <span className="query-underline"> {query}</span>
+      </h1>
       <div className="flex">
         {results.map(f => (
           <div key={f._id} className="gand">
@@ -75,24 +78,17 @@ export default function SearchResults() {
                 <p className="ImageTitle">{f.title}</p>
               </Link>
             </div>
-            <div className="ImgAndHeart">
-              <Link href={`/profile/${f.creator._id}`}>
+            <div className="hover-strip">
+              <Link href={`/other/${f.creator._id}`}>
                 <img
                   className="profile"
                   src={f.UserProfileImage}
                   alt="Profile"
                 />
               </Link>
-              <p className="overlayText">{f.creator.username}</p>
-              <span className="">0</span>
-              <FaHeart
-              // onClick={() => ItemClicked(f.id)}
-              // className="like"
-              // style={{
-              //   fontSize: "20px",
-              //   color: cart.includes(f._id) ? "red" : "gray",
-              // }}
-              />
+              <p className="overlayText">{f.title}</p>
+              <span className="like-count">0</span>
+              <FaHeart className="like-button" />
             </div>
           </div>
         ))}

@@ -6,6 +6,9 @@ import Providers from "./provider"
 import Footer from "@/components/Footer"
 import Test from "@/app/test/page"
 import {Poppins} from "next/font/google"
+
+import {authCheckFunction} from "@/ReduxStore/slices/Authentication"
+import AuthInitilizer from "@/components/protectedRoutes/AuthInitilizer"
 // const geistSans = localFont({
 //   src: "./fonts/GeistVF.woff",
 //   variable: "--font-geist-sans",
@@ -43,12 +46,14 @@ export default function RootLayout({
       // className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Providers>
-          <div>
-            <Navbar></Navbar>
-            <main className={poppins.className}>{children}</main>
-            {/* <Footer></Footer> */}
-            {/* <Test></Test> */}
-          </div>
+          <AuthInitilizer>
+            <div>
+              <Navbar></Navbar>
+              <main className={poppins.className}>{children}</main>
+              {/* <Footer></Footer> */}
+              {/* <Test></Test> */}
+            </div>
+          </AuthInitilizer>
         </Providers>
       </body>
     </html>

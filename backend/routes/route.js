@@ -44,8 +44,15 @@ const {
   // UserVideo,
   // Both,
 } = require("../controller/UserUpload")
+
+const {
+  searchingRoute,
+  autocompleteSearch,
+  fullSearch,
+} = require("../controller/Searching")
 const {Cloud} = require("../controller/Cloud/CloudNary")
 const MainData = require("../controller/MainData")
+const {isAuthenticatedFunction} = require("../controller/Authentication")
 let userdata
 let userimagelocation
 
@@ -163,6 +170,19 @@ router.post("/chat/newMessage", sendMessage)
 router.get("/dashboard/chat/:conversationId", getMessages)
 router.post("/dashboard/chat/latest", getLatestMessage)
 router.delete("/delete", deleteAllMessages)
+
+//searching route
+
+router.get("/autocomplete", autocompleteSearch)
+router.get("/search", fullSearch)
+
+//Authentication
+router.get("/status", isAuthenticatedFunction, (req, res) => {
+  if (!req.user) {
+    res.status(200).json({user: true})
+  }
+  res.status(200).json({user: req.user || true})
+})
 
 router.get("/f", (req, res) => {
   console.log(req.user.id)

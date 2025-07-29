@@ -18,7 +18,8 @@ export default function Home() {
   const [showGet, setShowNotice] = useState(false)
   const [searchValue, setSearchValue] = useState("")
   const [searchResultData, setSearchResultData] = useState()
-  const [filterData, setFilterData] = useState()
+  const [filterData, setFilterData] = useState([])
+  console.log(filterData)
   const [showSearchOption, setShowSearchOption] = useState(false)
   console.log("show", showSearchOption)
   console.log("search", searchValue)
@@ -29,10 +30,13 @@ export default function Home() {
 
   const searchQueryFunctionCaller = async query => {
     console.log("query", query)
-    const res = await fetch(`http://localhost:5001/search?query=${query}`, {
-      method: "GET",
-      credentials: "include",
-    })
+    const res = await fetch(
+      `http://localhost:5001/autocompleteSearch?query=${query}`,
+      {
+        method: "GET",
+        credentials: "include",
+      }
+    )
     const data = await res.json()
     setSearchResultData(data)
     console.log(data)
@@ -50,15 +54,29 @@ export default function Home() {
     }
   }
 
-  const searchChange = e => {
+  const searchChange = async e => {
+    try {
+      const res = await fetch(
+        `http://localhost:5001/auth/autocomplete?q=${e}`,
+        {
+          method: "GET",
+        }
+      )
+      const data = await res.json()
+      console.log(data)
+      setFilterData(data)
+    } catch (error) {
+      console.log(error)
+    }
+
     setSearchValue(e)
     setShowSearchOption(true)
-    const filterdata = search
-      .filter(key => key.toLowerCase().includes(e.toLowerCase()))
-      .slice(0, 5)
+    // const filterdata = search
+    //   .filter(key => key.toLowerCase().includes(e.toLowerCase()))
+    //   .slice(0, 5)
 
-    console.log(filterdata)
-    setFilterData(filterdata)
+    // console.log(filterdata)
+    // setFilterData(filterdata)
   }
 
   const handleClickSearch = e => {
@@ -163,7 +181,7 @@ export default function Home() {
               {showSearchOption &&
                 filterData?.map(e => (
                   <div key={e} className="searchbruh">
-                    <p onClick={() => handleClickSearch(e)}>{e}</p>
+                    <p onClick={() => handleClickSearch(e.title)}>{e.title}</p>
                   </div>
                 ))}
             </div>

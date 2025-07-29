@@ -449,13 +449,16 @@ const upload = multer({storage: storage}).fields([
   {name: "side_images[]", maxCount: 3},
 ])
 
-const UserPostMedia = async (req, res) => {
+const UserPostMedia1 = async (req, res) => {
   upload(req, res, async err => {
     if (err) {
       console.log("File uploade error at stage 0", err)
-      return res
-        .status(400)
-        .json({error: "File upload failed", details: err.message})
+      return res.status(400).json({
+        error: "File upload failed",
+        details: err.message,
+        success: false,
+        status: "failed",
+      })
     }
 
     //stage 1 print the files and forminput
@@ -472,16 +475,20 @@ const UserPostMedia = async (req, res) => {
           req.files["side_images[]"].length === 0))
     ) {
       console.log("No file uploaded at stage 2")
-      return res
-        .status(400)
-        .json({error: "No file Detected in backend At lease upload 1 image"})
+      return res.status(400).json({
+        error: "No file Detected in backend At lease upload 1 image",
+        success: false,
+        status: "failed",
+      })
     }
 
     //stage3 first Get a user
     const userProfile = await User.findById(req.user._id)
     if (!userProfile) {
       console.log("User not found")
-      return res.status(401).json({success: false, msg: "User not found"})
+      return res
+        .status(401)
+        .json({success: false, msg: "User not found", status: "failed"})
     }
 
     // stage 4 get a form input data from user
@@ -581,16 +588,23 @@ const UserPostMedia = async (req, res) => {
       })
 
       console.log("Media uploaded and saved to DB:", newDesign)
-      return res.status(200).json({success: true, data: newDesign})
+      return res
+        .status(200)
+        .json({success: true, data: newDesign, status: "succeeded"})
     } catch (error) {
       console.error("Error uploading to Cloudinary or saving to DB:", error)
       return res.status(500).json({
         success: false,
+        status: "failed",
         error: "Upload failed",
         details: error.message,
       })
     }
   })
+}
+const UserPostMedia = async (req, res) => {
+  res.json({status: "succeeded", success: true})
+  // res.json({status: "failed", success: false})
 }
 
 // **New function for updating existing posts**
