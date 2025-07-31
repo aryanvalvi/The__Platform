@@ -3,6 +3,7 @@ import {createAsyncThunk, createSlice} from "@reduxjs/toolkit"
 const initialState = {
   user: null,
   loading: true,
+  openPopup: false,
 }
 const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5001"
 export const authCheckFunction = createAsyncThunk(
@@ -22,7 +23,7 @@ export const authCheckFunction = createAsyncThunk(
       console.log(data)
       return data
     } catch (error) {
-      return rejectWithValue(error.message)
+      return rejectWithValue((error as Error).message)
     }
   }
 )
@@ -30,16 +31,20 @@ export const authCheckFunction = createAsyncThunk(
 export const authSlice = createSlice({
   name: "authSlice",
   initialState,
-  reducers: {},
+  reducers: {
+    setOpen: (state, action) => {
+      state.openPopup = action.payload
+    },
+  },
   extraReducers: builder => {
-    builder.addCase(authCheckFunction.pending, (state, action) => {
+    builder.addCase(authCheckFunction.pending, state => {
       state.loading = true
     })
     builder.addCase(authCheckFunction.fulfilled, (state, action) => {
       state.loading = false
       state.user = action.payload.user || null
     })
-    builder.addCase(authCheckFunction.rejected, (state, action) => {
+    builder.addCase(authCheckFunction.rejected, state => {
       state.loading = false
       state.user = null
     })
@@ -47,3 +52,4 @@ export const authSlice = createSlice({
 })
 
 export const AuthenticationReducer = authSlice.reducer
+export const {setOpen} = authSlice.actions

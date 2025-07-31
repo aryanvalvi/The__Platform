@@ -1,10 +1,10 @@
-import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+// import React from 'react'
+// import { useDispatch, useSelector } from 'react-redux'
 
-const homeCustoms = ({}) => {
-  const dispatch = useDispatch();
-  const { loading, currentPage, data } = useSelector(selector);
- 
-}
+// const homeCustoms = ({}) => {
+//   const dispatch = useDispatch();
+//   const { loading, currentPage, data } = useSelector(selector);
 
-export default homeCustoms
+// }
+
+// export default homeCustoms

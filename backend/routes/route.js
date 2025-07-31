@@ -27,6 +27,8 @@ const {
   HandleSavedDesigns,
   OtherProfile,
   UserInteraction2,
+  Check2,
+  toggleLike,
 } = require("../controller/UserInteraction")
 const {
   testApi,
@@ -61,10 +63,13 @@ let userimagelocation
 router.get("/explore", MainData)
 
 //auth login
-router.get(
-  "/google",
-  passport.authenticate("google", {scope: ["profile", "email"]})
-)
+router.get("/google", (req, res, next) => {
+  const {state} = req.query
+  passport.authenticate("google", {
+    scope: ["profile", "email"],
+    state: state || "/",
+  })(req, res, next)
+})
 //auth redirect
 router.get(
   "/google/redirect",
@@ -72,9 +77,13 @@ router.get(
     failureRedirect: "/",
   }),
   (req, res) => {
+    const state = req.query.state || "/"
     // console.log(req.user);
-    res.redirect(process.env.FRONTEND_URL)
-    console.log(process.env.GOOGLE_CLIENT_ID)
+    const redirectUrl = `${process.env.FRONTEND_URL}${decodeURIComponent(
+      state
+    )}`
+    console.log("redirecting to", redirectUrl)
+    res.redirect(redirectUrl)
   }
 )
 //auth getuserdata;
@@ -153,6 +162,8 @@ router.post("/getuserdesign", GetUserDesign)
 router.post("/userInteraction", UserInteraction)
 router.post("/userInteraction2", UserInteraction2)
 router.post("/Check/:postId", Check)
+router.post("/Check2", Check2)
+router.post("/toggle-like", toggleLike)
 router.post("/dashboard", Dashboard)
 router.post("/profile/:id", OtherProfile)
 router.get("/getprofile", getUserProfile)

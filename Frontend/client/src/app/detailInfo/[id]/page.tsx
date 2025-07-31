@@ -10,24 +10,30 @@ import {PiContactlessPaymentFill} from "react-icons/pi"
 import {IoMdShareAlt} from "react-icons/io"
 import {BsBookmarksFill} from "react-icons/bs"
 import {AiFillLike} from "react-icons/ai"
-import Dashboard from "@/components/Dashboard/Dashboard"
+import SwiperDesign from "@/components/Dashboard/SwiperDesign"
 import {getConversationId} from "@/ReduxStore/slices/MessageSlice"
 import {
   CheckUserInteraction,
   sendUserInteraction,
 } from "@/ReduxStore/slices/userInteractionSlice"
 import "./info.scss"
-const page = () => {
+import LoginPopup from "@/components/login/LoginPopup"
+import {setOpen} from "@/ReduxStore/slices/Authentication"
+
+const Page = () => {
   const dispatch = useAppDispatch()
   const {id} = useParams()
   const [selectImg, setSelectedImg] = useState<string>("")
   const [openPopup, setopenPopup] = useState<boolean>(false)
+  // const [showLoginPopup, setShowLoginPopup] = useState<boolean>(false)
   const {followed, like, save} = useAppSelector(
     state => state.userInteractionReducer.interaction || {}
   )
   const {mainDesign, moreDesigns} = useAppSelector(
-    state => state.moreDetailReducer.homeContent
+    state => state.moreDetailReducer
   )
+  console.log(mainDesign, moreDesigns)
+  const {user, loading} = useAppSelector(state => state.AuthenticationReducer)
 
   // const interaction = useAppSelector(
   //   state => state.userInteractionReducer.interaction || {}
@@ -35,22 +41,38 @@ const page = () => {
 
   //Functions
   const contactFunction = () => {
-    setopenPopup(!openPopup)
-    dispatch(getConversationId(mainDesign?.creator?._id))
-  }
-  const fetchData = () => {
-    dispatch(fetchMoreDetail(id))
+    if (!user && !loading) {
+      return
+    }
+    dispatch(setOpen(false))
+    if (mainDesign?.creator?._id) {
+      dispatch(getConversationId(mainDesign?.creator?._id))
+      setopenPopup(true)
+    }
   }
 
   const handleFollow = () => {
+    if (!user && !loading) {
+      dispatch(setOpen(false))
+      return
+    }
+
     dispatch(sendUserInteraction({actionType: "follow", postId: id}))
   }
 
   const handleLike = () => {
+    if (!user && !loading) {
+      dispatch(setOpen(false))
+      return
+    }
     dispatch(sendUserInteraction({actionType: "like", postId: id}))
   }
 
   const handleSave = () => {
+    if (!user && !loading) {
+      dispatch(setOpen(false))
+      return
+    }
     dispatch(sendUserInteraction({actionType: "save", postId: id}))
   }
 
@@ -58,31 +80,43 @@ const page = () => {
 
   //1
   useEffect(() => {
-    setSelectedImg(mainDesign?.images)
+    if (mainDesign?.images) {
+      if (Array.isArray(mainDesign.images) && mainDesign.images.length > 0) {
+        setSelectedImg(mainDesign.images[0])
+      } else if (typeof mainDesign.images === "string") {
+        setSelectedImg(mainDesign.images)
+      } else {
+        setSelectedImg("")
+      }
+    } else {
+      setSelectedImg("")
+    }
   }, [mainDesign])
 
   //2
   useEffect(() => {
     dispatch(CheckUserInteraction({postid: id, actionType: "fromDetail"}))
-  }, [])
+  }, [dispatch, id])
   const conversation = useAppSelector(
-    state => state.MessageReducer.ConversationId
+    state => state.MessageReducer.conversationId
   )
 
   //3
   useEffect(() => {
     if (id) {
-      fetchData()
+      dispatch(fetchMoreDetail(id))
     }
-  }, [id])
+  }, [id, dispatch])
 
   return (
     <>
+      <LoginPopup></LoginPopup>
       {openPopup && (
         <Popup
+          openPopup={openPopup}
           setopenPopup={setopenPopup}
           mainDesign={mainDesign}
-          post={userid}
+          post={user}
           conversationid={conversation}
         ></Popup>
       )}
@@ -127,21 +161,39 @@ const page = () => {
                 </div>
               )}
               <div className="sideImages">
-                {mainDesign?.sideImages.length > 1 ? (
+                {mainDesign?.sideImages && mainDesign?.sideImages.length > 1 ? (
                   mainDesign?.images ? (
                     <div
-                      onClick={() => setSelectedImg(mainDesign?.images)}
+                      onClick={() => {
+                        if (
+                          Array.isArray(mainDesign.images) &&
+                          mainDesign.images.length > 0
+                        ) {
+                          setSelectedImg(mainDesign.images[0])
+                        } else if (typeof mainDesign.images === "string") {
+                          setSelectedImg(mainDesign.images)
+                        } else {
+                          setSelectedImg("")
+                        }
+                      }}
                       className="shadowForMedia"
                     >
-                      <img
-                        className="bigImage"
-                        src={mainDesign?.images}
-                        alt=""
-                      />
+                      <img className="bigImage" src={selectImg} alt="" />
                     </div>
                   ) : (
                     <div
-                      onClick={() => setSelectedImg(mainDesign?.video)}
+                      onClick={() => {
+                        if (
+                          Array.isArray(mainDesign.video) &&
+                          mainDesign.video.length > 0
+                        ) {
+                          setSelectedImg(mainDesign.video[0])
+                        } else if (typeof mainDesign.video === "string") {
+                          setSelectedImg(mainDesign.video)
+                        } else {
+                          setSelectedImg("")
+                        }
+                      }}
                       className="shadowForMedia"
                     >
                       <video
@@ -166,6 +218,7 @@ const page = () => {
                     return (
                       <div
                         onClick={() => setSelectedImg(e)}
+                        key={"video"}
                         className="shadowForMedia"
                       >
                         <video className="" src={e}></video>
@@ -174,10 +227,17 @@ const page = () => {
                   } else {
                     return (
                       <div
+                        key={"image"}
                         onClick={() => setSelectedImg(e)}
                         className="shadowForMedia"
                       >
-                        <img className="bigImage" src={e} alt="" />
+                        <img
+                          height={100}
+                          width={100}
+                          className="bigImage"
+                          src={e}
+                          alt=""
+                        />
                       </div>
                     )
                   }
@@ -228,10 +288,10 @@ const page = () => {
         <div className="More">
           <p>More by {mainDesign?.creator?.username}</p>
         </div>
-        <Dashboard data={moreDesigns}></Dashboard>
+        <SwiperDesign data={moreDesigns}></SwiperDesign>
       </div>
     </>
   )
 }
 
-export default page
+export default Page

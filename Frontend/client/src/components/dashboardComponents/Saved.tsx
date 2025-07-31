@@ -1,28 +1,27 @@
 "use client"
 import React, {useEffect, useState} from "react"
-import MypostsPopup from "./MypostsPopup"
-import {BiSolidEdit} from "react-icons/bi"
-
 import {FaHeart} from "react-icons/fa"
 import "./dashboardComponents.scss"
 import {UserSavedDesigns} from "@/ReduxStore/slices/UserProfile"
-import {useDispatch} from "react-redux"
-import {useAppSelector} from "@/ReduxStore/hook/CustomHook"
+
+import {useAppDispatch, useAppSelector} from "@/ReduxStore/hook/CustomHook"
 import {MdDeleteOutline} from "react-icons/md"
 import Popupconfirm from "./Popupconfirm"
 import Link from "next/link"
+import {DesignPost} from "../../ReduxStore/slices/UserProfile"
 
-const Saved = ({data, id}) => {
+const Saved = () => {
   const [popupClicked, setpopupClicked] = useState(false)
 
-  const [post, setPost] = useState()
+  const [post, setPost] = useState("")
   console.log(post)
-  console.log(data)
-  const dispatch = useDispatch()
+
+  const dispatch = useAppDispatch()
 
   const Data = useAppSelector(
     state => state.UserProfileSliceReducer.savedDesigns
   )
+  console.log(Data)
   const handleunsave = () => {
     dispatch(
       UserSavedDesigns({
@@ -35,9 +34,10 @@ const Saved = ({data, id}) => {
     dispatch(
       UserSavedDesigns({
         actionType: "fetch",
+        postId: "",
       })
     )
-  }, [])
+  }, [dispatch])
   return (
     // <>
     //   <button onClick={handleunsave}>unsave</button>
@@ -49,19 +49,13 @@ const Saved = ({data, id}) => {
           handleunsave={handleunsave}
         />
       )}
-      {Data?.map(f => (
+      {Data?.map((f: DesignPost) => (
         <div key={f._id} className="gand">
           <div className="imageContent">
             <Link href={`/detailInfo/${f._id}`}>
-              <MdDeleteOutline
-                onClick={() => {
-                  setpopupClicked(!popupClicked)
-                  setPost(f._id)
-                }}
-                className="edit-gand"
-              ></MdDeleteOutline>
+              {/* <RxCross2 className="edit-gand"></RxCross2> */}
               {f.images && f.images.length > 0 ? (
-                <img className="mgand" src={f.images} alt={f.title} />
+                <img className="mgand" src={f.images[0]} alt={f.title} />
               ) : (
                 <video
                   muted
@@ -69,14 +63,13 @@ const Saved = ({data, id}) => {
                   loop
                   className="mgand"
                   src={f.video}
-                  alt={f.title}
                 ></video>
               )}
             </Link>
           </div>
           {/* <p className="ImageTitle">{f.title}</p> */}
           <div className="ImgAndHeart">
-            <Link href={`/profile/${f.creator._id}`}>
+            <Link href={`/other/${f.creator}`}>
               <img className="profile" src={f.UserProfileImage} alt="Profile" />
             </Link>
             {/* <p className="overlayText">{f.creator.username}</p> */}
@@ -92,6 +85,14 @@ const Saved = ({data, id}) => {
             // }}
             />
           </div>
+          <MdDeleteOutline
+            onClick={() => {
+              setpopupClicked(!popupClicked)
+              setPost(f?._id)
+            }}
+            size={40}
+            className="cross"
+          />
         </div>
       ))}
     </div>

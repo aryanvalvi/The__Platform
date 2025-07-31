@@ -1,24 +1,22 @@
 "use client"
-import Image from "next/image"
 import {animateScroll as scroll} from "react-scroll"
 import "./Home.scss"
 import HomeContent from "./homeContent/page"
 import {Typewriter} from "react-simple-typewriter"
 import {useEffect, useRef, useState} from "react"
-import debounce from "lodash/debounce"
-import Link from "next/link"
+
 import {MdSearch} from "react-icons/md"
 
 import {useRouter} from "next/navigation"
-import {search} from "../utils/search/search"
+
 export default function Home() {
-  const wrapperRef = useRef(null)
+  const wrapperRef = useRef<HTMLFormElement | null>(null)
   // console.log(search.map(e => e))
   const [showLine, setShowLine] = useState(false)
   const [showGet, setShowNotice] = useState(false)
   const [searchValue, setSearchValue] = useState("")
-  const [searchResultData, setSearchResultData] = useState()
-  const [filterData, setFilterData] = useState([])
+
+  const [filterData, setFilterData] = useState<{title: string}[]>([])
   console.log(filterData)
   const [showSearchOption, setShowSearchOption] = useState(false)
   console.log("show", showSearchOption)
@@ -28,33 +26,33 @@ export default function Home() {
     scroll.scrollTo(700)
   }
 
-  const searchQueryFunctionCaller = async query => {
-    console.log("query", query)
-    const res = await fetch(
-      `http://localhost:5001/autocompleteSearch?query=${query}`,
-      {
-        method: "GET",
-        credentials: "include",
-      }
-    )
-    const data = await res.json()
-    setSearchResultData(data)
-    console.log(data)
-  }
-  const debounceFucntion = debounce(searchQueryFunctionCaller, 300)
-  const OnChangeSearchFunction = e => {
-    setSearchValue(e)
-    debounceFucntion(e)
-  }
+  // const searchQueryFunctionCaller = async query => {
+  //   console.log("query", query)
+  //   const res = await fetch(
+  //     `http://localhost:5001/autocompleteSearch?query=${query}`,
+  //     {
+  //       method: "GET",
+  //       credentials: "include",
+  //     }
+  //   )
+  //   const data = await res.json()
 
-  const handleSearch = e => {
+  //   console.log(data)
+  // }
+  // const debounceFucntion = debounce(searchQueryFunctionCaller, 300)
+  // const OnChangeSearchFunction = e => {
+  //   setSearchValue(e)
+  //   debounceFucntion(e)
+  // }
+
+  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (searchValue.trim()) {
       router.push(`/result?q=${encodeURIComponent(searchValue)}`)
     }
   }
 
-  const searchChange = async e => {
+  const searchChange = async (e: string) => {
     try {
       const res = await fetch(
         `http://localhost:5001/auth/autocomplete?q=${e}`,
@@ -79,13 +77,13 @@ export default function Home() {
     // setFilterData(filterdata)
   }
 
-  const handleClickSearch = e => {
+  const handleClickSearch = (title: string) => {
     // e.preventDefault()
     if (searchValue.trim()) {
-      router.push(`/result?q=${encodeURIComponent(e)}`)
+      router.push(`/result?q=${encodeURIComponent(title)}`)
     }
-    console.log("clicked option", e)
-    setSearchValue(e)
+    console.log("clicked option", title)
+    setSearchValue(title)
   }
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -95,8 +93,11 @@ export default function Home() {
   }, [])
 
   useEffect(() => {
-    const handleClickOutside = e => {
-      if (wrapperRef.current && !wrapperRef.current.contains(e.target)) {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        wrapperRef.current &&
+        !wrapperRef.current.contains(e.target as Node)
+      ) {
         setShowSearchOption(false)
       }
     }
@@ -180,7 +181,7 @@ export default function Home() {
             <div className="searchResultContainer">
               {showSearchOption &&
                 filterData?.map(e => (
-                  <div key={e} className="searchbruh">
+                  <div key={e.title} className="searchbruh">
                     <p onClick={() => handleClickSearch(e.title)}>{e.title}</p>
                   </div>
                 ))}

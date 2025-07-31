@@ -1,18 +1,26 @@
 import React, {useState} from "react"
 import {FaHeart} from "react-icons/fa"
-import {Link} from "react-scroll"
+
 import "./dashboardComponents.scss"
 import {BiSolidEdit} from "react-icons/bi"
 import MypostsPopup from "./MypostsPopup"
-
-const Myposts = ({data, id}) => {
+import {DesignPost} from "../../ReduxStore/slices/UserProfile"
+import Link from "next/link"
+const Myposts = ({
+  data,
+  id,
+}: {
+  data: DesignPost[] | null
+  id: string | string[] | undefined
+}) => {
   const [popupClicked, setpopupClicked] = useState(false)
-  const [post, setPost] = useState()
+  const [post, setPost] = useState<DesignPost>()
+  console.log(post)
   console.log(popupClicked)
   console.log(data)
   return (
     <div className="flex">
-      {popupClicked && (
+      {popupClicked && post && (
         <MypostsPopup data={post} id={id} setpopupClicked={setpopupClicked} />
       )}
       {data?.map(f => (
@@ -28,7 +36,7 @@ const Myposts = ({data, id}) => {
             {/* <Link href={`/detailInfo/${f._id}`}> */}
             <BiSolidEdit className="edit-gand"></BiSolidEdit>
             {f.images && f.images.length > 0 ? (
-              <img className="mgand" src={f.images} alt={f.title} />
+              <img className="mgand" src={f.images[0]} alt={f.title} />
             ) : (
               <video
                 muted
@@ -36,14 +44,13 @@ const Myposts = ({data, id}) => {
                 loop
                 className="mgand"
                 src={f.video}
-                alt={f.title}
               ></video>
             )}
             {/* </Link> */}
           </div>
           {/* <p className="ImageTitle">{f.title}</p> */}
           <div className="ImgAndHeart">
-            <Link href={`/profile/${f.creator._id}`}>
+            <Link href={`/other/${f.creator}`}>
               <img className="profile" src={f.UserProfileImage} alt="Profile" />
             </Link>
             {/* <p className="overlayText">{f.creator.username}</p> */}

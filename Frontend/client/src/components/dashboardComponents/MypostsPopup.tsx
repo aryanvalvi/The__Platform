@@ -9,58 +9,81 @@ import {
   postUpdateFunction,
   resetPostUpdateSuccess,
 } from "@/ReduxStore/slices/PostpostSlice"
-import {useDispatch} from "react-redux"
-import {useAppSelector} from "@/ReduxStore/hook/CustomHook"
+
+import {useAppDispatch, useAppSelector} from "@/ReduxStore/hook/CustomHook"
 import {UserDashBoardFunction} from "@/ReduxStore/slices/UserProfile"
-const MypostsPopup = ({setpopupClicked, data, id}) => {
+import {DesignPost} from "../../ReduxStore/slices/UserProfile"
+
+interface MypostsPopupProps {
+  data: DesignPost
+  id: string[] | string | undefined
+  setpopupClicked: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+const MypostsPopup = ({setpopupClicked, data, id}: MypostsPopupProps) => {
+  console.log(setpopupClicked, data, id)
   console.log(id, "id is")
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   console.log(data)
-  const [formData, setFormData] = useState({
+  interface formdata {
+    title: string
+    description: string
+    tags: string[]
+    visibility: "public" | "private"
+    images_url_for_preview: string
+    tools: string
+    cover: string
+    category: string
+    externalLinks: string
+  }
+  const [formData, setFormData] = useState<formdata>({
     title: data.title || "",
     description: data.description || "",
     tags: Array.isArray(data.tags) ? data.tags : [],
     visibility: data.visibility || "public",
-    images_url_for_preview: data.images || "",
-    tools: data.tools || "",
+    images_url_for_preview: Array.isArray(data.images)
+      ? data.images[0] || ""
+      : "",
+    tools: Array.isArray(data.tools) ? data.tools[0] || "" : "",
     cover: "",
+    category: "",
+    externalLinks: "",
   })
-  const [dropdown2, setDropdown2] = useState(false)
-  const [newImageFile, setNewImageFile] = useState(null)
-  const [dropdownValue2, setDropDownValue2] = useState("Tool")
-  const [isToggled, setIsToggled] = useState(false)
-  const [showTools, setShowTools] = useState(true)
-  const [showTag, setShowTag] = useState(true)
-  const [showSearchOption, setShowSearchOption] = useState(false)
-  const [inputTag, setInputTag] = useState("")
-  const [filterData, setFilterData] = useState([])
-  const [tags, setTags] = useState([])
-  const [mobileStep, setMobileStep] = useState(1)
+  const [dropdown2, setDropdown2] = useState<boolean>(false)
+  const [newImageFile, setNewImageFile] = useState<File | null>(null)
+  const [dropdownValue2, setDropDownValue2] = useState<string>("Tool")
+  const [isToggled, setIsToggled] = useState<boolean>(false)
+  const [showTools, setShowTools] = useState<boolean>(true)
+  const [showTag, setShowTag] = useState<boolean>(true)
+  const [showSearchOption, setShowSearchOption] = useState<boolean>(false)
+  const [inputTag, setInputTag] = useState<string>("")
+  const [filterData, setFilterData] = useState<string[]>([])
+  const [tags, setTags] = useState<string[]>([])
+  const [mobileStep, setMobileStep] = useState<number>(1)
   const returnDataFromUpdate = useAppSelector(
     state => state.postPostReducer.postUpdateSuccess
   )
   console.log("checkiiing", returnDataFromUpdate)
-  const handleToggle = type => {
+  const handleToggle = (type: string) => {
     if (type === "tools") {
       setShowTools(!showTools)
       setFormData(prev => ({
         ...prev,
-        tools: (prev.tools = ""),
+        tools: "",
       }))
-
       setIsToggled(prev => !prev)
     } else {
       setShowTag(!showTag)
       setFormData(prev => ({
         ...prev,
-        tags: (prev.tags = []),
+        tags: [],
       }))
       setIsToggled(prev => !prev)
     }
   }
-  const wrapperRef = useRef()
+  const wrapperRef = useRef<HTMLDivElement | null>(null)
 
-  const onInputChange = e => {
+  const onInputChange = (e: string) => {
     setShowSearchOption(true)
     setInputTag(e)
     if (e.trim() === "") {
@@ -72,7 +95,7 @@ const MypostsPopup = ({setpopupClicked, data, id}) => {
       setFilterData(filterData)
     }
   }
-  const TagSelectorFucntion = e => {
+  const TagSelectorFucntion = (e: any) => {
     setShowSearchOption(false)
     if (!tags.includes(e)) {
       setTags(prev => [...prev, e])
@@ -82,7 +105,7 @@ const MypostsPopup = ({setpopupClicked, data, id}) => {
 
     console.log(e)
   }
-  const removeTag = tagToRemove => {
+  const removeTag = (tagToRemove: string) => {
     setTags(tags.filter(tag => tag !== tagToRemove)) // Remove the tag
     setFormData(prev => ({
       ...prev,
@@ -91,19 +114,25 @@ const MypostsPopup = ({setpopupClicked, data, id}) => {
     console.log("after filtering array", formData)
   }
   console.log(formData)
-  const handleChange = e => {
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
     const {name, value} = e.target
     console.log(name, value, filterData, dropdownValue2)
     setFormData(prev => ({...prev, [name]: value}))
   }
 
-  const handleImageChange = e => {
-    const file = e.target.files[0]
-    setFormData(prev => ({
-      ...prev,
-      images_url_for_preview: URL.createObjectURL(file),
-    }))
-    setNewImageFile(file)
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      setFormData(prev => ({
+        ...prev,
+        images_url_for_preview: URL.createObjectURL(file),
+      }))
+      setNewImageFile(file)
+    }
   }
 
   const handleSave = () => {
@@ -115,23 +144,25 @@ const MypostsPopup = ({setpopupClicked, data, id}) => {
     const userFormInput = {
       Title: formData.title,
       Des: formData.description,
-      tags: formData.tags, // Use the state managed `tags` array
-      dropdownValue: formData.category, // Assuming you add category to formData state
-      dropdownValue2: formData.tools, // Use formData.tools
-      linkset: formData.externalLinks, // Assuming you add externalLinks to formData state
+      tags: formData.tags,
+      dropdownValue: formData.category,
+      dropdownValue2: formData.tools,
+      linkset: formData.externalLinks,
       visibility: formData.visibility,
-      // Do NOT send images: 'blob:...' here, as files are separate
     }
     updateFormData.append("userFormInput", JSON.stringify(userFormInput))
 
-    for (let pair of updateFormData.entries()) {
+    for (const pair of updateFormData.entries()) {
       console.log("update form data entry", pair[0], pair[1])
     }
     dispatch(postUpdateFunction({postId: data._id, formData: updateFormData}))
   }
   useEffect(() => {
-    const handleClickOutside = e => {
-      if (wrapperRef.current && !wrapperRef.current.contains(e.target)) {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        wrapperRef.current &&
+        !wrapperRef.current.contains(e.target as Node)
+      ) {
         setShowSearchOption(false)
       }
     }
@@ -142,8 +173,10 @@ const MypostsPopup = ({setpopupClicked, data, id}) => {
   }, [])
   useEffect(() => {
     if (returnDataFromUpdate) {
-      alert("Post updated successfully!") // Optional: User feedback
-      dispatch(UserDashBoardFunction(id))
+      alert("Post updated successfully!")
+      if (id) {
+        dispatch(UserDashBoardFunction(id))
+      }
       setpopupClicked(false)
       dispatch(resetPostUpdateSuccess())
       setpopupClicked(false) // Close the popup
@@ -286,9 +319,9 @@ const MypostsPopup = ({setpopupClicked, data, id}) => {
                         {hugeToolsList.map(e => (
                           <div
                             onClick={() => {
-                              setDropDownValue2(e),
-                                setDropdown2(false),
-                                setFormData(prev => ({...prev, tools: e}))
+                              setDropDownValue2(e)
+                              setDropdown2(false)
+                              setFormData(prev => ({...prev, tools: e}))
                             }}
                             className="search-tag"
                             key={e}

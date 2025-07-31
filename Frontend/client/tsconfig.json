@@ -33,7 +33,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "src/app/post/[id]",
+    "../../../bumping/[id]",
     "src/app/detailInfo/[id]",
     ".next/types/app/result/page.tsx"
   ],

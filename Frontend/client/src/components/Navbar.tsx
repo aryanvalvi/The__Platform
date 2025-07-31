@@ -7,41 +7,116 @@ import {fetchUserData, logoutUser} from "@/ReduxStore/slices/dataFetchSlice"
 import "./Navbar.scss"
 import {RxHamburgerMenu} from "react-icons/rx"
 
-const Navbar = () => {
-  console.log("bsdk", process.env.NEXT_PUBLIC_API_URL)
+const Navbar: React.FC = () => {
   const [isHovered, setIsHovered] = useState(false)
-  const dispatch = useAppDispatch()
-  const {user} = useAppSelector(state => state.UserDataFetchReducer.userData)
   const [ham, setHam] = useState(false)
 
-  console.log("Ham state:", ham) // Debug log
+  const dispatch = useAppDispatch()
+  const user = useAppSelector(state => state.UserDataFetchReducer.userData)
+  const isLoading = useAppSelector(state => state.UserDataFetchReducer.pending)
 
-  const HandleLogin = () => {
-    window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/google`
+  console.log("Current user:", user)
+  console.log("Ham state:", ham)
+
+  const handleLogin = () => {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL
+    if (!apiUrl) {
+      console.error("API URL not configured")
+      return
+    }
+    window.location.href = `${apiUrl}/auth/google`
   }
 
   const handleLogout = async () => {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/logout`, {
-      method: "GET",
-      credentials: "include",
-    })
-    const data = await res.json()
-    console.log("Logout", data)
-    dispatch(logoutUser())
+    try {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL
+      if (!apiUrl) {
+        console.error("API URL not configured")
+        return
+      }
+
+      const res = await fetch(`${apiUrl}/auth/logout`, {
+        method: "GET",
+        credentials: "include",
+      })
+
+      if (!res.ok) {
+        throw new Error(`Logout failed: ${res.status}`)
+      }
+
+      const data = await res.json()
+      console.log("Logout successful:", data)
+      dispatch(logoutUser())
+    } catch (error) {
+      console.error("Logout error:", error)
+    }
+  }
+
+  const toggleMenu = () => {
+    setHam(prev => !prev)
+  }
+
+  const closeMenu = () => {
+    setHam(false)
   }
 
   useEffect(() => {
-    if (!user) dispatch(fetchUserData())
+    if (user === null) {
+      dispatch(fetchUserData())
+    }
   }, [dispatch, user])
+
+  const renderAuthSection = () => {
+    if (isLoading) {
+      return (
+        <div className="loading-spinner">
+          <span>Loading...</span>
+        </div>
+      )
+    }
+
+    if (!user) {
+      return (
+        <button onClick={handleLogin} className="sign">
+          Log In
+        </button>
+      )
+    }
+
+    return (
+      <div
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        className="NavProfile"
+      >
+        <div className="pname">
+          <Link href={`/dashboard/profile/${user._id}`}>
+            <img
+              className="profile-picture"
+              src={user.userImage || "/image/fallback.png"}
+              alt={`${user.username}'s profile picture`}
+            />
+          </Link>
+          <p className="profile-name">{user.username}</p>
+          {isHovered && (
+            <button onClick={handleLogout} className="logout">
+              Log Out
+            </button>
+          )}
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="NavContainer">
-      {/* Backdrop overlay with dynamic class */}
+      {/* Backdrop overlay */}
       <div
         className={`backdrop ${ham ? "active" : ""}`}
-        onClick={() => setHam(false)}
-        aria-hidden={ham}
-      ></div>
+        onClick={closeMenu}
+        aria-hidden={!ham}
+      />
+
       <div className="NavbarContain">
         <div>
           <Link href="/">
@@ -51,69 +126,49 @@ const Navbar = () => {
               height={300}
               src="/client_images/logoooo1.svg"
               alt="Logo"
+              priority
             />
           </Link>
         </div>
+
         <div>
           <nav>
             <span className="ham">
               <RxHamburgerMenu
-                onClick={() => setHam(prev => !prev)}
+                onClick={toggleMenu}
                 aria-label="Toggle menu"
                 aria-expanded={ham}
+                role="button"
+                tabIndex={0}
+                onKeyDown={e => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    toggleMenu()
+                  }
+                }}
               />
             </span>
-            <ul className={`navbarElements ${ham ? "open" : ""}`}>
-              <Link href="/" className="Link">
-                <li className="home">home</li>
-              </Link>
-              {/* {
-                user ?
-              } */}
-              <Link href="/test" className="Link Explore">
-                <li>Publish</li>
-              </Link>
-              {/* <Link className="Link" href="/">
-                <li className="Learn">Learn</li>
-              </Link> */}
 
-              <li className="signCont">
-                {user === null || user === false ? (
-                  <button onClick={HandleLogin} className="sign">
-                    log in
-                  </button>
-                ) : (
-                  <div
-                    onMouseEnter={() => setIsHovered(true)}
-                    onMouseLeave={() => setIsHovered(false)}
-                    className="NavProfile"
-                  >
-                    <div className="pname">
-                      <Link href={`/dashboard/profile/${user._id}`}>
-                        <img
-                          className="profile-picture"
-                          src={user.userImage || "/image/fallback.png"}
-                          alt="Profile picture"
-                        />
-                      </Link>
-                      <p className="profile-name">{user.username}</p>
-                      {isHovered && (
-                        <button onClick={handleLogout} className="logout">
-                          LogOut
-                        </button>
-                      )}
-                    </div>
-                  </div>
-                )}
+            <ul className={`navbarElements ${ham ? "open" : ""}`}>
+              <li>
+                <Link href="/" className="Link" onClick={closeMenu}>
+                  <span className="home">Home</span>
+                </Link>
               </li>
+
+              <li>
+                <Link
+                  href="/publish"
+                  className="Link Explore"
+                  onClick={closeMenu}
+                >
+                  <span>Publish</span>
+                </Link>
+              </li>
+
+              <li className="signCont">{renderAuthSection()}</li>
             </ul>
           </nav>
         </div>
-        {/* <div>
-          <nav className="signContainer">
-            <ul className="navbarElement"></ul>
-          </nav>
-        </div> */}
       </div>
     </div>
   )

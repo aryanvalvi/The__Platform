@@ -1,14 +1,12 @@
 import type {Metadata} from "next"
-import localFont from "next/font/local"
 import "./globals.css"
 import Navbar from "@/components/Navbar"
 import Providers from "./provider"
-import Footer from "@/components/Footer"
-import Test from "@/app/test/page"
+
 import {Poppins} from "next/font/google"
 
-import {authCheckFunction} from "@/ReduxStore/slices/Authentication"
 import AuthInitilizer from "@/components/protectedRoutes/AuthInitilizer"
+import LoginPopup from "@/components/login/LoginPopup"
 // const geistSans = localFont({
 //   src: "./fonts/GeistVF.woff",
 //   variable: "--font-geist-sans",
@@ -37,10 +35,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link
+        {/* <link
           href="https://fonts.googleapis.com/css2?family=Poppins:wght@100..900&display=swap"
           rel="stylesheet"
-        />
+        /> */}
       </head>
       <body
       // className={`${geistSans.variable} ${geistMono.variable} antialiased`}
@@ -48,6 +46,7 @@ export default function RootLayout({
         <Providers>
           <AuthInitilizer>
             <div>
+              <LoginPopup></LoginPopup>
               <Navbar></Navbar>
               <main className={poppins.className}>{children}</main>
               {/* <Footer></Footer> */}

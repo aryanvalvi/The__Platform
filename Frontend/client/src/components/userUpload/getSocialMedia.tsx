@@ -1,4 +1,4 @@
-const getSocialMedia = url => {
+const getSocialMedia = (url: string) => {
   let formattedUrl = url
   if (!url.startsWith("http://") && !url.startsWith("https://")) {
     formattedUrl = `https://${url}`

@@ -3,19 +3,20 @@ import {useParams} from "next/navigation"
 import React, {useEffect, useState} from "react"
 import "./other.scss"
 import {OtherProfile} from "@/ReduxStore/slices/UserProfile"
-import {useDispatch} from "react-redux"
-import {useAppSelector} from "@/ReduxStore/hook/CustomHook"
+
+import {useAppDispatch, useAppSelector} from "@/ReduxStore/hook/CustomHook"
 import {
   CheckUserInteraction,
-  sendUserInteraction,
   sendUserInteraction2,
 } from "@/ReduxStore/slices/userInteractionSlice"
 import {getConversationId} from "@/ReduxStore/slices/MessageSlice"
 import Popup from "@/components/Popup"
 import {FaHeart} from "react-icons/fa"
-import {Link} from "react-scroll"
+
 import "../../homeContent/Sexplore.scss"
-const page = () => {
+import Link from "next/link"
+const Page = () => {
+  const dispatch = useAppDispatch()
   const [openPopup, setopenPopup] = useState(false)
 
   const Data = useAppSelector(
@@ -35,24 +36,27 @@ const page = () => {
   }
   const contactFunction = () => {
     setopenPopup(!openPopup)
-    dispatch(getConversationId(id))
+    if (id) {
+      dispatch(getConversationId(id))
+    }
   }
   const conversation = useAppSelector(
-    state => state.MessageReducer.ConversationId
+    state => state.MessageReducer.conversationId
   )
-  const dispatch = useDispatch()
+
   useEffect(() => {
     window.scrollTo(0, 0)
     dispatch(OtherProfile(id))
     dispatch(CheckUserInteraction({postid: id, actionType: "fromOther"}))
-  }, [])
+  }, [dispatch, id])
   return (
     <div className="OtherProfileContainer">
       {openPopup && (
         <Popup
+          openPopup
           setopenPopup={setopenPopup}
-          // mainDesign={mainDesign}
-          // post={userid}
+          mainDesign={null}
+          post={null}
           conversationid={conversation}
         ></Popup>
       )}
@@ -61,14 +65,15 @@ const page = () => {
           <span className="client-image">
             <img
               // src="https://picsum.photos/300/200
-              src={Data.user.userImage}
+              src={Data?.user?.userImage}
+              alt={Data?.user?.userImage}
             />
 
             <p>Aryan</p>
           </span>
           <ul>
             <li>
-              <span>{Data.user.followers?.length}</span>
+              <span>{Data?.user?.followers?.length}</span>
               <p>Followers</p>
             </li>
             <li>
@@ -76,7 +81,7 @@ const page = () => {
               <p>posts</p>
             </li>
             <li>
-              <span>{Data.user.likedBY?.length}</span>
+              <span>{Data?.user?.likedBY?.length}</span>
               <p>Likes</p>
             </li>
           </ul>
@@ -98,10 +103,10 @@ const page = () => {
       </div>
       <div className="MiddlePartContainer">
         <div className="moreby">
-          <p>More by {Data?.user.username}</p>
+          <p>More by {Data?.user?.username}</p>
         </div>
         <div className="flex">
-          {Data?.design.map(f => (
+          {Data?.design?.map((f: any) => (
             <div key={f._id} className="gand">
               <div className="imageContent">
                 <Link href={`/detailInfo/${f._id}`}>
@@ -114,7 +119,7 @@ const page = () => {
                       loop
                       className="mgand"
                       src={f.video}
-                      alt={f.title}
+                      // alt={f.title}
                     ></video>
                   )}
                 </Link>
@@ -148,4 +153,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Page

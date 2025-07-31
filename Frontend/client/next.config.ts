@@ -10,6 +10,10 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  sassOptions: {
+    // implementation: require("sass"),
+    // api: "modern",
+  },
 }
 
 export default nextConfig

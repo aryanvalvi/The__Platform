@@ -4,19 +4,20 @@ interface postPostArgs {
   formData: FormData
 }
 interface posptPostReturn {
-  success: Boolean
+  success: boolean
+  status: any
 }
 
 interface postPost {
-  buttonclick: Number
+  buttonclick: number
   file: File | null
   videoFile: File | null
-  description: String
-  type: String
-  Title: String
-  success: Boolean
-  status: String
-  postUpdateSuccess: Boolean
+  description: string
+  type: string
+  Title: string
+  success: boolean
+  status: string
+  postUpdateSuccess: boolean
 }
 
 const initialState: postPost = {
@@ -50,7 +51,7 @@ export const postPostFunction = createAsyncThunk<posptPostReturn, postPostArgs>(
 )
 export const postUpdateFunction = createAsyncThunk(
   "postupdate",
-  async ({postId, formData}) => {
+  async ({postId, formData}: {postId: string; formData: FormData}) => {
     const res = await fetch(`${baseUrl}/auth/update/${postId}`, {
       method: "PUT",
       credentials: "include",
@@ -105,10 +106,10 @@ export const postPost = createSlice({
     setVideoFile: (state, action) => {
       state.videoFile = action.payload
     },
-    setbuttonClick: (state, action) => {
-      ;(state.buttonclick = action.payload.buttonclick),
-        (state.type = action.payload.type)
-    },
+    // setbuttonClick: (state, action) => {
+    //   ;(state.buttonclick = action.payload.buttonclick),
+    //     (state.type = action.payload.type)
+    // },
     setDescription: (state, action) => {
       state.description = action.payload
     },
@@ -138,7 +139,7 @@ export const postPost = createSlice({
   },
 })
 
-export const {setFile, setbuttonClick, setDescription, setTitle, setVideoFile} =
+export const {setFile, setDescription, setTitle, setVideoFile} =
   postPost.actions
 export const {resetPostUpdateSuccess} = postPost.actions
 

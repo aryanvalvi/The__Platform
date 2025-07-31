@@ -314,7 +314,7 @@
 // }
 
 // popup
-.modal2 {
+.modal3 {
   position: fixed;
   top: 0;
   left: 0;
@@ -738,4 +738,9 @@
       }
     }
   }
+}
+
+.cross {
+  position: absolute;
+  font-size: 30px;
 }

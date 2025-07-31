@@ -1,5 +1,5 @@
-import React, {useEffect, useRef} from "react"
-import {createRoot} from "react-dom/client"
+"use client"
+import React, {useRef} from "react"
 import {Swiper, SwiperSlide} from "swiper/react"
 import {Grid, Pagination, Navigation} from "swiper/modules"
 import {FaArrowLeft, FaArrowRight} from "react-icons/fa"
@@ -7,18 +7,47 @@ import "swiper/css"
 import "swiper/css/grid"
 import "swiper/css/pagination"
 import "./dashboard.scss"
+// import {Design} from "../../ReduxStore/slices/homeContentSlice"
 
-const Dashboard = ({data}) => {
-  "use client"
+export interface Design {
+  _id: string
+  title: string
+  description: string
+  UserProfileImage: string
+  creator: {
+    _id: string
+    googleID: string
+    username: string
+    userImage: string
+    following: string[]
+  }
+  comments: any[]
+  createdAt: string
+  downloads: number
+  externalLinks: string[]
+  images: string[] | string | any
+  likes: string[]
+  saves: string[]
+  sideImages: string[]
+  tags: string[]
+  tools: string[]
+  video: string
+  views: number
+  visibility: string
+  __v: number
+}
+const SwiperDesign = ({data}: {data: Design[] | null}) => {
+  console.log(data)
+  const sliderRef = useRef(null)
+
   if (!data || data.length === 0) {
     return <div className="no-images">No Images bro</div>
   }
 
   console.log("data from dashboard", data)
-  const sliderRef = useRef(null)
 
   // Determine rows based on data length
-  const getRows = dataLength => (dataLength >= 6 ? 2 : 1)
+  const getRows = (dataLength: number) => (dataLength >= 6 ? 2 : 1)
 
   const showArrows = data.length > 6
 
@@ -84,4 +113,4 @@ const Dashboard = ({data}) => {
     </div>
   )
 }
-export default Dashboard
+export default SwiperDesign

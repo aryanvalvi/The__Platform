@@ -1,10 +1,9 @@
 "use client"
 import {useAppDispatch, useAppSelector} from "@/ReduxStore/hook/CustomHook"
-import React, {useEffect, useRef, useState} from "react"
+import React, {useEffect, useRef, useState, Suspense} from "react"
 import {FaCloudUploadAlt} from "react-icons/fa"
 import {Swiper, SwiperSlide} from "swiper/react"
-import {Navigation, Pagination, Scrollbar, A11y, Autoplay} from "swiper/modules"
-import "swiper/css"
+import {Navigation, Pagination, Scrollbar, A11y} from "swiper/modules"
 import "swiper/css"
 import "swiper/css/navigation"
 import "swiper/css/pagination"
@@ -27,36 +26,29 @@ import {
   FaLink,
 } from "react-icons/fa"
 import {FaCircleArrowLeft} from "react-icons/fa6"
-import {FiEdit} from "react-icons/fi"
-import {AiOutlineEdit} from "react-icons/ai"
 import {RxCrossCircled} from "react-icons/rx"
-import "swiper/css/navigation"
-import "swiper/css/pagination"
-import "swiper/css/scrollbar"
 import {RxCross1} from "react-icons/rx"
 import {hugeProjectTypes, hugeToolsList} from "../../utils/tools/tools"
-import {dribbbleTags} from "../../utils/tags/tags"
-import {RiArrowDropDownLine} from "react-icons/ri"
+import {RiArrowDropDownLine, RiEditLine} from "react-icons/ri"
 import "./test.scss"
 import {FaArrowLeft, FaArrowRight} from "react-icons/fa"
 import {
   postPostFunction,
   setDescription,
-  setFile,
   setTitle,
 } from "@/ReduxStore/slices/PostpostSlice"
-import {isArray} from "lodash"
 import {AiOutlinePlusCircle} from "react-icons/ai"
 import {search} from "@/utils/search/search"
 import getSocialMedia from "../../utils/hooks/getSocialMedia"
-import {useRouter} from "next/navigation"
 import ProtectedRoutes from "@/components/protectedRoutes/ProtectedRoutes"
+import {useRouter} from "next/navigation"
 
-//types
+// Types
 type FileChangeEvent = React.ChangeEvent<HTMLInputElement>
-const ImageUpload = () => {
+
+const PublishContent = () => {
   const router = useRouter()
-  const overlayRef = useRef<HTMLDivElement>(null)
+  const overlayRef = useRef<HTMLDivElement | null>(null)
   const iconMap = {
     FaDribbble: FaDribbble,
     FaBehance: FaBehance,
@@ -74,30 +66,38 @@ const ImageUpload = () => {
     FaCodepen: FaCodepen,
     FaLink: FaLink,
   }
-  //all state
-  const wrapperRef = useRef()
+
+  // All state
+  const wrapperRef = useRef<HTMLDivElement | null>(null)
   const [dropdown, setDropdown] = useState<boolean>(false)
   const [dropdownValue, setDropDownValue] = useState<string>("category")
   const [dropdown2, setDropdown2] = useState<boolean>(false)
   const [dropdownValue2, setDropDownValue2] = useState<string>("Tool")
   const [upload, setUpload] = useState<boolean>(true)
   const [upload2, setUpload2] = useState<boolean>(false)
-  const [arryImage, setArryImage] = useState<any[]>([])
+  type ImageItem = {
+    url: string
+    type: string
+  }
+  const [arryImage, setArryImage] = useState<ImageItem[]>([])
   console.log(arryImage.length)
   const [next, setNext] = useState<boolean>(false)
-  const [filterData, setFilterData] = useState<any[]>([])
-  const [selectedTag, setSelectedTags] = useState<any[]>([])
+  const [filterData, setFilterData] = useState<string[]>([])
+  const [selectedTag, setSelectedTags] = useState<string[]>([])
   const [showSearchOption, setShowSearchOption] = useState<boolean>(false)
   const [link, setLink] = useState<string | undefined>(undefined)
   const [showCategory, setShowCategory] = useState<boolean>(true)
   const [showTools, setShowTools] = useState<boolean>(true)
-  const [linkset, SetLinkSet] = useState<any[]>([])
+  type LinkItem = {
+    Icon: React.ComponentType<{className?: string}>
+    link: string
+  }
+  const [linkset, SetLinkSet] = useState<LinkItem[]>([])
   const [edit, setEdit] = useState<boolean>(false)
   const [index, setIndex] = useState<number | undefined>(undefined)
   const [file, setFile] = useState<File | null>(null)
-  const [multi, setMulti] = useState<any[]>([])
+  const [multi, setMulti] = useState<string[]>([])
   const [multiImgFile, setMultiImgFile] = useState<File[]>([])
-  const [url, setUrl] = useState<string>("")
   const [inputTag, setInputTag] = useState<string>("")
   const [tags, setTags] = useState<string[]>([])
   const [isToggled, setIsToggled] = useState<boolean>(false)
@@ -106,17 +106,16 @@ const ImageUpload = () => {
   const [error, setError] = useState(false)
   const dispatch = useAppDispatch()
 
-  //Reducer slice state
+  // Reducer slice state
   const success = useAppSelector(state => state.postPostReducer.success)
   const status = useAppSelector(state => state.postPostReducer.status)
   const Data = useAppSelector(state => state.postPostReducer)
-  const {user} = useAppSelector(state => state.UserDataFetchReducer.userData)
+  const userData = useAppSelector(state => state.UserDataFetchReducer.userData)
+  console.log(userData)
   const Des = Data.description
   const Title = Data.Title
 
-  //file Image Chnages Function
-
-  //main logic for file change and uplode
+  // File Image Changes Function
   const handleFileChange = (e: FileChangeEvent) => {
     setUpload(false)
     setUpload2(true)
@@ -124,7 +123,6 @@ const ImageUpload = () => {
     const selectedFile = e.target.files?.[0] || null
 
     if (selectedFile) {
-      setUrl(URL.createObjectURL(selectedFile))
       const img = {
         url: URL.createObjectURL(selectedFile),
         type: selectedFile.type,
@@ -132,6 +130,7 @@ const ImageUpload = () => {
       setArryImage(prev => [...prev, img])
     }
   }
+
   const MultipleFileChange = (e: FileChangeEvent) => {
     const filelist = e.target.files
     if (!filelist) return
@@ -145,19 +144,17 @@ const ImageUpload = () => {
       selectMultiple.map(bruh => bruh)
     )
     const filesArray = selectMultiple.map(file => file)
-
     const urls = selectMultiple.map(file => ({
       url: URL.createObjectURL(file),
       type: file.type,
     }))
     setArryImage(prev => [...prev, ...urls])
     console.log(urls)
-    // setToggle1(true)
     setMultiImgFile(filesArray)
-
     setMulti(urls.map(item => item.url))
   }
-  const handleUpload = async (e: FileChangeEvent) => {
+
+  const handleUpload = async (e: React.MouseEvent<HTMLButtonElement>) => {
     setPublish(true)
     setSux(true)
     e.preventDefault()
@@ -179,24 +176,26 @@ const ImageUpload = () => {
       linkset,
     }
     formData.append("userFormInput", JSON.stringify(formUserInput))
-
-    // console.log("FormData Entries:")
-    // for (let pair of formData.entries()) {
-    //   console.log(pair[0], pair[1])
-    // }
     dispatch(postPostFunction({formData}))
   }
 
-  //File things changes
-
   const addLink = () => {
-    const bruh = getSocialMedia(`${link}`)
-    console.log("getSocialMedia output for", link, ":", bruh)
-    const realIcon = iconMap[bruh] || iconMap.FaLink
-    console.log("Selected icon:", realIcon ? realIcon.name : "undefined")
-    SetLinkSet(prev => [...prev, {Icon: realIcon, link: link}])
+    if (!link || link.trim() === "") {
+      console.error("Link is empty or undefined")
+      return
+    }
+    const iconKey = getSocialMedia(link)
+    console.log("getSocialMedia output for", link, ":", iconKey)
+    const selectedIcon =
+      iconMap[iconKey as keyof typeof iconMap] || iconMap.FaLink
+    console.log(
+      "Selected icon:",
+      selectedIcon ? selectedIcon.name : "undefined"
+    )
+    SetLinkSet((prev: any) => [...prev, {Icon: selectedIcon, link: link}])
     setLink("")
   }
+
   const handleToggle = (type: "category" | "tools") => {
     if (type === "category") {
       setShowCategory(!showCategory)
@@ -208,17 +207,20 @@ const ImageUpload = () => {
       setIsToggled(prev => !prev)
     }
   }
+
   const nextFunc = () => {
-    if (!Title.trim()) {
+    if (!Title.trim() || !Des.trim()) {
+      return
     }
-    if (!Des.trim()) {
-    } else setNext(true)
+    setNext(true)
   }
-  const OptionClearTag = (e: FileChangeEvent) => {
+
+  const OptionClearTag = (e: string) => {
     const clear = selectedTag.filter(data => data !== e)
     console.log(clear)
     setSelectedTags(clear)
   }
+
   const onInputChange = (value: string) => {
     setShowSearchOption(true)
     setInputTag(value)
@@ -231,12 +233,14 @@ const ImageUpload = () => {
       setFilterData(filterData)
     }
   }
+
   const TagSelectorFucntion = (e: string) => {
     setShowSearchOption(false)
     if (!tags.includes(e)) {
       setTags(prev => [...prev, e])
     }
   }
+
   const editFunction = (action: "delete" | "change") => {
     console.log(arryImage)
     if (action === "delete") {
@@ -246,41 +250,48 @@ const ImageUpload = () => {
     } else if (action === "change") {
       const fileInput = document.getElementById("file-input3")
       fileInput?.click()
-
       setEdit(false)
-
       console.log("change")
     }
   }
+
   const editChangeFileFunction = (e: FileChangeEvent) => {
     const selectedFile = e.target.files?.[0]
     if (!selectedFile || index === undefined) return
     const img = URL.createObjectURL(selectedFile)
     setArryImage(prev => {
       const Updated = [...prev]
-      Updated[index] = img
+      Updated[index] = {
+        url: img,
+        type: selectedFile.type,
+      }
       return Updated
     })
   }
-  const HandleDiscriptionChange = (e: FileChangeEvent) => {
+
+  const HandleDiscriptionChange = (
+    e: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
     dispatch(setDescription(e.target.value))
   }
-  const HandleTitleChange = (e: FileChangeEvent) => {
+
+  const HandleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setTitle(e.target.value))
   }
+
   const removeTag = (tagToRemove: any) => {
     setTags(tags.filter(tag => tag !== tagToRemove))
   }
 
   const okayFunction = () => {
     setPublish(false)
-    if (!error) {
-      router.push(`dashboard/profile/${user._id}`)
+    if (!error && userData?._id) {
+      router.push(`/dashboard/profile/${userData._id}`)
     }
   }
+
   console.log(status)
 
-  //All useEffect hooks
   useEffect(() => {
     if (status === "succeeded") {
       setSux(false)
@@ -289,21 +300,20 @@ const ImageUpload = () => {
       setError(true)
     }
   }, [status])
+
   useEffect(() => {
     if (file) {
       const timeout = setTimeout(() => {}, 1110)
-
       return () => clearTimeout(timeout)
-    }
-    if (multi) {
-    }
-    if (url) {
     }
   }, [file, multi])
 
   useEffect(() => {
-    const handleClickOutside = e => {
-      if (wrapperRef.current && !wrapperRef.current.contains(e.target)) {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        wrapperRef.current &&
+        !wrapperRef.current.contains(e.target as Node)
+      ) {
         setShowSearchOption(false)
       }
       if (
@@ -379,7 +389,7 @@ const ImageUpload = () => {
                     onClick={() => setEdit(false)}
                     className="crossCircle"
                   ></RxCrossCircled>
-                  <AiOutlineEdit className="edit2"></AiOutlineEdit>
+                  <RiEditLine className="edit2"></RiEditLine>
                   <p>Are you sure </p>
                   <p>you want to make changes to this image?</p>
                   <div className="inOverlayFlex">
@@ -440,8 +450,7 @@ const ImageUpload = () => {
                           alt="Uploaded content"
                         />
                       )}
-
-                      <FiEdit
+                      <RiEditLine
                         onClick={() => {
                           setIndex(index)
                           setEdit(true)
@@ -462,8 +471,6 @@ const ImageUpload = () => {
                   </div>
                 </SwiperSlide>
               )}
-
-              {/* Navigation arrows */}
               <>
                 <div className="custom-swiper-button-prev">
                   <FaArrowLeft
@@ -512,7 +519,6 @@ const ImageUpload = () => {
                 </div>
               </div>
             )}
-
             {upload2 && (
               <>
                 {!next && (
@@ -543,12 +549,11 @@ const ImageUpload = () => {
                         placeholder="Enter title..."
                         value={Title}
                       />
-
                       <label className="input-label">Description:</label>
                       <textarea
                         name="message"
-                        rows="4"
-                        cols="50"
+                        rows={4}
+                        cols={50}
                         required
                         placeholder="Write your description..."
                         className="description"
@@ -617,7 +622,6 @@ const ImageUpload = () => {
                     </form>
                   </div>
                 )}
-
                 {next && (
                   <div className="upload-container">
                     <div className="form2">
@@ -654,7 +658,8 @@ const ImageUpload = () => {
                                 {hugeProjectTypes.map(e => (
                                   <div
                                     onClick={() => {
-                                      setDropDownValue(e), setDropdown(false)
+                                      setDropDownValue(e)
+                                      setDropdown(false)
                                     }}
                                     className="search-tag"
                                     key={e}
@@ -667,7 +672,6 @@ const ImageUpload = () => {
                           </div>
                         )}
                       </div>
-
                       <div className="tools">
                         <div className="label-toggle">
                           <label className="input-label">Tools:</label>
@@ -701,7 +705,8 @@ const ImageUpload = () => {
                                 {hugeToolsList.map(e => (
                                   <div
                                     onClick={() => {
-                                      setDropDownValue2(e), setDropdown2(false)
+                                      setDropDownValue2(e)
+                                      setDropdown2(false)
                                     }}
                                     className="search-tag"
                                     key={e}
@@ -714,7 +719,6 @@ const ImageUpload = () => {
                           </div>
                         )}
                       </div>
-
                       <div className="external-link-container">
                         <label className="input-label">External links:</label>
                         <div className="link-input-wrapper">
@@ -766,4 +770,12 @@ const ImageUpload = () => {
   )
 }
 
-export default ImageUpload
+const Page = () => {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <PublishContent />
+    </Suspense>
+  )
+}
+
+export default Page

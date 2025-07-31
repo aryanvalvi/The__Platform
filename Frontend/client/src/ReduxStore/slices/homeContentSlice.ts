@@ -1,17 +1,19 @@
-import {createSlice, createAsyncThunk, isPending} from "@reduxjs/toolkit"
-import {userData} from "./dataFetchSlice"
+import {createSlice, createAsyncThunk} from "@reduxjs/toolkit"
+import {UserData} from "./dataFetchSlice"
 interface homecontent {
   UserProfileImage?: string
-  comments?: any[]
+  comments?: []
   createdAt?: string
-  creator?: userData
+  creator?: UserData
   description?: string
-  images?: string[]
-  likes?: any[]
-  saves?: any[]
-  tags?: any[]
+  images?: string
+  video?: string
+  likes?: []
+  saves?: []
+  tags?: []
   title?: string
-  _id?: string
+  _id?: string | any
+  sideImages: string[]
 }
 
 interface initialState {
@@ -20,7 +22,7 @@ interface initialState {
   homeContent: homecontent[]
   hasMorePost: boolean
   isError: boolean
-  totalPost: Number
+  totalPost: number
   page: number
   skip: number
   prevData: homecontent[]
@@ -41,123 +43,97 @@ const initialState: initialState = {
 interface moreDetailInitialState {
   homeContent: {
     mainDesign: homecontent | null
-    moreDesign: homecontent[]
+    moreDesign: homecontent[] | null
   }
 }
-const moreDetailInitialState: moreDetailInitialState = {
-  homeContent: [],
+
+// types.ts or inside the slice file
+
+export interface Creator {
+  _id: string
+  googleID: string
+  username: string
+  userImage: string
+  following: string[]
 }
 
-interface checkerInitialState {
-  check: {
-    follow: boolean
-    like: boolean
-    save: boolean
+export interface Design {
+  _id: string
+  title: string
+  description: string
+  UserProfileImage: string
+  creator: {
+    _id: string
+    googleID: string
+    username: string
+    userImage: string
+    following: string[]
   }
-}
-const checkerInitialState: checkerInitialState = {
-  check: {
-    follow: false,
-    like: false,
-    save: false,
-  },
+  comments: any[]
+  createdAt: string
+  downloads: number
+  externalLinks: string[]
+  images: string[]
+  likes: string[]
+  saves: string[]
+  sideImages: string[]
+  tags: string[]
+  tools: string[]
+  video: string
+  views: number
+  visibility: string
+  __v: number
 }
 
-const userPostInteractionState: checkerInitialState = {
-  check: {
-    follow: false,
-    like: false,
-    save: false,
-  },
+export interface DesignState {
+  mainDesign: Design | null
+  moreDesigns: Design[] | null
 }
-interface Proposal {
-  post: string
-  message: string
-  budget: number
+const moreDetailInitialState: DesignState = {
+  mainDesign: null,
+  moreDesigns: null,
 }
-interface sendproposalState {
-  proposal: Proposal[]
-}
-const sendproposalState: sendproposalState = {
-  proposal: [],
-}
+
+// interface checkerInitialState {
+//   check: {
+//     follow: boolean
+//     like: boolean
+//     save: boolean
+//   }
+// }
+// const checkerInitialState: checkerInitialState = {
+//   check: {
+//     follow: false,
+//     like: false,
+//     save: false,
+//   },
+// }
+
+// const userPostInteractionState: checkerInitialState = {
+//   check: {
+//     follow: false,
+//     like: false,
+//     save: false,
+//   },
+// }
+// interface Proposal {
+//   post: string
+//   message: string
+//   budget: number
+// }
+// interface sendproposalState {
+//   proposal: Proposal[]
+// }
+// const sendproposalState: sendproposalState = {
+//   proposal: [],
+// }
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5001"
 console.log(baseUrl)
-export const fetchHomeContent = createAsyncThunk(
-  "homeContent/fetchHomeContent",
-  async page => {
-    // console.log("From FetchHomeContent asyc thunk")
-    // const state:any = getState();
-    // const page = state.homeContent.page;
-    console.log("pageNumber", page)
-
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/auth/Getdata?page=${page}`,
-      {
-        // const res = await fetch(
-        //   `https://the-platform-backend-9a4a.onrender.com/auth/Getdata?page=${page}`,
-        //   {
-        method: "GET",
-        credentials: "include",
-      }
-    )
-    const {data, totalPost} = await res.json()
-    console.log("HomeContentSlie", data)
-    return {data, totalPost}
-  }
-)
-
-export const homeContentSlice = createSlice({
-  name: "homeContent",
-  initialState,
-  reducers: {
-    setPageIncrease: state => {
-      state.page += 1
-      console.log("Page value from reducer", state.page)
-    },
-  },
-  extraReducers: builder => {
-    // When the fetchHomeContent action is pending (i.e., loading)
-    builder.addCase(fetchHomeContent.pending, state => {
-      state.loading = true
-    })
-
-    // When the fetchHomeContent action is fulfilled (i.e., data is fetched successfully)
-    builder.addCase(fetchHomeContent.fulfilled, (state, action) => {
-      const {data, totalPost} = action.payload
-      const prevData = state.prevData
-      if (JSON.stringify(data) === JSON.stringify(prevData)) {
-        console.log(
-          "Page data is the same as previous page data. Skipping fetch."
-        )
-        state.page += 1
-        // state.hasMorePost = false; // No more data to fetch
-        return
-      }
-      // const validData = Array.isArray(data)?data:[]
-      // if (Array.isArray(data)){
-
-      state.homeContent = [...state.homeContent, ...data]
-      // }
-      state.prevData = data
-      state.totalPost = totalPost
-      state.hasMorePost = state.homeContent.length < totalPost
-
-      // Increment current page for next request
-    })
-
-    // When the fetchHomeContent action is rejected (i.e., failed request)
-    builder.addCase(fetchHomeContent.rejected, state => {
-      state.isError = true
-      state.loading = false
-    })
-  },
-})
 
 export const fetchMoreDetail = createAsyncThunk(
   "FETCH_MORE_DETAILS",
-  async (id: any) => {
+  async (id: string | string[]) => {
     const res = await fetch(`${baseUrl}/auth/getmore`, {
       method: "POST",
       credentials: "include",
@@ -178,99 +154,157 @@ export const moreDetailSlice = createSlice({
   reducers: {},
   extraReducers: builder => {
     builder.addCase(fetchMoreDetail.fulfilled, (state, action) => {
-      state.homeContent = action.payload
+      state.mainDesign = action.payload.mainDesign
+      state.moreDesigns = action.payload.moreDesigns
     })
   },
 })
 
-export const checkerFunction = createAsyncThunk(
-  "checkerFunction",
-  async (id: any) => {
-    const res = await fetch(`${baseUrl}/auth/Check`, {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({receiver: id}),
-    })
-    const data = await res.json()
-    return data
+// export const checkerFunction = createAsyncThunk(
+//   "checkerFunction",
+//   async (id: string) => {
+//     const res = await fetch(`${baseUrl}/auth/Check`, {
+//       method: "POST",
+//       credentials: "include",
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//       body: JSON.stringify({receiver: id}),
+//     })
+//     const data = await res.json()
+//     return data
+//   }
+// )
+
+// export const Checker = createSlice({
+//   name: "checker",
+//   initialState: checkerInitialState,
+//   reducers: {},
+//   extraReducers: builder => {
+//     builder.addCase(checkerFunction.fulfilled, (state, action) => {
+//       state.check = action.payload
+//     })
+//   },
+// })
+// export const userPostInteractionFunction = createAsyncThunk(
+//   "userPostInteraction",
+//   async ({action, post}: {action: string; recieverId: string}) => {
+//     const userdata = {
+//       action,
+//       post,
+//     }
+//     console.log("action receiverId", userdata)
+//     const res = await fetch(`${baseUrl}/auth/userInteraction`, {
+//       method: "POST",
+//       credentials: "include",
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//       body: JSON.stringify(userdata),
+//     })
+//     const data = await res.json()
+//     console.log("afterchecker ", data)
+//     return data
+//   }
+// )
+
+// export const userPostInteraction = createSlice({
+//   name: "interaction",
+//   initialState: userPostInteractionState,
+//   reducers: {},
+//   extraReducers: builder => {
+//     builder.addCase(userPostInteractionFunction.fulfilled, (state, action) => {
+//       state.check = action.payload
+//     })
+//   },
+// })
+// export const SendproposalFunction = createAsyncThunk(
+//   "Sendproposal",
+//   async ({message, post, budget}) => {
+//     const res = await fetch(`${baseUrl}/sendproposal`, {
+//       method: "POST",
+//       credentials: "include",
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//       body: JSON.stringify({message, post, budget}),
+//     })
+//     const data = await res.json()
+//     console.log("proposeeeee", data)
+//     return data
+//   }
+// )
+// export const Sendproposal = createSlice({
+//   name: "sendproposal",
+//   initialState: sendproposalState,
+//   reducers: {},
+//   extraReducers: builder => {
+//     builder.addCase(SendproposalFunction.fulfilled, (state, action) => {
+//       state.proposal = action.payload
+//     })
+//   },
+// })
+
+export const fetchHomeContent = createAsyncThunk(
+  "homeContent/fetchHomeContent",
+  async (page: number) => {
+    console.log("pageNumber", page)
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/auth/Getdata?page=${page}`,
+      {
+        method: "GET",
+        credentials: "include",
+      }
+    )
+    const {data, totalPost} = await res.json()
+    console.log("HomeContentSlie", data)
+    return {data, totalPost}
   }
 )
 
-export const Checker = createSlice({
-  name: "checker",
-  initialState: checkerInitialState,
-  reducers: {},
-  extraReducers: builder => {
-    builder.addCase(checkerFunction.fulfilled, (state, action) => {
-      state.check = action.payload
-    })
+export const homeContentSlice = createSlice({
+  name: "homeContent",
+  initialState,
+  reducers: {
+    setPageIncrease: state => {
+      state.page += 1
+      console.log("Page value from reducer", state.page)
+    },
   },
-})
-export const userPostInteractionFunction = createAsyncThunk(
-  "userPostInteraction",
-  async ({action, post}: {action: string; recieverId: string}) => {
-    const userdata = {
-      action,
-      post,
-    }
-    console.log("action receiverId", userdata)
-    const res = await fetch(`${baseUrl}/auth/userInteraction`, {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(userdata),
+  extraReducers: builder => {
+    builder.addCase(fetchHomeContent.pending, state => {
+      state.loading = true
     })
-    const data = await res.json()
-    console.log("afterchecker ", data)
-    return data
-  }
-)
+    builder.addCase(fetchHomeContent.fulfilled, (state, action) => {
+      const {data, totalPost} = action.payload
+      const prevData = state.prevData
+      if (JSON.stringify(data) === JSON.stringify(prevData)) {
+        console.log(
+          "Page data is the same as previous page data. Skipping fetch."
+        )
+        state.page += 1
+        return
+      }
 
-export const userPostInteraction = createSlice({
-  name: "interaction",
-  initialState: userPostInteractionState,
-  reducers: {},
-  extraReducers: builder => {
-    builder.addCase(userPostInteractionFunction.fulfilled, (state, action) => {
-      state.check = action.payload
-    })
-  },
-})
-export const SendproposalFunction = createAsyncThunk(
-  "Sendproposal",
-  async ({message, post, budget}) => {
-    const res = await fetch(`${baseUrl}/sendproposal`, {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({message, post, budget}),
-    })
-    const data = await res.json()
-    console.log("proposeeeee", data)
-    return data
-  }
-)
-export const Sendproposal = createSlice({
-  name: "sendproposal",
-  initialState: sendproposalState,
-  reducers: {},
-  extraReducers: builder => {
-    builder.addCase(SendproposalFunction.fulfilled, (state, action) => {
-      state.proposal = action.payload
-    })
-  },
-})
+      state.homeContent = [...state.homeContent, ...data]
+      // }
+      state.prevData = data
+      state.totalPost = totalPost
+      state.hasMorePost = state.homeContent.length < totalPost
 
-export const {setPageIncrease, setPageFromStorage} = homeContentSlice.actions
-export const SendproposalReducer = Sendproposal.reducer
+      // Increment current page for next request
+    })
+
+    // When the fetchHomeContent action is rejected (i.e., failed request)
+    builder.addCase(fetchHomeContent.rejected, state => {
+      state.isError = true
+      state.loading = false
+    })
+  },
+})
+export const {setPageIncrease} = homeContentSlice.actions
+// export const SendproposalReducer = Sendproposal.reducer
 export const homeContentReducer = homeContentSlice.reducer
 export const moreDetailReducer = moreDetailSlice.reducer
-export const checkerReducer = Checker.reducer
-export const userPostInteractionReducer = userPostInteraction.reducer
+// export const checkerReducer = Checker.reducer
+// export const userPostInteractionReducer = userPostInteraction.reducer

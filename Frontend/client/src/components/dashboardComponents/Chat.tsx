@@ -1,16 +1,15 @@
 "use client"
 import React, {useEffect, useState} from "react"
 import "./chat.scss"
-import {useDispatch} from "react-redux"
+
 import {
   getConversation,
-  getConversationId,
   getLatestMessage,
   getMessage,
   resetSend,
   sendMessage,
 } from "@/ReduxStore/slices/MessageSlice"
-import {useAppSelector} from "@/ReduxStore/hook/CustomHook"
+import {useAppDispatch, useAppSelector} from "@/ReduxStore/hook/CustomHook"
 
 const Chat = () => {
   const [selectedUser, setSelectedUser] = useState({
@@ -19,13 +18,13 @@ const Chat = () => {
     selectedUserId: "",
     conversationId: "",
   })
-  const [messages, setMessages] = useState([])
-  const data = useAppSelector(state => state.MessageReducer.conversattions)
+  const [messages, setMessages] = useState<string>("")
+  const data = useAppSelector(state => state.MessageReducer.conversations)
   const admin = useAppSelector(state => state.MessageReducer.adminId)
   const latestMessages = useAppSelector(
     state => state.MessageReducer.latestConversation
   )
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const gotMessage = useAppSelector(state => state.MessageReducer.gotMessage)
   // const conversationId = useAppSelector(
   //   state => state.MessageReducer.ConversationId
@@ -34,14 +33,30 @@ const Chat = () => {
   console.log(gotMessage)
   // console.log("conversation id is", conversationId)
   // console.log("sendok", sendOk)
+  const filterData = data
+    .map(e => {
+      const otherUser = e.members.find(member => member._id !== admin)
+      const latestMsg = latestMessages.find(
+        msg => msg.conversationIds === e._id
+      )
+      return {conversationId: e._id, otherUser, latestMsg}
+    })
+    .filter(item => item.otherUser !== undefined) // Filter out undefined otherUser
+    .map(item => ({
+      ...item,
+      otherUser: item.otherUser!, // Now we can safely assert it's not undefined
+    }))
 
-  const filterData = data.map(e => {
-    const otherUser = e.members.find(member => member._id !== admin)
-    const latestMsg = latestMessages.find(msg => msg.conversationIds === e._id)
-    return {conversationId: e._id, otherUser, latestMsg}
-  })
-
-  const selectUserFunction = e => {
+  const selectUserFunction = (e: {
+    conversationId: string
+    otherUser: {_id: string; username: string; userImage: string}
+    latestMsg?: {
+      conversationIds: string
+      latestMessages: {text: string; createdAt: string}
+      unreadCount: number
+    }
+  }) => {
+    console.log(e)
     dispatch(getMessage(e.conversationId))
     console.log(e)
     console.log(e.conversationId)
@@ -65,11 +80,11 @@ const Chat = () => {
 
   useEffect(() => {
     dispatch(getMessage(selectedUser.conversationId))
-  }, [sendOk])
+  }, [sendOk, dispatch, selectedUser.conversationId])
 
   useEffect(() => {
     dispatch(getConversation())
-  }, [])
+  }, [dispatch])
 
   useEffect(() => {
     if (data && data.length > 0) {
@@ -100,11 +115,11 @@ const Chat = () => {
               <div className="nameMsg">
                 <div className="user-name">
                   <p>{e.otherUser?.username}</p>
-                  {e.latestMsg?.unreadCount > 0 && (
+                  {/* {e.latestMsg?.unreadCount > 0 && (
                     <span className="unread-badge">
                       {e.latestMsg.unreadCount}
                     </span>
-                  )}
+                  )} */}
                 </div>
                 <div className="latestMsg">
                   <p>
@@ -113,7 +128,7 @@ const Chat = () => {
                 </div>
               </div>
               <div className="timestamp">
-                <p>{e.latestMsg?.createdAt || "10:45"}</p>
+                {/* <p>{e.latestMsg?.createdAt || "10:45"}</p> */}
               </div>
             </div>
           ))}
@@ -136,6 +151,7 @@ const Chat = () => {
           {gotMessage.map(msg => {
             return (
               <div
+                key={"bruh"}
                 className={
                   msg.sender._id === admin ? "message admin" : "message other"
                 }

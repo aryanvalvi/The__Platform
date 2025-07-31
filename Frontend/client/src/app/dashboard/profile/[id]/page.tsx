@@ -2,53 +2,66 @@
 import React, {useEffect, useState} from "react"
 import {FiFileText} from "react-icons/fi"
 import {FiInbox} from "react-icons/fi"
-// or
-import {BsInbox} from "react-icons/bs"
+
 import {FiBookmark} from "react-icons/fi"
-// or
-import {BsBookmark} from "react-icons/bs"
 
 import "./dashboard.scss"
 import Myposts from "@/components/dashboardComponents/Myposts"
 import {UserDashBoardFunction} from "@/ReduxStore/slices/UserProfile"
-import {useDispatch} from "react-redux"
+
 import {useParams} from "next/navigation"
-import {useAppSelector} from "@/ReduxStore/hook/CustomHook"
+import {useAppDispatch, useAppSelector} from "@/ReduxStore/hook/CustomHook"
 import Chat from "@/components/dashboardComponents/Chat"
 import Saved from "@/components/dashboardComponents/Saved"
 import ProtectedRoutes from "@/components/protectedRoutes/ProtectedRoutes"
-
-const page = () => {
+import {DashboardState} from "../../../../ReduxStore/slices/UserProfile"
+const Page = () => {
   const [activeTab, setActiveTab] = useState("My posts")
-  const Data = useAppSelector(state => state.UserProfileSliceReducer)
-  console.log("from frontend dashboard", Data)
+  const {data, user, totalDesign} = useAppSelector(
+    (state: {UserProfileSliceReducer: DashboardState}) =>
+      state.UserProfileSliceReducer
+  )
+  // const user = useAppSelector(state => state.UserProfileSliceReducer.user)
+  // const totalDesign = useAppSelector(
+  //   state => state.UserProfileSliceReducer.totalDesign
+  // )
+  console.log("from frontend dashboard", data, user, totalDesign)
   const {id} = useParams()
   console.log(id)
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   useEffect(() => {
-    dispatch(UserDashBoardFunction(id))
-  }, [])
+    if (typeof id === "string") {
+      dispatch(UserDashBoardFunction(id))
+    } else {
+      console.log("not passed the dispatch function to userdashboardFuntion")
+    }
+  }, [id, dispatch])
   return (
     <ProtectedRoutes>
       <div className="dashboardContainer">
         <div className="dashboard-left">
           <div className="dashboard-left-profile-container">
             <span className="client-image">
-              <img src={Data.user.userImage} alt={Data.user.userImage} />
+              <img
+                width={100}
+                height={100}
+                src={user?.userImage}
+                alt={user?.userImage}
+              />
 
-              <p>{Data.user.username}</p>
+              <p>{user?.username}</p>
             </span>
             <ul>
               <li>
-                <span>{Data.user.followers.length}</span>
+                <span>{user?.followers.length}</span>
                 <p>Followers</p>
               </li>
               <li>
-                <span>{Data.totalDesign}</span>
+                <span>{totalDesign}</span>
                 <p>posts</p>
               </li>
               <li>
-                <span>{Data.user.likedDesigns.length}</span>
+                <span>{user?.likedDesigns.length}</span>
                 <p>Likes</p>
               </li>
             </ul>
@@ -86,12 +99,10 @@ const page = () => {
             <div className="right-down">
               <p className="right-down-p">My posts</p>
               {activeTab === "My posts" && (
-                <Myposts data={Data?.data} id={id}></Myposts>
+                <Myposts data={data} id={id}></Myposts>
               )}
               {activeTab === "inbox" && <Chat></Chat>}
-              {activeTab === "saved" && (
-                <Saved data={Data?.user.savedDesigns} id={id}></Saved>
-              )}
+              {activeTab === "saved" && <Saved></Saved>}
             </div>
           </div>
         </div>
@@ -100,4 +111,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Page

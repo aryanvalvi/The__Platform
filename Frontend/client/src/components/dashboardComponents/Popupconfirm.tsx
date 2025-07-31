@@ -1,11 +1,19 @@
 "use client"
 import React, {useEffect, useRef} from "react"
 import "./dashboardComponents.scss"
-const Popupconfirm = ({setpopupClicked, handleunsave}) => {
-  const popupRef = useRef(null)
+interface PopupConfirmProps {
+  setpopupClicked: React.Dispatch<React.SetStateAction<boolean>>
+  handleunsave: () => void
+}
+const Popupconfirm = ({setpopupClicked, handleunsave}: PopupConfirmProps) => {
+  console.log(setpopupClicked, handleunsave)
+  const popupRef = useRef<HTMLDivElement>(null)
   useEffect(() => {
-    const handleClickOutside = event => {
-      if (popupRef.current && !popupRef.current.contains(event.target)) {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        popupRef.current &&
+        !popupRef.current.contains(event.target as Node)
+      ) {
         setpopupClicked(false)
       }
     }
@@ -14,16 +22,17 @@ const Popupconfirm = ({setpopupClicked, handleunsave}) => {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside)
     }
-  }, [])
+  }, [setpopupClicked])
   return (
-    <div className="modal2">
+    <div className="modal3">
       <div className="modal-conten2" ref={popupRef}>
         <div className="PopupconfirmCenter">
           <p>are u sure</p>
           <div className="popupbuttonContainer">
             <button
               onClick={() => {
-                handleunsave(), setpopupClicked(false)
+                handleunsave()
+                setpopupClicked(false)
               }}
             >
               Yes

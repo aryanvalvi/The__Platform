@@ -1,17 +1,46 @@
 "use client"
-import {useEffect, useState} from "react"
+import {useEffect, useState, Suspense} from "react"
 import {useSearchParams} from "next/navigation"
 import Link from "next/link"
-import Image from "next/image"
 import "./Search.scss"
 import {FaHeart} from "react-icons/fa"
 import "../homeContent/Sexplore.scss"
-export default function SearchResults() {
+
+// Component to handle the search results logic
+function SearchResultsContent() {
   const [results, setResults] = useState([])
   const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
+  const [error, setError] = useState("")
   const searchParams = useSearchParams()
   const query = searchParams.get("q")
+
+  interface Highlight {
+    [key: string]: any
+  }
+
+  interface DesignPost {
+    _id: string
+    title: string
+    description: string
+    UserProfileImage: string
+    creator: {
+      userImage: string
+      username: string
+      _id: string
+    }
+    images: string[]
+    video: string[]
+    sideImages: string[]
+    externalLinks: string[]
+    tags: string[]
+    tools: string[]
+    highlight: Highlight[]
+    comments: any[]
+    likes: string[]
+    views: number
+    score: number
+    createdAt: string
+  }
 
   useEffect(() => {
     const fetchResults = async () => {
@@ -35,11 +64,10 @@ export default function SearchResults() {
         }
         const data = await res.json()
         console.log(data)
-        // console.log(data.map(e => e.images?.[0]))
         setResults(data)
         setLoading(false)
       } catch (err) {
-        setError(err.message)
+        setError((err as Error).message)
         setLoading(false)
       }
     }
@@ -50,7 +78,7 @@ export default function SearchResults() {
   if (loading) return <div className="loading">Loading...</div>
   if (error) return <div className="error">{error}</div>
   if (!results.length)
-    return <div className="no-results">No results found for "{query}"</div>
+    return <div className="no-results">No results found for {query}</div>
 
   return (
     <div>
@@ -59,20 +87,19 @@ export default function SearchResults() {
         <span className="query-underline"> {query}</span>
       </h1>
       <div className="flex">
-        {results.map(f => (
+        {results.map((f: DesignPost) => (
           <div key={f._id} className="gand">
             <div className="imageContent">
               <Link href={`/detailInfo/${f._id}`}>
                 {f.images && f.images.length > 0 ? (
-                  <img className="mgand" src={f.images} alt={f.title} />
+                  <img className="mgand" src={f.images[0]} alt={f.title} />
                 ) : (
                   <video
                     muted
                     autoPlay
                     loop
                     className="mgand"
-                    src={f.video}
-                    alt={f.title}
+                    src={f.video[0]}
                   ></video>
                 )}
                 <p className="ImageTitle">{f.title}</p>
@@ -97,32 +124,11 @@ export default function SearchResults() {
   )
 }
 
-//  <div className="search-results-container">
-//       <h1>Search Results for "{query}"</h1>
-//       <div className="results-grid">
-//         {results.map(design => (
-//           <div key={design._id} className="design-card">
-//             <Link href={`/detailInfo/${design._id}`}>
-//               {design.images?.[0] ? (
-//                 <Image
-//                   src={design.images[0]}
-//                   alt={design.title || "Design image"}
-//                   width={300}
-//                   height={200}
-//                   className="design-image"
-//                   onError={e =>
-//                     console.log(`Failed to load image: ${design.images[0]}`)
-//                   }
-//                 />
-//               ) : (
-//                 <div className="image-placeholder">No Image Available</div>
-//               )}
-//               <h3>{design.title}</h3>
-//               <p>{design.description?.substring(0, 100)}...</p>
-//               <p>By: {design.creator.username}</p>
-//               {/* <p>Category: {design.category}</p> */}
-//             </Link>
-//           </div>
-//         ))}
-//       </div>
-//     </div>
+// Main component with Suspense boundary
+export default function SearchResults() {
+  return (
+    <Suspense fallback={<div className="loading">Loading...</div>}>
+      <SearchResultsContent />
+    </Suspense>
+  )
+}

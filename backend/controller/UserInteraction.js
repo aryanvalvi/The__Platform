@@ -250,6 +250,78 @@ const Check = async (req, res) => {
     return res.status(500).json({message: "Server error", error: err})
   }
 }
+// Backend API - Updated Check2 function
+const Check2 = async (req, res) => {
+  console.log("Check2 is called")
+  const {ids} = req.body // array of design post IDs
+  console.log(ids)
+  const adminId = req.user?._id
+
+  try {
+    if (!Array.isArray(ids) || ids.length === 0) {
+      return res.status(400).json({message: "Invalid IDs array"})
+    }
+
+    // Get all design posts with the provided IDs
+    const designs = await DesignUpload.find({_id: {$in: ids}})
+
+    // Check which ones the user has liked
+    const likedMap = {}
+
+    designs.forEach(design => {
+      likedMap[design._id] = design.likes.includes(adminId)
+    })
+
+    return res.status(200).json({liked: likedMap})
+  } catch (error) {
+    console.error("Check2 error:", error)
+    return res.status(500).json({message: "Server error", error})
+  }
+}
+
+// New Like/Unlike API endpoint
+const toggleLike = async (req, res) => {
+  console.log("toggleLike is called")
+  const {postId} = req.body
+  const adminId = req.user?._id
+
+  try {
+    if (!postId) {
+      return res.status(400).json({message: "Post ID is required"})
+    }
+
+    // Find the design post
+    const design = await DesignUpload.findById(postId)
+
+    if (!design) {
+      return res.status(404).json({message: "Design not found"})
+    }
+
+    const isLiked = design.likes.includes(adminId)
+
+    if (isLiked) {
+      // Unlike: Remove user from likes array
+      design.likes = design.likes.filter(
+        id => id.toString() !== adminId.toString()
+      )
+    } else {
+      // Like: Add user to likes array
+      design.likes.push(adminId)
+    }
+
+    await design.save()
+
+    return res.status(200).json({
+      success: true,
+      isLiked: !isLiked,
+      likesCount: design.likes.length,
+      postId: postId,
+    })
+  } catch (error) {
+    console.error("toggleLike error:", error)
+    return res.status(500).json({message: "Server error", error})
+  }
+}
 
 //send proposal
 const SendProposal = async (req, res) => {
@@ -435,4 +507,6 @@ module.exports = {
   HandleSavedDesigns,
   OtherProfile,
   UserInteraction2,
+  Check2,
+  toggleLike,
 }
