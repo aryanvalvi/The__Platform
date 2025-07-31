@@ -43,25 +43,28 @@ export const sendUserInteraction = createAsyncThunk<
 
 interface SendInteractionArgs {
   actionType: string
-  id: string
+  id: string | any
 }
 
 export const sendUserInteraction2 = createAsyncThunk<
   unknown,
   SendInteractionArgs
->("sendUserinteraction", async ({actionType, id}) => {
-  const res = await fetch(`${baseUrl}/auth/userInteraction2`, {
-    method: "POST",
-    credentials: "include",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({actionType, id}),
-  })
-  const data = await res.json()
-  console.log(data)
-  return data
-})
+>(
+  "sendUserinteraction",
+  async ({actionType, id}: {actionType: string; id: any}) => {
+    const res = await fetch(`${baseUrl}/auth/userInteraction2`, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({actionType, id}),
+    })
+    const data = await res.json()
+    console.log(data)
+    return data
+  }
+)
 
 export const CheckUserInteraction = createAsyncThunk<
   {followed: boolean; like: boolean; save: boolean},
