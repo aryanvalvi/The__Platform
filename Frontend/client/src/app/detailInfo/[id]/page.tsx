@@ -9,14 +9,14 @@ import {
   sendUserInteraction,
 } from "@/ReduxStore/slices/userInteractionSlice"
 import {setOpen} from "@/ReduxStore/slices/Authentication"
+import Popup from "@/components/Popup"
+import LoginPopup from "@/components/login/LoginPopup"
+import SwiperDesign from "@/components/Dashboard/SwiperDesign"
 import {IoChatbubblesOutline} from "react-icons/io5"
 import {PiContactlessPaymentFill} from "react-icons/pi"
 import {IoMdShareAlt} from "react-icons/io"
 import {BsBookmarksFill} from "react-icons/bs"
 import {AiFillLike} from "react-icons/ai"
-import Popup from "@/components/Popup"
-import LoginPopup from "@/components/login/LoginPopup"
-import SwiperDesign from "@/components/Dashboard/SwiperDesign"
 import "./info.scss"
 
 const Page = () => {
@@ -37,18 +37,18 @@ const Page = () => {
 
   const contactFunction = () => {
     if (!user && !loading) {
-      dispatch(setOpen(false))
+      dispatch(setOpen(true))
       return
     }
     if (mainDesign?.creator?._id) {
-      dispatch(getConversationId(mainDesign?.creator?._id))
+      dispatch(getConversationId(mainDesign.creator._id))
       setopenPopup(true)
     }
   }
 
   const handleFollow = () => {
     if (!user && !loading) {
-      dispatch(setOpen(false))
+      dispatch(setOpen(true))
       return
     }
     dispatch(sendUserInteraction({actionType: "follow", postId: id}))
@@ -56,7 +56,7 @@ const Page = () => {
 
   const handleLike = () => {
     if (!user && !loading) {
-      dispatch(setOpen(false))
+      dispatch(setOpen(true))
       return
     }
     dispatch(sendUserInteraction({actionType: "like", postId: id}))
@@ -64,7 +64,7 @@ const Page = () => {
 
   const handleSave = () => {
     if (!user && !loading) {
-      dispatch(setOpen(false))
+      dispatch(setOpen(true))
       return
     }
     dispatch(sendUserInteraction({actionType: "save", postId: id}))
@@ -120,7 +120,7 @@ const Page = () => {
                 <span className="TopInfo3-span">
                   <p>by {mainDesign?.creator?.username}</p>
                   <button onClick={handleFollow}>
-                    {followed ? <>Following</> : <>follow</>}
+                    {followed ? "Following" : "follow"}
                   </button>
                 </span>
               </div>
@@ -144,8 +144,8 @@ const Page = () => {
                 </div>
               )}
               <div className="sideImages">
-                {mainDesign?.sideImages && mainDesign?.sideImages.length > 1 ? (
-                  mainDesign?.images ? (
+                {mainDesign?.sideImages && mainDesign.sideImages.length > 1 ? (
+                  mainDesign.images ? (
                     <div
                       onClick={() => {
                         if (
@@ -199,15 +199,15 @@ const Page = () => {
                   return isVideo ? (
                     <div
                       onClick={() => setSelectedImg(e)}
-                      key={"video"}
+                      key="video"
                       className="shadowForMedia"
                     >
                       <video className="" src={e} />
                     </div>
                   ) : (
                     <div
-                      key={"image"}
                       onClick={() => setSelectedImg(e)}
+                      key="image"
                       className="shadowForMedia"
                     >
                       <img
@@ -225,7 +225,7 @@ const Page = () => {
             <div className="leftSideDetails">
               <span onClick={handleLike}>
                 <span className="LeftSideDetails-Icon">
-                  <AiFillLike className={` ${like ? "like" : "like2"}`} />
+                  <AiFillLike className={like ? "like" : "like2"} />
                 </span>
                 <p>Contact</p>
               </span>
@@ -249,7 +249,7 @@ const Page = () => {
               </span>
               <span onClick={handleSave}>
                 <span className="LeftSideDetails-Icon">
-                  <BsBookmarksFill className={`${save ? "saved" : "saved2"}`} />
+                  <BsBookmarksFill className={save ? "saved" : "saved2"} />
                 </span>
                 <p>Share</p>
               </span>

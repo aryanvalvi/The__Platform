@@ -1,28 +1,30 @@
 "use client"
 import React from "react"
-import {usePathname} from "next/navigation"
-import {useAppSelector, useAppDispatch} from "@/ReduxStore/hook/CustomHook"
-import {setOpen} from "@/ReduxStore/slices/Authentication"
-import {RxCross2} from "react-icons/rx"
 import "./login.scss"
+import {usePathname} from "next/navigation"
+import {useAppSelector} from "@/ReduxStore/hook/CustomHook"
+import {RxCross2} from "react-icons/rx"
+import {useDispatch} from "react-redux"
+import {setOpen} from "@/ReduxStore/slices/Authentication"
 
 const LoginPopup = () => {
-  const dispatch = useAppDispatch()
+  const dispatch = useDispatch()
   const openPopup = useAppSelector(
     state => state.AuthenticationReducer.openPopup
   )
-  const pathname = usePathname()
 
+  // useEffect(() => {}, [dispatch])
+  const pathname = usePathname()
   if (!openPopup) {
     return null
   }
 
   const handleGoogleLogin = () => {
     const state = encodeURIComponent(pathname)
+
     const googleAuthUri = `${process.env.NEXT_PUBLIC_API_URL}/auth/google?state=${state}`
     window.location.href = googleAuthUri
   }
-
   return (
     <div className="modal2">
       <div className="modal2Content">
