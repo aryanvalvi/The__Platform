@@ -21,13 +21,13 @@ require("dotenv").config()
 //   cors: "http://localhost:3000",
 //   methods: ["GET", "POST", "PUT", "DELETE"],
 // })
-io.on("connection", socket => {
-  console.log(`User connected with id ${socket.id}`)
+// io.on("connection", socket => {
+//   console.log(`User connected with id ${socket.id}`)
 
-  socket.on("disconnect", () => {
-    console.log("user discoonected", socket.id)
-  })
-})
+//   socket.on("disconnect", () => {
+//     console.log("user discoonected", socket.id)
+//   })
+// })
 
 const client = require("./elasticSearchSync/sync")
 // Middleware setup
