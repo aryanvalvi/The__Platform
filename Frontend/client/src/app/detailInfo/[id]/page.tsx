@@ -1,50 +1,45 @@
 "use client"
+import React, {useEffect, useState} from "react"
 import {useParams} from "next/navigation"
 import {useAppDispatch, useAppSelector} from "@/ReduxStore/hook/CustomHook"
 import {fetchMoreDetail} from "@/ReduxStore/slices/homeContentSlice"
-import React, {useEffect, useState} from "react"
-
-import Popup from "@/components/Popup"
-import {IoChatbubblesOutline} from "react-icons/io5"
-import {PiContactlessPaymentFill} from "react-icons/pi"
-import {IoMdShareAlt} from "react-icons/io"
-import {BsBookmarksFill} from "react-icons/bs"
-import {AiFillLike} from "react-icons/ai"
-import SwiperDesign from "@/components/Dashboard/SwiperDesign"
 import {getConversationId} from "@/ReduxStore/slices/MessageSlice"
 import {
   CheckUserInteraction,
   sendUserInteraction,
 } from "@/ReduxStore/slices/userInteractionSlice"
-import "./info.scss"
-import LoginPopup from "@/components/login/LoginPopup"
 import {setOpen} from "@/ReduxStore/slices/Authentication"
+import {IoChatbubblesOutline} from "react-icons/io5"
+import {PiContactlessPaymentFill} from "react-icons/pi"
+import {IoMdShareAlt} from "react-icons/io"
+import {BsBookmarksFill} from "react-icons/bs"
+import {AiFillLike} from "react-icons/ai"
+import Popup from "@/components/Popup"
+import LoginPopup from "@/components/login/LoginPopup"
+import SwiperDesign from "@/components/Dashboard/SwiperDesign"
+import "./info.scss"
 
 const Page = () => {
   const dispatch = useAppDispatch()
   const {id} = useParams()
   const [selectImg, setSelectedImg] = useState<string>("")
   const [openPopup, setopenPopup] = useState<boolean>(false)
-  // const [showLoginPopup, setShowLoginPopup] = useState<boolean>(false)
   const {followed, like, save} = useAppSelector(
     state => state.userInteractionReducer.interaction || {}
   )
   const {mainDesign, moreDesigns} = useAppSelector(
     state => state.moreDetailReducer
   )
-  console.log(mainDesign, moreDesigns)
   const {user, loading} = useAppSelector(state => state.AuthenticationReducer)
+  const conversation = useAppSelector(
+    state => state.MessageReducer.conversationId
+  )
 
-  // const interaction = useAppSelector(
-  //   state => state.userInteractionReducer.interaction || {}
-  // )
-
-  //Functions
   const contactFunction = () => {
     if (!user && !loading) {
+      dispatch(setOpen(false))
       return
     }
-    dispatch(setOpen(false))
     if (mainDesign?.creator?._id) {
       dispatch(getConversationId(mainDesign?.creator?._id))
       setopenPopup(true)
@@ -56,7 +51,6 @@ const Page = () => {
       dispatch(setOpen(false))
       return
     }
-
     dispatch(sendUserInteraction({actionType: "follow", postId: id}))
   }
 
@@ -76,9 +70,6 @@ const Page = () => {
     dispatch(sendUserInteraction({actionType: "save", postId: id}))
   }
 
-  //useEffects
-
-  //1
   useEffect(() => {
     if (mainDesign?.images) {
       if (Array.isArray(mainDesign.images) && mainDesign.images.length > 0) {
@@ -93,15 +84,10 @@ const Page = () => {
     }
   }, [mainDesign])
 
-  //2
   useEffect(() => {
     dispatch(CheckUserInteraction({postid: id, actionType: "fromDetail"}))
   }, [dispatch, id])
-  const conversation = useAppSelector(
-    state => state.MessageReducer.conversationId
-  )
 
-  //3
   useEffect(() => {
     if (id) {
       dispatch(fetchMoreDetail(id))
@@ -110,7 +96,7 @@ const Page = () => {
 
   return (
     <>
-      <LoginPopup></LoginPopup>
+      <LoginPopup />
       {openPopup && (
         <Popup
           openPopup={openPopup}
@@ -118,9 +104,8 @@ const Page = () => {
           mainDesign={mainDesign}
           post={user}
           conversationid={conversation}
-        ></Popup>
+        />
       )}
-
       <div className="MoreInfoDad">
         <div className="MoreInfoContainer">
           <div className="TopInfo">
@@ -134,7 +119,6 @@ const Page = () => {
                 <p>{mainDesign?.title}</p>
                 <span className="TopInfo3-span">
                   <p>by {mainDesign?.creator?.username}</p>
-
                   <button onClick={handleFollow}>
                     {followed ? <>Following</> : <>follow</>}
                   </button>
@@ -142,7 +126,6 @@ const Page = () => {
               </div>
             </div>
           </div>
-
           <div className="bigImageContainer">
             <div className="mainImage">
               {mainDesign?.images ? (
@@ -157,7 +140,7 @@ const Page = () => {
                     muted
                     className="bigImage"
                     src={mainDesign?.video}
-                  ></video>
+                  />
                 </div>
               )}
               <div className="sideImages">
@@ -202,7 +185,7 @@ const Page = () => {
                         muted
                         className="bigImage"
                         src={mainDesign?.video}
-                      ></video>
+                      />
                     </div>
                   )
                 ) : (
@@ -213,38 +196,32 @@ const Page = () => {
                     e.endsWith(".mp4") ||
                     e.endsWith("webm") ||
                     e.endsWith("ogg")
-
-                  if (isVideo) {
-                    return (
-                      <div
-                        onClick={() => setSelectedImg(e)}
-                        key={"video"}
-                        className="shadowForMedia"
-                      >
-                        <video className="" src={e}></video>
-                      </div>
-                    )
-                  } else {
-                    return (
-                      <div
-                        key={"image"}
-                        onClick={() => setSelectedImg(e)}
-                        className="shadowForMedia"
-                      >
-                        <img
-                          height={100}
-                          width={100}
-                          className="bigImage"
-                          src={e}
-                          alt=""
-                        />
-                      </div>
-                    )
-                  }
+                  return isVideo ? (
+                    <div
+                      onClick={() => setSelectedImg(e)}
+                      key={"video"}
+                      className="shadowForMedia"
+                    >
+                      <video className="" src={e} />
+                    </div>
+                  ) : (
+                    <div
+                      key={"image"}
+                      onClick={() => setSelectedImg(e)}
+                      className="shadowForMedia"
+                    >
+                      <img
+                        height={100}
+                        width={100}
+                        className="bigImage"
+                        src={e}
+                        alt=""
+                      />
+                    </div>
+                  )
                 })}
               </div>
             </div>
-
             <div className="leftSideDetails">
               <span onClick={handleLike}>
                 <span className="LeftSideDetails-Icon">
@@ -272,15 +249,12 @@ const Page = () => {
               </span>
               <span onClick={handleSave}>
                 <span className="LeftSideDetails-Icon">
-                  <BsBookmarksFill
-                    className={`${save ? "saved" : "saved2"}  `}
-                  />
+                  <BsBookmarksFill className={`${save ? "saved" : "saved2"}`} />
                 </span>
                 <p>Share</p>
               </span>
             </div>
           </div>
-
           <p className="desMore">{mainDesign?.description}</p>
         </div>
       </div>
@@ -288,7 +262,7 @@ const Page = () => {
         <div className="More">
           <p>More by {mainDesign?.creator?.username}</p>
         </div>
-        <SwiperDesign data={moreDesigns}></SwiperDesign>
+        <SwiperDesign data={moreDesigns} />
       </div>
     </>
   )

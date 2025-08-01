@@ -129,7 +129,6 @@ const moreDetailInitialState: DesignState = {
 // }
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5001"
-console.log(baseUrl)
 
 export const fetchMoreDetail = createAsyncThunk(
   "FETCH_MORE_DETAILS",
@@ -143,7 +142,7 @@ export const fetchMoreDetail = createAsyncThunk(
       body: JSON.stringify({id}),
     })
     const data = await res.json()
-    console.log("get more", data)
+
     return data
   }
 )
@@ -193,7 +192,7 @@ export const moreDetailSlice = createSlice({
 //       action,
 //       post,
 //     }
-//     console.log("action receiverId", userdata)
+
 //     const res = await fetch(`${baseUrl}/auth/userInteraction`, {
 //       method: "POST",
 //       credentials: "include",
@@ -203,7 +202,7 @@ export const moreDetailSlice = createSlice({
 //       body: JSON.stringify(userdata),
 //     })
 //     const data = await res.json()
-//     console.log("afterchecker ", data)
+//
 //     return data
 //   }
 // )
@@ -230,7 +229,7 @@ export const moreDetailSlice = createSlice({
 //       body: JSON.stringify({message, post, budget}),
 //     })
 //     const data = await res.json()
-//     console.log("proposeeeee", data)
+
 //     return data
 //   }
 // )
@@ -248,7 +247,6 @@ export const moreDetailSlice = createSlice({
 export const fetchHomeContent = createAsyncThunk(
   "homeContent/fetchHomeContent",
   async (page: number) => {
-    console.log("pageNumber", page)
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/auth/Getdata?page=${page}`,
       {
@@ -257,7 +255,7 @@ export const fetchHomeContent = createAsyncThunk(
       }
     )
     const {data, totalPost} = await res.json()
-    console.log("HomeContentSlie", data)
+
     return {data, totalPost}
   }
 )
@@ -268,7 +266,6 @@ export const homeContentSlice = createSlice({
   reducers: {
     setPageIncrease: state => {
       state.page += 1
-      console.log("Page value from reducer", state.page)
     },
   },
   extraReducers: builder => {
@@ -279,9 +276,6 @@ export const homeContentSlice = createSlice({
       const {data, totalPost} = action.payload
       const prevData = state.prevData
       if (JSON.stringify(data) === JSON.stringify(prevData)) {
-        console.log(
-          "Page data is the same as previous page data. Skipping fetch."
-        )
         state.page += 1
         return
       }

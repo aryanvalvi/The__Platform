@@ -449,7 +449,7 @@ const upload = multer({storage: storage}).fields([
   {name: "side_images[]", maxCount: 3},
 ])
 
-const UserPostMedia1 = async (req, res) => {
+const UserPostMedia = async (req, res) => {
   upload(req, res, async err => {
     if (err) {
       console.log("File uploade error at stage 0", err)
@@ -602,10 +602,10 @@ const UserPostMedia1 = async (req, res) => {
     }
   })
 }
-const UserPostMedia = async (req, res) => {
-  res.json({status: "succeeded", success: true})
-  // res.json({status: "failed", success: false})
-}
+// const UserPostMedia = async (req, res) => {
+//   res.json({status: "succeeded", success: true})
+//   // res.json({status: "failed", success: false})
+// }
 
 // **New function for updating existing posts**
 const UserPostUpdateMedia = async (req, res) => {

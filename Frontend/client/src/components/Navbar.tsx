@@ -8,20 +8,16 @@ import "./Navbar.scss"
 import {RxHamburgerMenu} from "react-icons/rx"
 
 const Navbar: React.FC = () => {
-  const [isHovered, setIsHovered] = useState(false)
+  const [isProfileHovered, setIsProfileHovered] = useState(false)
   const [ham, setHam] = useState(false)
 
   const dispatch = useAppDispatch()
   const user = useAppSelector(state => state.UserDataFetchReducer.userData)
   const isLoading = useAppSelector(state => state.UserDataFetchReducer.pending)
 
-  console.log("Current user:", user)
-  console.log("Ham state:", ham)
-
   const handleLogin = () => {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL
     if (!apiUrl) {
-      console.error("API URL not configured")
       return
     }
     window.location.href = `${apiUrl}/auth/google`
@@ -31,7 +27,6 @@ const Navbar: React.FC = () => {
     try {
       const apiUrl = process.env.NEXT_PUBLIC_API_URL
       if (!apiUrl) {
-        console.error("API URL not configured")
         return
       }
 
@@ -45,8 +40,9 @@ const Navbar: React.FC = () => {
       }
 
       const data = await res.json()
-      console.log("Logout successful:", data)
-      dispatch(logoutUser())
+      if (data) {
+        dispatch(logoutUser())
+      }
     } catch (error) {
       console.error("Logout error:", error)
     }
@@ -60,6 +56,25 @@ const Navbar: React.FC = () => {
     setHam(false)
   }
 
+  // Close menu when clicking outside or on backdrop
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement
+      if (
+        ham &&
+        !target.closest(".navbarElements") &&
+        !target.closest(".ham")
+      ) {
+        setHam(false)
+      }
+    }
+
+    if (ham) {
+      document.addEventListener("click", handleClickOutside)
+      return () => document.removeEventListener("click", handleClickOutside)
+    }
+  }, [ham])
+
   useEffect(() => {
     if (user === null) {
       dispatch(fetchUserData())
@@ -70,6 +85,7 @@ const Navbar: React.FC = () => {
     if (isLoading) {
       return (
         <div className="loading-spinner">
+          <div className="spinner"></div>
           <span>Loading...</span>
         </div>
       )
@@ -85,24 +101,38 @@ const Navbar: React.FC = () => {
 
     return (
       <div
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
         className="NavProfile"
+        onMouseEnter={() => setIsProfileHovered(true)}
+        onMouseLeave={() => setIsProfileHovered(false)}
       >
         <div className="pname">
-          <Link href={`/dashboard/profile/${user._id}`}>
-            <img
-              className="profile-picture"
-              src={user.userImage || "/image/fallback.png"}
-              alt={`${user.username}'s profile picture`}
-            />
-          </Link>
-          <p className="profile-name">{user.username}</p>
-          {isHovered && (
-            <button onClick={handleLogout} className="logout">
+          <div className="profile-container">
+            <Link className="links" href={`/dashboard/profile/${user._id}`}>
+              <img
+                className="profile-picture"
+                src={user.userImage || "/image/fallback.png"}
+                alt={`${user.username}'s profile picture`}
+              />
+            </Link>
+            {isProfileHovered && (
+              <button
+                onClick={handleLogout}
+                className="logout"
+                onMouseDown={e => e.preventDefault()} // Prevent focus issues
+              >
+                Log Out
+              </button>
+            )}
+          </div>
+          <div className="sendLogout">
+            <button
+              onClick={handleLogout}
+              className="logout"
+              onMouseDown={e => e.preventDefault()} // Prevent focus issues
+            >
               Log Out
             </button>
-          )}
+          </div>
         </div>
       </div>
     )
@@ -119,7 +149,7 @@ const Navbar: React.FC = () => {
 
       <div className="NavbarContain">
         <div>
-          <Link href="/">
+          <Link className="links" href="/">
             <Image
               className="Navlogo"
               width={200}
@@ -142,6 +172,7 @@ const Navbar: React.FC = () => {
                 tabIndex={0}
                 onKeyDown={e => {
                   if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault()
                     toggleMenu()
                   }
                 }}

@@ -5,19 +5,18 @@ import {
   setPageIncrease,
 } from "@/ReduxStore/slices/homeContentSlice"
 import {useAppDispatch, useAppSelector} from "@/ReduxStore/hook/CustomHook"
-import SkeletonLoader from "@/components/skeleton/Skeleton"
-import Link from "next/link"
-import {FaHeart} from "react-icons/fa"
-import "./Sexplore.scss"
 import {
   CheckUserInteraction2,
   toggleLikePost,
 } from "@/ReduxStore/slices/userInteractionSlice"
+import SkeletonLoader from "@/components/skeleton/Skeleton"
+import Link from "next/link"
+import {FaHeart} from "react-icons/fa"
+import "./Sexplore.scss"
 
 const Page = () => {
   const dispatch = useAppDispatch()
   const Data = useAppSelector(state => state.homeContentReducer.homeContent)
-  console.log(Data)
   const hasMorePost = useAppSelector(
     state => state.homeContentReducer.hasMorePost
   )
@@ -26,14 +25,9 @@ const Page = () => {
   const {liked, likingInProgress} = useAppSelector(
     state => state.userInteractionReducer
   )
-  console.log(liked)
-  // Local state to track like counts for immediate UI feedback
   const [localLikeCounts, setLocalLikeCounts] = useState<{
     [key: string]: number
   }>({})
-
-  console.log(liked)
-  console.log(user)
   const LoadingRef = useRef(null)
 
   useEffect(() => {
@@ -73,7 +67,6 @@ const Page = () => {
     }
   }, [dispatch, Data, user, loading])
 
-  // Initialize local like counts when Data changes
   useEffect(() => {
     if (Data) {
       const counts: {[key: string]: number} = {}
@@ -86,62 +79,10 @@ const Page = () => {
     }
   }, [Data])
 
-  // Test effect - let's manually set some liked data to test
-  useEffect(() => {
-    if (
-      Data &&
-      Data.length > 0 &&
-      (!liked || Object.keys(liked).length === 0)
-    ) {
-      console.log("=== TESTING: Manually setting liked data ===")
-      // This is just for testing - remove this later
-      const testLiked: {[key: string]: boolean} = {}
-      Data.forEach((post, index) => {
-        if (post._id) {
-          // Check if _id is defined
-          testLiked[post._id] = index % 2 === 0 // Every other post should be liked
-        }
-      })
-      console.log("Test liked data:", testLiked)
-      // Optional: Dispatch testLiked to Redux store or update state
-      // Example: dispatch(setTestLiked(testLiked)); // You need to define this action
-    }
-  }, [Data, liked, dispatch]) // Add dispatch to dependencies if used
-
-  // Debug effect to log liked state
-  useEffect(() => {
-    console.log("=== LIKED STATE DEBUG ===")
-    console.log("Full liked object:", liked)
-    console.log("Type of liked:", typeof liked)
-    console.log(
-      "Is liked an object?",
-      typeof liked === "object" && liked !== null
-    )
-
-    if (liked) {
-      console.log("Keys in liked:", Object.keys(liked))
-      console.log("First few entries:", Object.entries(liked).slice(0, 3))
-    }
-
-    // // Test with a specific post ID if Data exists
-    // if (Data && Data.length > 0) {
-    //   const firstPostId = Data[0]._id
-    //   console.log(`Testing first post ${firstPostId}:`)
-    //   console.log("  - liked[postId]:", liked?.[firstPostId])
-    //   console.log("  - liked[postId] === true:", liked?.[firstPostId] === true)
-    //   console.log("  - Boolean(liked[postId]):", Boolean(liked?.[firstPostId]))
-    // }
-    // console.log("=== END DEBUG ===")
-  }, [liked, Data])
-
   const handleLikeToggle = async (postId: string) => {
     if (!user) {
-      console.log("User not logged in")
       return
     }
-
-    // --- FIX HERE ---
-    // Access liked directly: liked?.[postId]
     const isCurrentlyLiked = liked?.[postId] || false
     const currentCount = localLikeCounts[postId] || 0
 
@@ -152,12 +93,11 @@ const Page = () => {
 
     try {
       await dispatch(toggleLikePost(postId)).unwrap()
-    } catch (error) {
+    } catch {
       setLocalLikeCounts(prev => ({
         ...prev,
         [postId]: currentCount,
       }))
-      console.error("Error toggling like:", error)
     }
   }
 
@@ -175,13 +115,7 @@ const Page = () => {
                 {f.images && f.images.length > 0 ? (
                   <img className="mgand" src={f.images} alt={f.title} />
                 ) : (
-                  <video
-                    muted
-                    autoPlay
-                    loop
-                    className="mgand"
-                    src={f.video}
-                  ></video>
+                  <video muted autoPlay loop className="mgand" src={f.video} />
                 )}
               </Link>
             </div>
@@ -209,8 +143,8 @@ const Page = () => {
           </div>
         ))}
       </div>
-      <div ref={LoadingRef} className="loading"></div>
-      {hasMorePost && <SkeletonLoader count={6}></SkeletonLoader>}
+      <div ref={LoadingRef} className="loading" />
+      {hasMorePost && <SkeletonLoader count={6} />}
     </>
   )
 }

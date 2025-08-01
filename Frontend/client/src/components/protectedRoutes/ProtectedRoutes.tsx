@@ -11,12 +11,11 @@ const ProtectedRoutes = ({children}: {children: React.ReactNode}) => {
   const [isMounted, setIsMounted] = useState(false)
 
   useEffect(() => {
-    setIsMounted(true) // Mark as mounted on client
+    setIsMounted(true)
   }, [])
 
   useEffect(() => {
     if (isMounted && !loading && !user) {
-      console.log("Redirecting to / because user is null and loading is false")
       dispatch(setOpen(true))
       router.push("/")
     }

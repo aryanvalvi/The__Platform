@@ -45,7 +45,7 @@ export const postPostFunction = createAsyncThunk<posptPostReturn, postPostArgs>(
       // },
     })
     const data = await res.json()
-    console.log("postPost", data)
+
     return data
   }
 )
@@ -58,7 +58,7 @@ export const postUpdateFunction = createAsyncThunk(
       body: formData,
     })
     const data = await res.json()
-    console.log("from slice postupdate", data)
+
     return data
   }
 )
@@ -75,7 +75,7 @@ export const postUpdateFunction = createAsyncThunk(
 //       // }
 //     })
 //     const data = await res.json()
-//     console.log("videoPost", data)
+//
 //     return data
 //   }
 // )
@@ -91,7 +91,7 @@ export const postUpdateFunction = createAsyncThunk(
 //       // }
 //     })
 //     const data = await res.json()
-//     console.log("videoPost", data)
+
 //     return data
 //   }
 // )

@@ -7,7 +7,6 @@ import "swiper/css"
 import "swiper/css/grid"
 import "swiper/css/pagination"
 import "./dashboard.scss"
-// import {Design} from "../../ReduxStore/slices/homeContentSlice"
 
 export interface Design {
   _id: string
@@ -36,20 +35,15 @@ export interface Design {
   visibility: string
   __v: number
 }
+
 const SwiperDesign = ({data}: {data: Design[] | null}) => {
-  console.log(data)
   const sliderRef = useRef(null)
+  const getRows = (dataLength: number) => (dataLength >= 6 ? 2 : 1)
+  const showArrows = data && data.length > 6
 
   if (!data || data.length === 0) {
     return <div className="no-images">No Images bro</div>
   }
-
-  console.log("data from dashboard", data)
-
-  // Determine rows based on data length
-  const getRows = (dataLength: number) => (dataLength >= 6 ? 2 : 1)
-
-  const showArrows = data.length > 6
 
   return (
     <div className="swiperContainerr">
@@ -72,16 +66,8 @@ const SwiperDesign = ({data}: {data: Design[] | null}) => {
           className="swiperr"
           ref={sliderRef}
           breakpoints={{
-            0: {
-              slidesPerView: 1,
-              grid: {rows: 1},
-              spaceBetween: 8,
-            },
-            640: {
-              slidesPerView: 2,
-              grid: {rows: 1},
-              spaceBetween: 12,
-            },
+            0: {slidesPerView: 1, grid: {rows: 1}, spaceBetween: 8},
+            640: {slidesPerView: 2, grid: {rows: 1}, spaceBetween: 12},
             1024: {
               slidesPerView: 3,
               grid: {rows: getRows(data.length)},
@@ -113,4 +99,5 @@ const SwiperDesign = ({data}: {data: Design[] | null}) => {
     </div>
   )
 }
+
 export default SwiperDesign

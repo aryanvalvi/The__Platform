@@ -37,7 +37,7 @@ export const sendUserInteraction = createAsyncThunk<
     body: JSON.stringify({actionType, postId}),
   })
   const data = await res.json()
-  console.log(data)
+
   return data
 })
 
@@ -61,7 +61,7 @@ export const sendUserInteraction2 = createAsyncThunk<
       body: JSON.stringify({actionType, id}),
     })
     const data = await res.json()
-    console.log(data)
+
     return data
   }
 )
@@ -70,7 +70,6 @@ export const CheckUserInteraction = createAsyncThunk<
   {followed: boolean; like: boolean; save: boolean},
   {postid: string | any; actionType: string}
 >("CHECKER_INTERACTION", async ({postid, actionType}) => {
-  console.log(postid, actionType)
   const res = await fetch(`${baseUrl}/auth/Check/${postid}`, {
     method: "POST",
     credentials: "include",
@@ -80,7 +79,7 @@ export const CheckUserInteraction = createAsyncThunk<
     body: JSON.stringify({actionType}),
   })
   const data = await res.json()
-  console.log(data)
+
   return data
 })
 
@@ -88,7 +87,6 @@ export const CheckUserInteraction2 = createAsyncThunk<
   {[postId: string]: boolean},
   string[] | string | any
 >("CHECKER2", async ids => {
-  console.log(ids)
   const res = await fetch(`${baseUrl}/auth/check2`, {
     method: "POST",
     credentials: "include",
@@ -98,7 +96,7 @@ export const CheckUserInteraction2 = createAsyncThunk<
     body: JSON.stringify({ids}),
   })
   const data = await res.json()
-  console.log(data)
+
   return data.liked
 })
 
@@ -106,7 +104,6 @@ export const toggleLikePost = createAsyncThunk<
   {success: boolean; postId: string; isLiked: boolean},
   string
 >("TOGGLE_LIKE", async postId => {
-  console.log("Toggling like for post:", postId)
   const res = await fetch(`${baseUrl}/auth/toggle-like`, {
     method: "POST",
     credentials: "include",
@@ -116,7 +113,7 @@ export const toggleLikePost = createAsyncThunk<
     body: JSON.stringify({postId}),
   })
   const data = await res.json()
-  console.log("Toggle like response:", data)
+
   return data
 })
 

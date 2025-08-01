@@ -1,13 +1,15 @@
 "use client"
 import React, {useEffect, useRef} from "react"
 import "./dashboardComponents.scss"
+
 interface PopupConfirmProps {
   setpopupClicked: React.Dispatch<React.SetStateAction<boolean>>
   handleunsave: () => void
 }
+
 const Popupconfirm = ({setpopupClicked, handleunsave}: PopupConfirmProps) => {
-  console.log(setpopupClicked, handleunsave)
   const popupRef = useRef<HTMLDivElement>(null)
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -17,17 +19,15 @@ const Popupconfirm = ({setpopupClicked, handleunsave}: PopupConfirmProps) => {
         setpopupClicked(false)
       }
     }
-
     document.addEventListener("mousedown", handleClickOutside)
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside)
-    }
+    return () => document.removeEventListener("mousedown", handleClickOutside)
   }, [setpopupClicked])
+
   return (
     <div className="modal3">
       <div className="modal-conten2" ref={popupRef}>
         <div className="PopupconfirmCenter">
-          <p>are u sure</p>
+          <p>Are you sure?</p>
           <div className="popupbuttonContainer">
             <button
               onClick={() => {
@@ -37,7 +37,7 @@ const Popupconfirm = ({setpopupClicked, handleunsave}: PopupConfirmProps) => {
             >
               Yes
             </button>
-            <button onClick={() => setpopupClicked(false)}>NO</button>
+            <button onClick={() => setpopupClicked(false)}>No</button>
           </div>
         </div>
       </div>

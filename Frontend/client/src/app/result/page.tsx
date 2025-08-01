@@ -2,55 +2,45 @@
 import {useEffect, useState, Suspense} from "react"
 import {useSearchParams} from "next/navigation"
 import Link from "next/link"
-import "./Search.scss"
 import {FaHeart} from "react-icons/fa"
+import "./Search.scss"
 import "../homeContent/Sexplore.scss"
 
-// Component to handle the search results logic
-function SearchResultsContent() {
-  const [results, setResults] = useState([])
+type Highlight = {[key: string]: any}
+type DesignPost = {
+  _id: string
+  title: string
+  description: string
+  UserProfileImage: string
+  creator: {userImage: string; username: string; _id: string}
+  images: string[]
+  video: string[]
+  sideImages: string[]
+  externalLinks: string[]
+  tags: string[]
+  tools: string[]
+  highlight: Highlight[]
+  comments: any[]
+  likes: string[]
+  views: number
+  score: number
+  createdAt: string
+}
+
+const SearchResultsContent = () => {
+  const [results, setResults] = useState<DesignPost[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
   const searchParams = useSearchParams()
   const query = searchParams.get("q")
 
-  interface Highlight {
-    [key: string]: any
-  }
-
-  interface DesignPost {
-    _id: string
-    title: string
-    description: string
-    UserProfileImage: string
-    creator: {
-      userImage: string
-      username: string
-      _id: string
-    }
-    images: string[]
-    video: string[]
-    sideImages: string[]
-    externalLinks: string[]
-    tags: string[]
-    tools: string[]
-    highlight: Highlight[]
-    comments: any[]
-    likes: string[]
-    views: number
-    score: number
-    createdAt: string
-  }
-
   useEffect(() => {
     const fetchResults = async () => {
-      console.log("hit")
       if (!query) {
         setError("No search query provided")
         setLoading(false)
         return
       }
-
       try {
         const res = await fetch(
           `http://localhost:5001/search?q=${encodeURIComponent(query)}`,
@@ -63,7 +53,6 @@ function SearchResultsContent() {
           throw new Error("Failed to fetch search results")
         }
         const data = await res.json()
-        console.log(data)
         setResults(data)
         setLoading(false)
       } catch (err) {
@@ -71,7 +60,6 @@ function SearchResultsContent() {
         setLoading(false)
       }
     }
-
     fetchResults()
   }, [query])
 
@@ -83,11 +71,10 @@ function SearchResultsContent() {
   return (
     <div>
       <h1 className="resultsH1">
-        Search Results for
-        <span className="query-underline"> {query}</span>
+        Search Results for <span className="query-underline"> {query}</span>
       </h1>
       <div className="flex">
-        {results.map((f: DesignPost) => (
+        {results.map(f => (
           <div key={f._id} className="gand">
             <div className="imageContent">
               <Link href={`/detailInfo/${f._id}`}>
@@ -100,7 +87,7 @@ function SearchResultsContent() {
                     loop
                     className="mgand"
                     src={f.video[0]}
-                  ></video>
+                  />
                 )}
                 <p className="ImageTitle">{f.title}</p>
               </Link>
@@ -124,11 +111,12 @@ function SearchResultsContent() {
   )
 }
 
-// Main component with Suspense boundary
-export default function SearchResults() {
+const SearchResults = () => {
   return (
     <Suspense fallback={<div className="loading">Loading...</div>}>
       <SearchResultsContent />
     </Suspense>
   )
 }
+
+export default SearchResults

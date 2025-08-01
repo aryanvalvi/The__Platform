@@ -52,10 +52,9 @@ export const fetchUserData = createAsyncThunk<
     }
 
     const data = await res.json()
-    console.log("data is ", data.user)
+
     return data
   } catch (error) {
-    console.error("Failed to fetch user data:", error)
     return rejectWithValue(
       error instanceof Error ? error.message : "Unknown error"
     )
@@ -67,7 +66,6 @@ export const dataFetching = createSlice({
   initialState,
   reducers: {
     logoutUser(state) {
-      console.log("Logging out user")
       state.userData = null
       state.pending = false
       state.isError = false
@@ -92,11 +90,10 @@ export const dataFetching = createSlice({
           state.userData = action.payload.user as UserData
         }
       })
-      .addCase(fetchUserData.rejected, (state, action) => {
+      .addCase(fetchUserData.rejected, state => {
         state.pending = false
         state.isError = true
         state.userData = null
-        console.error("Fetch user data rejected:", action.payload)
       })
   },
 })

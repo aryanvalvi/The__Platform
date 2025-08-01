@@ -16,11 +16,10 @@ export const authCheckFunction = createAsyncThunk(
       })
 
       if (!res.ok) {
-        console.log("chutiya un authorized he")
         throw new Error("unauthorized")
       }
       const data = await res.json()
-      console.log(data)
+
       return data
     } catch (error) {
       return rejectWithValue((error as Error).message)

@@ -1,42 +1,43 @@
 "use client"
 import React, {useEffect, useRef, useState} from "react"
-import "./dashboardComponents.scss"
-import {RiArrowDropDownLine, RiImageEditLine} from "react-icons/ri"
-import {hugeToolsList} from "@/utils/tools/tools"
-import {search} from "@/utils/search/search"
-import {RxCross1} from "react-icons/rx"
+import {useAppDispatch, useAppSelector} from "@/ReduxStore/hook/CustomHook"
 import {
   postUpdateFunction,
   resetPostUpdateSuccess,
 } from "@/ReduxStore/slices/PostpostSlice"
-
-import {useAppDispatch, useAppSelector} from "@/ReduxStore/hook/CustomHook"
 import {UserDashBoardFunction} from "@/ReduxStore/slices/UserProfile"
 import {DesignPost} from "../../ReduxStore/slices/UserProfile"
+import {hugeToolsList} from "@/utils/tools/tools"
+import {search} from "@/utils/search/search"
+import {RiArrowDropDownLine, RiImageEditLine} from "react-icons/ri"
+import {RxCross1} from "react-icons/rx"
+import "./dashboardComponents.scss"
 
 interface MypostsPopupProps {
   data: DesignPost
-  id: string[] | string | undefined
+  id: string | string[] | undefined
   setpopupClicked: React.Dispatch<React.SetStateAction<boolean>>
 }
 
+interface FormData {
+  title: string
+  description: string
+  tags: string[]
+  visibility: "public" | "private"
+  images_url_for_preview: string
+  tools: string
+  cover: string
+  category: string
+  externalLinks: string
+}
+
 const MypostsPopup = ({setpopupClicked, data, id}: MypostsPopupProps) => {
-  console.log(setpopupClicked, data, id)
-  console.log(id, "id is")
   const dispatch = useAppDispatch()
-  console.log(data)
-  interface formdata {
-    title: string
-    description: string
-    tags: string[]
-    visibility: "public" | "private"
-    images_url_for_preview: string
-    tools: string
-    cover: string
-    category: string
-    externalLinks: string
-  }
-  const [formData, setFormData] = useState<formdata>({
+  const returnDataFromUpdate = useAppSelector(
+    state => state.postPostReducer.postUpdateSuccess
+  )
+  const wrapperRef = useRef<HTMLDivElement | null>(null)
+  const [formData, setFormData] = useState<FormData>({
     title: data.title || "",
     description: data.description || "",
     tags: Array.isArray(data.tags) ? data.tags : [],
@@ -60,28 +61,18 @@ const MypostsPopup = ({setpopupClicked, data, id}: MypostsPopupProps) => {
   const [filterData, setFilterData] = useState<string[]>([])
   const [tags, setTags] = useState<string[]>([])
   const [mobileStep, setMobileStep] = useState<number>(1)
-  const returnDataFromUpdate = useAppSelector(
-    state => state.postPostReducer.postUpdateSuccess
-  )
-  console.log("checkiiing", returnDataFromUpdate)
+
   const handleToggle = (type: string) => {
     if (type === "tools") {
       setShowTools(!showTools)
-      setFormData(prev => ({
-        ...prev,
-        tools: "",
-      }))
+      setFormData(prev => ({...prev, tools: ""}))
       setIsToggled(prev => !prev)
     } else {
       setShowTag(!showTag)
-      setFormData(prev => ({
-        ...prev,
-        tags: [],
-      }))
+      setFormData(prev => ({...prev, tags: []}))
       setIsToggled(prev => !prev)
     }
   }
-  const wrapperRef = useRef<HTMLDivElement | null>(null)
 
   const onInputChange = (e: string) => {
     setShowSearchOption(true)
@@ -95,32 +86,29 @@ const MypostsPopup = ({setpopupClicked, data, id}: MypostsPopupProps) => {
       setFilterData(filterData)
     }
   }
-  const TagSelectorFucntion = (e: any) => {
+
+  const TagSelectorFucntion = (e: string) => {
     setShowSearchOption(false)
     if (!tags.includes(e)) {
       setTags(prev => [...prev, e])
-      setFormData(prev => ({...prev, tags: [...tags, e]}))
-      console.log("afatrt selecting tag formdata", formData)
+      setFormData(prev => ({...prev, tags: [...prev.tags, e]}))
     }
-
-    console.log(e)
   }
+
   const removeTag = (tagToRemove: string) => {
-    setTags(tags.filter(tag => tag !== tagToRemove)) // Remove the tag
+    setTags(tags.filter(tag => tag !== tagToRemove))
     setFormData(prev => ({
       ...prev,
       tags: prev.tags.filter(tag => tag !== tagToRemove),
     }))
-    console.log("after filtering array", formData)
   }
-  console.log(formData)
+
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
     >
   ) => {
     const {name, value} = e.target
-    console.log(name, value, filterData, dropdownValue2)
     setFormData(prev => ({...prev, [name]: value}))
   }
 
@@ -140,7 +128,6 @@ const MypostsPopup = ({setpopupClicked, data, id}: MypostsPopupProps) => {
     if (newImageFile) {
       updateFormData.append("image", newImageFile)
     }
-
     const userFormInput = {
       Title: formData.title,
       Des: formData.description,
@@ -151,12 +138,9 @@ const MypostsPopup = ({setpopupClicked, data, id}: MypostsPopupProps) => {
       visibility: formData.visibility,
     }
     updateFormData.append("userFormInput", JSON.stringify(userFormInput))
-
-    for (const pair of updateFormData.entries()) {
-      console.log("update form data entry", pair[0], pair[1])
-    }
     dispatch(postUpdateFunction({postId: data._id, formData: updateFormData}))
   }
+
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (
@@ -167,10 +151,9 @@ const MypostsPopup = ({setpopupClicked, data, id}: MypostsPopupProps) => {
       }
     }
     document.addEventListener("mousedown", handleClickOutside)
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside)
-    }
+    return () => document.removeEventListener("mousedown", handleClickOutside)
   }, [])
+
   useEffect(() => {
     if (returnDataFromUpdate) {
       alert("Post updated successfully!")
@@ -179,13 +162,12 @@ const MypostsPopup = ({setpopupClicked, data, id}: MypostsPopupProps) => {
       }
       setpopupClicked(false)
       dispatch(resetPostUpdateSuccess())
-      setpopupClicked(false) // Close the popup
     }
   }, [returnDataFromUpdate, dispatch, setpopupClicked, id])
 
   return (
     <div className="modal">
-      <div onClick={() => setpopupClicked(false)} className="overlay"></div>
+      <div onClick={() => setpopupClicked(false)} className="overlay" />
       <div className="modal-content">
         <h2>Edit Your Project</h2>
         <div className="left-right-container">
@@ -198,9 +180,15 @@ const MypostsPopup = ({setpopupClicked, data, id}: MypostsPopupProps) => {
                   src={formData.images_url_for_preview}
                   alt=""
                 />
-                <RiImageEditLine className="img-replace"></RiImageEditLine>
+                <RiImageEditLine className="img-replace" />
               </div>
             </label>
+            <input
+              type="file"
+              className="file-input"
+              id="file-input"
+              onChange={handleImageChange}
+            />
           </div>
           <div className="modal-content-right">
             <span
@@ -214,7 +202,6 @@ const MypostsPopup = ({setpopupClicked, data, id}: MypostsPopupProps) => {
                 onChange={handleChange}
               />
             </span>
-
             <span
               className={mobileStep === 1 ? "input-visible" : "input-hidden"}
             >
@@ -226,7 +213,6 @@ const MypostsPopup = ({setpopupClicked, data, id}: MypostsPopupProps) => {
                 onChange={handleChange}
               />
             </span>
-
             <span
               className={mobileStep === 2 ? "input-visible" : "input-hidden"}
             >
@@ -237,14 +223,13 @@ const MypostsPopup = ({setpopupClicked, data, id}: MypostsPopupProps) => {
                     className={`toggle-switch ${!showTag ? "active" : ""}`}
                     onClick={() => handleToggle("tag")}
                   >
-                    <div className="toggle-circle"></div>
+                    <div className="toggle-circle" />
                   </div>
                   <span className="toggle-label">
                     {isToggled ? "Not to Mentioned" : "Not to Mentioned"}
                   </span>
                 </div>
               </div>
-
               {showTag && (
                 <div className="tags-wrapper">
                   <input
@@ -270,7 +255,7 @@ const MypostsPopup = ({setpopupClicked, data, id}: MypostsPopupProps) => {
                   </div>
                 </div>
               )}
-              {formData?.tags.length > 0 && (
+              {formData.tags.length > 0 && (
                 <div className="selected-tags">
                   {formData.tags.map((tag, index) => (
                     <span key={index} className="tag-chip">
@@ -286,7 +271,6 @@ const MypostsPopup = ({setpopupClicked, data, id}: MypostsPopupProps) => {
                 </div>
               )}
             </span>
-
             <span
               className={mobileStep === 2 ? "input-visible" : "input-hidden"}
             >
@@ -298,7 +282,7 @@ const MypostsPopup = ({setpopupClicked, data, id}: MypostsPopupProps) => {
                       className={`toggle-switch ${!showTools ? "active" : ""}`}
                       onClick={() => handleToggle("tools")}
                     >
-                      <div className="toggle-circle"></div>
+                      <div className="toggle-circle" />
                     </div>
                     <span className="toggle-label">
                       {isToggled ? "Not to Mentioned" : "Not to Mentioned"}
@@ -335,7 +319,6 @@ const MypostsPopup = ({setpopupClicked, data, id}: MypostsPopupProps) => {
                 )}
               </div>
             </span>
-
             <span
               className={mobileStep === 2 ? "input-visible" : "input-hidden"}
             >
@@ -351,26 +334,6 @@ const MypostsPopup = ({setpopupClicked, data, id}: MypostsPopupProps) => {
             </span>
           </div>
         </div>
-
-        <input
-          type="file"
-          className="file-input"
-          id="file-input"
-          onChange={handleImageChange}
-        />
-        {/* <label>Cover Image</label>
-        {formData.images && (
-          <img
-            src={formData.images}
-            alt="cover preview"
-            style={{width: "100%", marginTop: "10px", borderRadius: "8px"}}
-          />
-        )} */}
-
-        {/* Optional Collaborator field */}
-        {/* <label>Collaborators</label>
-        <input type="text" name="collaborators" placeholder="email1, email2" /> */}
-
         <div className="popup-actions">
           {mobileStep === 1 && (
             <button onClick={() => setMobileStep(2)}>Next</button>

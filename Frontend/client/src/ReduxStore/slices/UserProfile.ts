@@ -78,8 +78,7 @@ const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5001"
 //       body: JSON.stringify({id}),
 //     })
 //     const data = await res.json()
-//     console.log(id)
-//     console.log("User profile", data)
+
 //     return data
 //   }
 // )
@@ -96,7 +95,7 @@ export const UserDashBoardFunction = createAsyncThunk(
       body: JSON.stringify({id}),
     })
     const data = await res.json()
-    console.log("from userprofile slice ", data)
+
     return data
   }
 )
@@ -111,7 +110,7 @@ export const OtherProfile = createAsyncThunk(
       },
     })
     const data = await res.json()
-    console.log("from userprofile slice ", data)
+
     return data
   }
 )
@@ -119,7 +118,6 @@ export const OtherProfile = createAsyncThunk(
 export const UserSavedDesigns = createAsyncThunk(
   "USER_SAVED_DESIGNS",
   async ({actionType, postId}: {actionType: string; postId: string}) => {
-    console.log(actionType, postId)
     const res = await fetch(`${baseUrl}/auth/savedDesigns`, {
       method: "POST",
       credentials: "include",
@@ -130,7 +128,7 @@ export const UserSavedDesigns = createAsyncThunk(
     })
 
     const data = await res.json()
-    console.log(data)
+
     return data
   }
 )

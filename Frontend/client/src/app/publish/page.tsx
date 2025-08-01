@@ -1,14 +1,16 @@
 "use client"
-import {useAppDispatch, useAppSelector} from "@/ReduxStore/hook/CustomHook"
 import React, {useEffect, useRef, useState, Suspense} from "react"
-import {FaCloudUploadAlt} from "react-icons/fa"
-import {Swiper, SwiperSlide} from "swiper/react"
-import {Navigation, Pagination, Scrollbar, A11y} from "swiper/modules"
-import "swiper/css"
-import "swiper/css/navigation"
-import "swiper/css/pagination"
-import "swiper/css/scrollbar"
+import {useAppDispatch, useAppSelector} from "@/ReduxStore/hook/CustomHook"
+import {useRouter} from "next/navigation"
 import {
+  postPostFunction,
+  setDescription,
+  setTitle,
+} from "@/ReduxStore/slices/PostpostSlice"
+import {
+  FaCloudUploadAlt,
+  FaArrowLeft,
+  FaArrowRight,
   FaDribbble,
   FaBehance,
   FaInstagram,
@@ -26,48 +28,29 @@ import {
   FaLink,
 } from "react-icons/fa"
 import {FaCircleArrowLeft} from "react-icons/fa6"
-import {RxCrossCircled} from "react-icons/rx"
-import {RxCross1} from "react-icons/rx"
-import {hugeProjectTypes, hugeToolsList} from "../../utils/tools/tools"
+import {RxCrossCircled, RxCross1} from "react-icons/rx"
 import {RiArrowDropDownLine, RiEditLine} from "react-icons/ri"
-import "./test.scss"
-import {FaArrowLeft, FaArrowRight} from "react-icons/fa"
-import {
-  postPostFunction,
-  setDescription,
-  setTitle,
-} from "@/ReduxStore/slices/PostpostSlice"
 import {AiOutlinePlusCircle} from "react-icons/ai"
-import {search} from "@/utils/search/search"
-import getSocialMedia from "../../utils/hooks/getSocialMedia"
+import {Swiper, SwiperSlide} from "swiper/react"
+import {Navigation, Pagination, Scrollbar, A11y} from "swiper/modules"
 import ProtectedRoutes from "@/components/protectedRoutes/ProtectedRoutes"
-import {useRouter} from "next/navigation"
+import {hugeProjectTypes, hugeToolsList} from "../../utils/tools/tools"
+import getSocialMedia from "../../utils/hooks/getSocialMedia"
+import {search} from "@/utils/search/search"
+import "swiper/css"
+import "swiper/css/navigation"
+import "swiper/css/pagination"
+import "swiper/css/scrollbar"
+import "./test.scss"
 
-// Types
 type FileChangeEvent = React.ChangeEvent<HTMLInputElement>
+type ImageItem = {url: string; type: string}
+type LinkItem = {Icon: React.ComponentType<{className?: string}>; link: string}
 
 const PublishContent = () => {
   const router = useRouter()
+  const dispatch = useAppDispatch()
   const overlayRef = useRef<HTMLDivElement | null>(null)
-  const iconMap = {
-    FaDribbble: FaDribbble,
-    FaBehance: FaBehance,
-    FaInstagram: FaInstagram,
-    FaFacebook: FaFacebook,
-    FaLinkedin: FaLinkedin,
-    FaTwitter: FaTwitter,
-    FaYoutube: FaYoutube,
-    FaGithub: FaGithub,
-    FaPinterest: FaPinterest,
-    FaReddit: FaReddit,
-    FaTiktok: FaTiktok,
-    FaMedium: FaMedium,
-    FaDeviantart: FaDeviantart,
-    FaCodepen: FaCodepen,
-    FaLink: FaLink,
-  }
-
-  // All state
   const wrapperRef = useRef<HTMLDivElement | null>(null)
   const [dropdown, setDropdown] = useState<boolean>(false)
   const [dropdownValue, setDropDownValue] = useState<string>("category")
@@ -75,12 +58,7 @@ const PublishContent = () => {
   const [dropdownValue2, setDropDownValue2] = useState<string>("Tool")
   const [upload, setUpload] = useState<boolean>(true)
   const [upload2, setUpload2] = useState<boolean>(false)
-  type ImageItem = {
-    url: string
-    type: string
-  }
   const [arryImage, setArryImage] = useState<ImageItem[]>([])
-  console.log(arryImage.length)
   const [next, setNext] = useState<boolean>(false)
   const [filterData, setFilterData] = useState<string[]>([])
   const [selectedTag, setSelectedTags] = useState<string[]>([])
@@ -88,10 +66,6 @@ const PublishContent = () => {
   const [link, setLink] = useState<string | undefined>(undefined)
   const [showCategory, setShowCategory] = useState<boolean>(true)
   const [showTools, setShowTools] = useState<boolean>(true)
-  type LinkItem = {
-    Icon: React.ComponentType<{className?: string}>
-    link: string
-  }
   const [linkset, SetLinkSet] = useState<LinkItem[]>([])
   const [edit, setEdit] = useState<boolean>(false)
   const [index, setIndex] = useState<number | undefined>(undefined)
@@ -104,24 +78,36 @@ const PublishContent = () => {
   const [publish, setPublish] = useState<boolean>(false)
   const [sux, setSux] = useState(false)
   const [error, setError] = useState(false)
-  const dispatch = useAppDispatch()
-
-  // Reducer slice state
   const success = useAppSelector(state => state.postPostReducer.success)
   const status = useAppSelector(state => state.postPostReducer.status)
   const Data = useAppSelector(state => state.postPostReducer)
   const userData = useAppSelector(state => state.UserDataFetchReducer.userData)
-  console.log(userData)
   const Des = Data.description
   const Title = Data.Title
 
-  // File Image Changes Function
+  const iconMap = {
+    FaDribbble,
+    FaBehance,
+    FaInstagram,
+    FaFacebook,
+    FaLinkedin,
+    FaTwitter,
+    FaYoutube,
+    FaGithub,
+    FaPinterest,
+    FaReddit,
+    FaTiktok,
+    FaMedium,
+    FaDeviantart,
+    FaCodepen,
+    FaLink,
+  }
+
   const handleFileChange = (e: FileChangeEvent) => {
     setUpload(false)
     setUpload2(true)
     setFile(e.target.files?.[0] || null)
     const selectedFile = e.target.files?.[0] || null
-
     if (selectedFile) {
       const img = {
         url: URL.createObjectURL(selectedFile),
@@ -139,17 +125,12 @@ const PublishContent = () => {
       alert("max side images size is 4")
       return
     }
-    console.log(
-      "despacito,",
-      selectMultiple.map(bruh => bruh)
-    )
     const filesArray = selectMultiple.map(file => file)
     const urls = selectMultiple.map(file => ({
       url: URL.createObjectURL(file),
       type: file.type,
     }))
     setArryImage(prev => [...prev, ...urls])
-    console.log(urls)
     setMultiImgFile(filesArray)
     setMulti(urls.map(item => item.url))
   }
@@ -164,9 +145,7 @@ const PublishContent = () => {
     }
     const formData = new FormData()
     formData.append("image", file)
-    multiImgFile.forEach(file => {
-      formData.append(`side_images[]`, file)
-    })
+    multiImgFile.forEach(file => formData.append(`side_images[]`, file))
     const formUserInput = {
       Des,
       Title,
@@ -180,18 +159,10 @@ const PublishContent = () => {
   }
 
   const addLink = () => {
-    if (!link || link.trim() === "") {
-      console.error("Link is empty or undefined")
-      return
-    }
+    if (!link || link.trim() === "") return
     const iconKey = getSocialMedia(link)
-    console.log("getSocialMedia output for", link, ":", iconKey)
     const selectedIcon =
       iconMap[iconKey as keyof typeof iconMap] || iconMap.FaLink
-    console.log(
-      "Selected icon:",
-      selectedIcon ? selectedIcon.name : "undefined"
-    )
     SetLinkSet((prev: any) => [...prev, {Icon: selectedIcon, link: link}])
     setLink("")
   }
@@ -209,15 +180,12 @@ const PublishContent = () => {
   }
 
   const nextFunc = () => {
-    if (!Title.trim() || !Des.trim()) {
-      return
-    }
+    if (!Title.trim() || !Des.trim()) return
     setNext(true)
   }
 
   const OptionClearTag = (e: string) => {
     const clear = selectedTag.filter(data => data !== e)
-    console.log(clear)
     setSelectedTags(clear)
   }
 
@@ -242,16 +210,13 @@ const PublishContent = () => {
   }
 
   const editFunction = (action: "delete" | "change") => {
-    console.log(arryImage)
     if (action === "delete") {
-      console.log(index, "delete")
       setArryImage(prev => prev.filter((_, i) => i !== index))
       setEdit(false)
     } else if (action === "change") {
       const fileInput = document.getElementById("file-input3")
       fileInput?.click()
       setEdit(false)
-      console.log("change")
     }
   }
 
@@ -261,10 +226,7 @@ const PublishContent = () => {
     const img = URL.createObjectURL(selectedFile)
     setArryImage(prev => {
       const Updated = [...prev]
-      Updated[index] = {
-        url: img,
-        type: selectedFile.type,
-      }
+      Updated[index] = {url: img, type: selectedFile.type}
       return Updated
     })
   }
@@ -289,8 +251,6 @@ const PublishContent = () => {
       router.push(`/dashboard/profile/${userData._id}`)
     }
   }
-
-  console.log(status)
 
   useEffect(() => {
     if (status === "succeeded") {
@@ -324,9 +284,7 @@ const PublishContent = () => {
       }
     }
     document.addEventListener("mousedown", handleClickOutside)
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside)
-    }
+    return () => document.removeEventListener("mousedown", handleClickOutside)
   }, [])
 
   return (
@@ -346,7 +304,7 @@ const PublishContent = () => {
               <div className="overlay">
                 <div className="inOverlay">
                   {sux ? (
-                    <div className="loader"></div>
+                    <div className="loader" />
                   ) : (
                     <div className="TikContainer">
                       <span>
@@ -388,9 +346,9 @@ const PublishContent = () => {
                   <RxCrossCircled
                     onClick={() => setEdit(false)}
                     className="crossCircle"
-                  ></RxCrossCircled>
-                  <RiEditLine className="edit2"></RiEditLine>
-                  <p>Are you sure </p>
+                  />
+                  <RiEditLine className="edit2" />
+                  <p>Are you sure</p>
                   <p>you want to make changes to this image?</p>
                   <div className="inOverlayFlex">
                     <button
@@ -432,7 +390,6 @@ const PublishContent = () => {
               {arryImage.length > 0 ? (
                 arryImage.map((e, index) => {
                   const isVideo = e.type && e.type.startsWith("video/")
-                  console.log("isVideo:", isVideo)
                   return (
                     <SwiperSlide key={index} className="swiper-slide">
                       {isVideo ? (
@@ -559,11 +516,11 @@ const PublishContent = () => {
                         className="description"
                         onChange={HandleDiscriptionChange}
                         value={Des}
-                      ></textarea>
+                      />
                       {tags.length > 0 && (
                         <div className="selected-tags">
-                          {tags.map((tag, index) => (
-                            <span key={index} className="tag-chip">
+                          {tags.map(tag => (
+                            <span key={tag} className="tag-chip">
                               {tag}
                               <button
                                 onClick={() => removeTag(tag)}
@@ -635,7 +592,7 @@ const PublishContent = () => {
                               }`}
                               onClick={() => handleToggle("category")}
                             >
-                              <div className="toggle-circle"></div>
+                              <div className="toggle-circle" />
                             </div>
                             <span className="toggle-label">
                               {isToggled
@@ -682,7 +639,7 @@ const PublishContent = () => {
                               }`}
                               onClick={() => handleToggle("tools")}
                             >
-                              <div className="toggle-circle"></div>
+                              <div className="toggle-circle" />
                             </div>
                             <span className="toggle-label">
                               {isToggled

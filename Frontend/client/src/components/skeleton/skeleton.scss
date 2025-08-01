@@ -7,19 +7,194 @@
   }
 }
 
+@keyframes skeleton-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
 .skeleton-container {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
-  align-items: center;
-  justify-content: center;
+  gap: 24px; /* Match your .flex gap */
+  padding: 32px; /* Match your .flex padding */
+  width: 100%;
+  max-width: 1400px; /* Match your .flex max-width */
+  margin: 0 auto; /* Match your .flex centering */
+  justify-content: center; /* Match your .flex justify-content */
+
+  @media (max-width: 1220px) {
+    gap: 20px;
+    padding: 20px;
+  }
+
+  @media (max-width: 1000px) {
+    gap: 20px;
+    padding: 20px;
+  }
+
+  @media (max-width: 768px) {
+    gap: 20px;
+    padding: 20px;
+  }
+
+  @media (max-width: 480px) {
+    gap: 15px;
+    padding: 20px;
+  }
 }
 
-.skeleton {
-  background: linear-gradient(90deg, #eeeeee 25%, #dddddd 50%, #eeeeee 75%);
+.skeleton-card {
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  position: relative;
+  width: calc(33.33% - 16px); /* Match your .gand width exactly */
+
+  @media (max-width: 1220px) {
+    width: calc(100% / 3 - 20px); /* 3 columns - match .gand */
+  }
+
+  @media (max-width: 1000px) {
+    width: calc(100% / 2 - 20px); /* 2 columns - match .gand */
+  }
+
+  @media (max-width: 768px) {
+    width: calc(100% - 20px); /* 1 column - match .gand */
+  }
+}
+
+.skeleton-image {
+  width: 100%;
+  aspect-ratio: 16/10; /* Match your .imageContent aspect-ratio */
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
   background-size: 400px 100%;
   animation: skeleton-loading 1.2s infinite ease-in-out;
-  height: 200px;
-  width: 100%; // Default width
-  border-radius: 10px;
+}
+
+.skeleton-hover-strip {
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: white;
+}
+
+.skeleton-profile {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 400px 100%;
+  animation: skeleton-loading 1.2s infinite ease-in-out;
+  flex-shrink: 0;
+}
+
+.skeleton-title {
+  flex: 1;
+  height: 16px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 400px 100%;
+  animation: skeleton-loading 1.2s infinite ease-in-out;
+  border-radius: 8px;
+  margin-right: 12px;
+}
+
+.skeleton-like-section {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.skeleton-like-count {
+  width: 20px;
+  height: 12px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 400px 100%;
+  animation: skeleton-loading 1.2s infinite ease-in-out;
+  border-radius: 6px;
+}
+
+.skeleton-heart {
+  width: 16px;
+  height: 16px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 400px 100%;
+  animation: skeleton-loading 1.2s infinite ease-in-out;
+  border-radius: 2px;
+}
+
+/* Enhanced skeleton animation */
+.skeleton-image,
+.skeleton-profile,
+.skeleton-title,
+.skeleton-like-count,
+.skeleton-heart {
+  position: relative;
+  overflow: hidden;
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.4),
+      transparent
+    );
+    transform: translateX(-100%);
+    animation: shimmer 1.5s infinite;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Staggered animation for cards */
+.skeleton-card {
+  &:nth-child(1) {
+    animation-delay: 0s;
+  }
+  &:nth-child(2) {
+    animation-delay: 0.1s;
+  }
+  &:nth-child(3) {
+    animation-delay: 0.2s;
+  }
+  &:nth-child(4) {
+    animation-delay: 0.3s;
+  }
+  &:nth-child(5) {
+    animation-delay: 0.4s;
+  }
+  &:nth-child(6) {
+    animation-delay: 0.5s;
+  }
+
+  animation: fadeInUp 0.6s ease-out forwards;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

@@ -44,14 +44,10 @@ const Popup = ({
   openPopup,
   setopenPopup,
   mainDesign,
-  post,
+
   conversationid,
 }: PopupProps) => {
-  console.log("popup got params", post)
-  console.log("conversation id", conversationid)
-
   const [message, setMessage] = useState("")
-  console.log(message)
 
   const [loading, setLoading] = useState(false)
   const [sendToggle, setSendToggle] = useState(false)
