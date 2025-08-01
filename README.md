@@ -4,7 +4,7 @@
 
 # Uiuxyn - Advanced Creative Portfolio & Social Platform
 
-**Uiuxyn** is a cutting-edge web platform built with Next.js, TypeScript, and Redux, designed to empower creatives to showcase, share, and collaborate on innovative design projects. Drawing inspiration from Dribbble and Behance, Uiuxyn elevates the experience with a modern, responsive UI, real-time chat, advanced search, and robust social media features. It’s a dynamic community hub where designers, developers, and creators can connect, engage, and inspire through a seamless, elegant interface.
+**Uiuxyn** is a state-of-the-art web platform built with Next.js, TypeScript, and Redux, designed to empower creatives to showcase, share, and collaborate on innovative design projects. With a sleek, responsive interface, real-time chat, powerful search, and robust social features, Uiuxyn is a dynamic community hub for designers, developers, and creators to connect, inspire, and elevate their work through an elegant, user-centric experience..
 
 
 
@@ -58,8 +58,8 @@ Follow these instructions to get a copy of the project up and running on your lo
 1.  **Clone the Repository:**
 
     ```sh
-    git clone https://github.com/your-username/uiuxyn.git
-    cd uiuxyn
+    git clone https://github.com/aryanvalvi/the__Platform
+    cd The__platform
     ```
 
 2.  **Install Dependencies:**
@@ -93,6 +93,10 @@ Follow these instructions to get a copy of the project up and running on your lo
 
 Uiuxyn interacts with a backend API (assumed to be running at `http://localhost:5001`) 
 
+    
+     npm install
+     npm run server.js
+    
   -
 **Note**: Ensure your backend is configured and running. Please refer to your backend repository for specific setup instructions.
 
