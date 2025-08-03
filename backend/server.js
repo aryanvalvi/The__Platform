@@ -19,7 +19,13 @@ const client = require("./elasticSearchSync/sync")
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 app.use(cookieParser())
-
+router.options("/xyz", (req, res) => {
+  res.setHeader("Access-Control-Allow-Origin", req.headers.origin)
+  res.setHeader("Access-Control-Allow-Methods", "POST,OPTIONS")
+  res.setHeader("Access-Control-Allow-Credentials", "true")
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type") // Allow Content-Type header
+  res.sendStatus(204)
+})
 const allowOriginsare = process.env.frontendUrl.split(",")
 console.log("Allowed Origins:", allowOriginsare)
 app.use(
