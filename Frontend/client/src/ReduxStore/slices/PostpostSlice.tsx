@@ -40,9 +40,9 @@ export const postPostFunction = createAsyncThunk<posptPostReturn, postPostArgs>(
       method: "POST",
       credentials: "include",
       body: formData,
-      headers: {
-        "Content-Type": "application/json",
-      },
+      // headers: {
+      //   "Content-Type": "application/json",
+      // },
     })
     const data = await res.json()
 

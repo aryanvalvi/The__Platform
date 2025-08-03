@@ -21,9 +21,17 @@ app.use(express.urlencoded({extended: true}))
 app.use(cookieParser())
 
 const allowOriginsare = process.env.frontendUrl.split(",")
+console.log("Allowed Origins:", allowOriginsare)
 app.use(
   cors({
-    origin: allowOriginsare,
+    origin: (origin, callback) => {
+      console.log("Request Origin:", origin)
+      if (!origin || allowOriginsare.includes(origin)) {
+        callback(null, true)
+      } else {
+        callback(new Error(`CORS blocked for origin: ${origin}`))
+      }
+    },
     methods: "GET,POST,PUT,DELETE",
     credentials: true,
   })
