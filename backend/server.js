@@ -11,40 +11,15 @@ const passport = require("passport")
 const router = require("./routes/route")
 const mongoose = require("mongoose")
 const session = require("express-session")
-const {checkConnection} = require("./elasticSearch/elastic")
-const retrive = require("./modification/modify")
+
 require("dotenv").config()
-
-//Socket io setup first do http.createServer(app) and then listen on server
-// const {Server} = require("socket.io")
-// const io = new Server(server, {
-//   cors: "http://localhost:3000",
-//   methods: ["GET", "POST", "PUT", "DELETE"],
-// })
-// io.on("connection", socket => {
-//   console.log(`User connected with id ${socket.id}`)
-
-//   socket.on("disconnect", () => {
-//     console.log("user discoonected", socket.id)
-//   })
-// })
 
 const client = require("./elasticSearchSync/sync")
 // Middleware setup
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 app.use(cookieParser())
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", req.headers.origin) // Dynamically allow origin
-  res.header("Access-Control-Allow-Credentials", "true")
-  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
-  )
-  next()
-})
-;("http://localhost:3000")
+
 const allowOriginsare = process.env.frontendUrl.split(",")
 app.use(
   cors({
