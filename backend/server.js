@@ -16,8 +16,8 @@ require("dotenv").config()
 
 const client = require("./elasticSearchSync/sync")
 // Middleware setup
-app.use(express.json({limit: "10mb"}))
-app.use(express.json())
+console.log("are ye lavde vps")
+app.use(express.json({limit: "50mb"}))
 app.use(express.urlencoded({extended: true}))
 app.use(cookieParser())
 router.options("/xyz", (req, res) => {
