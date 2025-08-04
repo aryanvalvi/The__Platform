@@ -11,25 +11,8 @@ const passport = require("passport")
 const router = require("./routes/route")
 const mongoose = require("mongoose")
 const session = require("express-session")
-
 require("dotenv").config()
-
-const client = require("./elasticSearchSync/sync")
-// Middleware setup
-console.log("are ye lavde vps")
-app.use(express.json({limit: "50mb"}))
-app.use(express.urlencoded({extended: true}))
-app.use(cookieParser())
-router.options("/xyz", (req, res) => {
-  res.setHeader("Access-Control-Allow-Origin", req.headers.origin)
-  res.setHeader("Access-Control-Allow-Methods", "POST,OPTIONS")
-  res.setHeader("Access-Control-Allow-Credentials", "true")
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type") // Allow Content-Type header
-  res.sendStatus(204)
-})
 const allowOriginsare = process.env.frontendUrl.split(",")
-console.log(allowOriginsare)
-console.log("Allowed Origins:", allowOriginsare)
 app.use(
   cors({
     origin: (origin, callback) => {
@@ -44,6 +27,19 @@ app.use(
     credentials: true,
   })
 )
+
+// Middleware setup
+console.log("are ye lavde vps")
+app.use(express.json({limit: "50mb"}))
+app.use(express.urlencoded({extended: true}))
+app.use(cookieParser())
+// router.options("/xyz", (req, res) => {
+//   res.setHeader("Access-Control-Allow-Origin", req.headers.origin)
+//   res.setHeader("Access-Control-Allow-Methods", "POST,OPTIONS")
+//   res.setHeader("Access-Control-Allow-Credentials", "true")
+//   res.setHeader("Access-Control-Allow-Headers", "Content-Type") // Allow Content-Type header
+//   res.sendStatus(204)
+// })
 
 // Session management
 app.use(
