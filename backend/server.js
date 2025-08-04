@@ -40,7 +40,7 @@ app.use(
         callback(new Error(`CORS blocked for origin: ${origin}`))
       }
     },
-    methods: "GET,POST,PUT,DELETE",
+    methods: "GET,POST,PUT,DELETE,OPTIONS",
     credentials: true,
   })
 )
