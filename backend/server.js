@@ -27,6 +27,21 @@ app.use(
     credentials: true,
   })
 )
+app.options(
+  "*",
+  cors({
+    origin: (origin, callback) => {
+      const allowOriginsare = process.env.frontendUrl.split(",")
+      if (!origin || allowOriginsare.includes(origin)) {
+        callback(null, true)
+      } else {
+        callback(new Error(`CORS blocked for origin: ${origin}`))
+      }
+    },
+    methods: "GET,POST,PUT,DELETE,OPTIONS",
+    credentials: true,
+  })
+)
 
 // Middleware setup
 console.log("are ye lavde vps")
