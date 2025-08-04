@@ -16,6 +16,7 @@ require("dotenv").config()
 
 const client = require("./elasticSearchSync/sync")
 // Middleware setup
+app.use(express.json({limit: "10mb"}))
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 app.use(cookieParser())
@@ -27,6 +28,7 @@ router.options("/xyz", (req, res) => {
   res.sendStatus(204)
 })
 const allowOriginsare = process.env.frontendUrl.split(",")
+console.log(allowOriginsare)
 console.log("Allowed Origins:", allowOriginsare)
 app.use(
   cors({
