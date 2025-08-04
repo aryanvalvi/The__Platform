@@ -443,7 +443,14 @@ const storage = multer.diskStorage({
 
 //after we declare how to store the image now we are tell or
 // adding middleware to say multer to accept what type of image video and sideImages[]
-const upload = multer({storage: storage}).fields([
+const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: 50 * 1024 * 1024, // 50MB limit
+    fieldSize: 50 * 1024 * 1024, // 50MB for field data
+    files: 5, // Maximum 5 files total
+  },
+}).fields([
   {name: "image", maxCount: 1},
   {name: "video", maxCount: 1},
   {name: "side_images[]", maxCount: 3},
