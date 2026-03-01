@@ -19,6 +19,7 @@ export const authCheckFunction = createAsyncThunk(
         throw new Error("unauthorized")
       }
       const data = await res.json()
+      console.log(data)
 
       return data
     } catch (error) {
